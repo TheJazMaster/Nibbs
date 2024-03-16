@@ -1,0 +1,164 @@
+{
+    "character": {
+        "name": "Nibbs",
+        "description": [
+            "<c=c74b9b>NIBBS</c>",
+            "A young warrior from another galaxy. Her cards focus on positioning using <c=keyword>backtrackable instant movement</c> and <c=keyword>time stop</c>, but often generate <c=downside>heat</c>."
+        ]
+    },
+    "action": {
+        "backtrackMove": {
+            "name": "Reversible move",
+            "description": "Instantly move <c=keyword>{{Amount}}</c> spaces in this direction and gain <c=status>BACKTRACK</c> of the opposite direction equal to the distance moved."
+        },
+        "backtrackMoveLeft": {
+            "name": "Reversible move left",
+            "description": "Instantly move <c=keyword>{{Amount}}</c> spaces to the <c=keyword>LEFT</c> and gain <c=status>BACKTRACK RIGHT</c> equal to the distance moved."
+        },
+        "backtrackMoveRight": {
+            "name": "Reversible move right",
+            "description": "Instantly move <c=keyword>{{Amount}}</c> spaces to the <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved."
+        },
+        "backtrackMoveRandom": {
+            "name": "Reversible move random",
+            "description": "Instantly move <c=keyword>{{Amount}}</c> spaces in a random direction and gain <c=status>BACKTRACK</c> of the opposite direction equal to the distance moved."
+        }
+    },
+    "status": {
+        "Backflip": {
+            "name": "Backflip",
+            "description": "All cards with flippable actions, such as <c=action>move</c>, are <c=cardtrait>flippable</c> for {0} turns."
+        },
+        "Smokescreen": {
+            "name": "Smokescreen",
+            "description": "Whenever this ship moves, it gains {0} <c=status>TEMP SHIELD</c>. <c=downside>Decreases by 1 at end of turn.</c>."
+        },
+        "BacktrackLeft": {
+            "name": "Backtrack Left",
+            "description": "Lets you move left with {0}. Costs 1 backtrack left per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
+        },
+        "BacktrackRight": {
+            "name": "Backtrack Right",
+            "description": "Lets you move right with {0}. Costs 1 backtrack right per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
+        },
+        "BacktrackAutododgeLeft": {
+            "name": "Reversible Autododge Left",
+            "description": "If fired on, will completely move out of the way <c=keyword>LEFT</c> and gain <c=status>BACKTRACK RIGHT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
+        },
+        "BacktrackAutododgeRight": {
+            "name": "Reversible Autododge Right",
+            "description": "If fired on, will completely move out of the way <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
+        }
+    },
+    "artifact": {
+        "ChocolateSurpriseEgg": {
+            "name": "CHOCOLATE MONSTER EGG",
+            "description": "At the end of every turn, if you gained any <c=status>HEAT</c> that turn, gain <c=status>TEMP SHIELD</c> equal to your <c=status>HEAT</c>."
+        },
+        "EyeOfCoba": {
+            "name": "EYE OF COBA",
+            "description": "Your first <c=action>non-reversible move</c> each turn becomes a <c=keyword>reversible</c> move."
+        },
+        "GalacticNewsCoverage": {
+            "name": "CHANNEL 7 COVERAGE",
+            "description": "Upon reaching 5 <c=status>BACKFLIP</c>, lose 5 backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
+        },
+        "EternalFlame": {
+            "name": "ETERNAL FLAME",
+            "description": "The first time each combat you would <c=keyword>overheat</c>, gain 1 <c=status>TIMESTOP</c> instead."
+        },
+        "QuantumEngines": {
+            "name": "QUANTUM ENGINES",
+            "description": "Whenever you gain <c=status>BACKTRACK LEFT/RIGHT</c>, gain 1 more."
+        },
+        "SugarRush": {
+            "name": "SUGAR RUSH",
+            "description": "Gain 1 extra <c=energy>ENERGY</c> every turn. <c=downside>At the end of each turn, reversible move 1 in a random direction.</c>"
+        },
+        "FledgelingOrb": {
+            "name": "FLEDGELING'S ORB",
+            "description": "You cannot <c=action>OVERHEAT</c> while you have <c=status>TIMESTOP</c>. <c=downside>Your backtrack movement doesn't trigger STRAFE."
+        }
+    },
+    "card": {
+        "SpaceHopping": {
+            "name": "Space Hopping"
+        },
+        "WingsOfFire": {
+            "name": "Wings of Fire"
+        },
+        "Fireball": {
+            "name": "Fireball"
+        },
+        "BlazingPath": {
+            "name": "Blazing Path"
+        },
+        "WormholeSurfing": {
+            "name": "Wormhole Surfing"
+        },
+        "OverHere": {
+            "name": "Over Here!"
+        },
+        "HotPursuit": {
+            "name": "Hot Pursuit"
+        },
+        "Backflip": {
+            "name": "Backflip"
+        },
+        "SteamCover": {
+            "name": "Steam Cover"
+        },
+        "QuantumTurbulence": {
+            "name": "Quantum Turbulence",
+            "description": {
+                "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}}.",
+                "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}} and gain 1 <c=status>temp shield</c>.",
+                "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}} and <c=action>right {{Amount}}."
+            }
+        },
+        "FireBreath": {
+            "name": "Fire-Breath"
+        },
+        "FlapFlap": {
+            "name": "Flap-Flap"
+        },
+        "Smokescreen": {
+            "name": "Smokescreen"
+        },
+        "HoldOn": {
+            "name": "Hold On!"
+        },
+        "DimensionalJaunt": {
+            "name": "Dimensional Jaunt",
+            "description": {
+                "None": "Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>.",
+                "A": "Add a <c=card>Hop A</c> and a <c=card>Skip A</c> to your <c=keyword>draw pile</c>.",
+                "B": "Gain 2 <c=status>backflip</c>. Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>."
+            }
+        },
+        "Hop": {
+            "name": "Hop"
+        },
+        "Skip": {
+            "name": "Skip"
+        },
+        "Taunt": {
+            "name": "Taunt"
+        },
+        "DragonFrenzy": {
+            "name": "Dragon Frenzy"
+        },
+        "Superposition": {
+            "name": "Super-Position"
+        },
+        "CoolantPump": {
+            "name": "Coolant Pump"
+        },
+        "FluxCompressor": {
+            "name": "Flux Compressor"
+        },
+        "Nova": {
+            "name": "Nova"
+        }
+    }
+}

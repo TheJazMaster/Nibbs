@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>TheJazMaster.Nibbs</RootNamespace>
+		<Version>1.0.4</Version>
+		<IncludedModProjectPaths>I18n;Sprites</IncludedModProjectPaths>
+
+		<TargetFramework>net8.0</TargetFramework>
+		<ModZipPath>$(MSBuildProjectDirectory)\.release\$(MSBuildProjectName)-$(Version).zip</ModZipPath>
+
+		<ModLoaderPath>..\..</ModLoaderPath>
+
+		<EnableDllExtract>false</EnableDllExtract>		
+		<GameExePath>/home/thejazmaster/.steam/steam/steamapps/common/Cobalt Core/</GameExePath>
+		<GameDllPath>$(ModLoaderPath)/Extract/CobaltCore.dll</GameDllPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0"/>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="All" ExcludeAssets="All" />
+		<PackageReference Include="EnumByNameSourceGenerator" Version="1.1.1" PrivateAssets="All" ExcludeAssets="All" />
+		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" PrivateAssets="All" ExcludeAssets="All" />
+        <PackageReference Include="Fayti1703.AssemblyTasks" Version="1.0.0" PrivateAssets="All" ExcludeAssets="runtime" />
+    </ItemGroup>
+
+    <Target Name="PublicizeGameDll" AfterTargets="ResolveReferences">
+        <Fayti1703.AssemblyTasks.PublishAllTypes SourceFilePath="$(GameDllPath)" TargetFilePath="$(IntermediateOutputPath)/CobaltCore.dll" />
+        <ItemGroup>
+            <ReferencePath Remove="$(GameDllPath)" />
+            <ReferencePath Include="$(IntermediateOutputPath)/CobaltCore.dll" />
+        </ItemGroup>
+    </Target>
+</Project>
