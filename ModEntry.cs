@@ -236,6 +236,7 @@ public sealed class ModEntry : SimpleMod {
 		AMovePatches.Apply();
 		AAttackPatches.Apply();
 		ShipPatches.Apply();
+		CombatPatches.Apply();
 
         NibbsCharacter = helper.Content.Characters.RegisterCharacter("Nibbs", new()
 		{

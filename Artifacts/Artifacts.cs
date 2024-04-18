@@ -220,7 +220,7 @@ internal sealed class EternalFlameArtifact : Artifact, INibbsArtifact
 
 	public override void OnTurnEnd(State state, Combat combat)
 	{
-		if (state.ship.Get(Status.timeStop) == 0 && state.ship.Get(Status.heat) >= state.ship.heatTrigger) {
+		if (active && state.ship.Get(Status.timeStop) == 0 && state.ship.Get(Status.heat) >= state.ship.heatTrigger) {
 			active = false;
 			Pulse();
 			state.ship.Add(Status.timeStop, 1);
