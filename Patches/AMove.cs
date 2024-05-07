@@ -49,7 +49,7 @@ public class AMovePatches
             });
         }
 
-        if (__instance is not ABacktrackMove && __instance.targetPlayer) {
+        if (__instance is not ABacktrackMove && __instance.targetPlayer && __instance.dir != 0) {
             foreach (Artifact item in s.EnumerateAllArtifacts()) {
                 if (item is EyeOfCobaArtifact artifact && artifact.active) {
                     ABacktrackMove.AddBacktrack(s, c, __state, s.ship.x, __instance);

@@ -62,38 +62,59 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 0
+		cost = 1
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
-			new AStatus {
-				status = Status.hermes,
-				statusAmount = 1,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
-			},
-			new ADrawCard {
-				count = 1
-			}
-		],
-		_ => [
-			new AStatus {
-				status = Status.hermes,
-				statusAmount = upgrade == Upgrade.B ? 2 : 1,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = upgrade == Upgrade.B ? 2 : 1,
-				targetPlayer = true
-			}
-		]
-	};
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new ABacktrackMove {
+			dir = upgrade == Upgrade.A ? -3 : -2,
+			targetPlayer = true
+		},
+		new AStatus {
+			status = Status.hermes,
+			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+			targetPlayer = true
+		},
+		new AStatus {
+			status = Status.heat,
+			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+			targetPlayer = true
+		}
+	];
+
+	// public override CardData GetData(State state) => new() {
+	// 	cost = 0
+	// };
+
+	// public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+	// 	Upgrade.A => [
+	// 		new AStatus {
+	// 			status = Status.hermes,
+	// 			statusAmount = 1,
+	// 			targetPlayer = true
+	// 		},
+	// 		new AStatus {
+	// 			status = Status.heat,
+	// 			statusAmount = 1,
+	// 			targetPlayer = true
+	// 		},
+	// 		new ADrawCard {
+	// 			count = 1
+	// 		}
+	// 	],
+	// 	_ => [
+	// 		new AStatus {
+	// 			status = Status.hermes,
+	// 			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+	// 			targetPlayer = true
+	// 		},
+	// 		new AStatus {
+	// 			status = Status.heat,
+	// 			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+	// 			targetPlayer = true
+	// 		}
+	// 	]
+	// };
 }
 
 internal sealed class FireballCard : Card, INibbsCard
@@ -357,7 +378,11 @@ internal sealed class BackflipCard : Card, INibbsCard
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
 			status = ModEntry.Instance.BackflipStatus.Status,
-			statusAmount = upgrade == Upgrade.B ? 5 : upgrade == Upgrade.A ? 4 : 3,
+			statusAmount = upgrade == Upgrade.B ? 4 : upgrade == Upgrade.A ? 3 : 2,
+			targetPlayer = true
+		},
+		new ABacktrackMove {
+			dir = 2,
 			targetPlayer = true
 		}
 	];
@@ -842,8 +867,11 @@ internal sealed class TauntCard : Card, INibbsCard
 		Upgrade.B => [
 			new AStatus {
 				status = ModEntry.Instance.BackflipStatus.Status,
-				statusAmount = 6,
+				statusAmount = 5,
 				targetPlayer = true
+			},
+			new ADrawCard {
+				count = 3	
 			},
 			new AStatus {
 				status = Status.evade,
@@ -863,6 +891,9 @@ internal sealed class TauntCard : Card, INibbsCard
 				status = ModEntry.Instance.BackflipStatus.Status,
 				statusAmount = 4,
 				targetPlayer = true
+			},
+			new ADrawCard {
+				count = 2
 			},
 			new AStatus {
 				status = Status.evade,
@@ -1105,7 +1136,7 @@ internal sealed class NovaCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 2 : 1,
+		cost = upgrade == Upgrade.A ? 1 : 0,
 		retain = true,
 		exhaust = true,
 	};
