@@ -346,6 +346,7 @@ internal sealed class BackflipCard : Card, INibbsCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
+		flippable = true,
 		exhaust = upgrade == Upgrade.B
 	};
 
@@ -356,7 +357,7 @@ internal sealed class BackflipCard : Card, INibbsCard
 			targetPlayer = true
 		},
 		new ABacktrackMove {
-			dir = 2,
+			dir = 1,
 			targetPlayer = true
 		}
 	];
@@ -889,6 +890,58 @@ internal sealed class TauntCard : Card, INibbsCard
 }
 
 
+internal sealed class FluxCompressorCard : Card, INibbsCard
+{
+	public static void Register(IModHelper helper) {
+		helper.Content.Cards.RegisterCard("FluxCompressor", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = ModEntry.Instance.NibbsDeck.Deck,
+				rarity = Rarity.uncommon,
+				upgradesTo = [Upgrade.A, Upgrade.B]
+			},
+			Art = StableSpr.cards_StunSource,
+			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/FluxCompressor.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "FluxCompressor", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.stunCharge,
+				statusAmount = 3,
+				targetPlayer = true
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+				stunEnemy = true
+			}
+		],
+		Upgrade.A => [
+			new AStatus {
+				status = Status.stunCharge,
+				statusAmount = 5,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AStatus {
+				status = Status.stunCharge,
+				statusAmount = 3,
+				targetPlayer = true
+			},
+		]
+	};
+}
+
+
 internal sealed class DragonFrenzyCard : Card, INibbsCard
 {
 	public static void Register(IModHelper helper) {
@@ -898,7 +951,7 @@ internal sealed class DragonFrenzyCard : Card, INibbsCard
 			Meta = new()
 			{
 				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.uncommon,
+				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
 			Art = StableSpr.cards_BlockerBurnout,
@@ -915,7 +968,7 @@ internal sealed class DragonFrenzyCard : Card, INibbsCard
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AAttack {
-			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
+			damage = GetDmg(s, upgrade == Upgrade.A ? 1 : 0),
 			stunEnemy = true
 		},
 		// new AStatus {
@@ -1054,58 +1107,6 @@ internal sealed class CoolantPumpCard : Card, INibbsCard
 }
 
 
-internal sealed class FluxCompressorCard : Card, INibbsCard
-{
-	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("FluxCompressor", new()
-		{
-			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
-			Meta = new()
-			{
-				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.rare,
-				upgradesTo = [Upgrade.A, Upgrade.B]
-			},
-			Art = StableSpr.cards_StunSource,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/FluxCompressor.png")).Sprite,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "FluxCompressor", "name"]).Localize
-		});
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = 1
-	};
-
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.B => [
-			new AStatus {
-				status = Status.stunCharge,
-				statusAmount = 3,
-				targetPlayer = true
-			},
-			new AAttack {
-				damage = GetDmg(s, 1),
-				stunEnemy = true
-			}
-		],
-		Upgrade.A => [
-			new AStatus {
-				status = Status.stunCharge,
-				statusAmount = 5,
-				targetPlayer = true
-			}
-		],
-		_ => [
-			new AStatus {
-				status = Status.stunCharge,
-				statusAmount = 3,
-				targetPlayer = true
-			},
-		]
-	};
-}
-
-
 internal sealed class NovaCard : Card, INibbsCard
 {
 	public static void Register(IModHelper helper) {
@@ -1125,7 +1126,7 @@ internal sealed class NovaCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 1 : 0,
+		cost = upgrade == Upgrade.A ? 2 : 1,
 		retain = true,
 		exhaust = true,
 	};
@@ -1134,7 +1135,7 @@ internal sealed class NovaCard : Card, INibbsCard
 		Upgrade.B => [
 			new AStatus {
 				status = Status.timeStop,
-				statusAmount = upgrade == Upgrade.A ? 2 : 1,
+				statusAmount = 1,
 				targetPlayer = true
 			},
 			new AStatus {
@@ -1143,7 +1144,7 @@ internal sealed class NovaCard : Card, INibbsCard
 				targetPlayer = true
 			},
 			new ADrawCard {
-				count = 2
+				count = 3
 			},
 			new AStatus {
 				status = Status.heat,
@@ -1161,6 +1162,9 @@ internal sealed class NovaCard : Card, INibbsCard
 				status = ModEntry.Instance.BackflipStatus.Status,
 				statusAmount = 1,
 				targetPlayer = true
+			},
+			new ADrawCard {
+				count = 1
 			},
 			new AStatus {
 				status = Status.heat,
