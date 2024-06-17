@@ -222,7 +222,7 @@ public sealed class ModEntry : SimpleMod {
         foreach (var cardType in AllCardTypes)
 			AccessTools.DeclaredMethod(cardType, nameof(INibbsCard.Register))?.Invoke(null, [helper]);
 		foreach (var artifactType in AllArtifactTypes)
-			AccessTools.DeclaredMethod(artifactType, nameof(INibbsCard.Register))?.Invoke(null, [helper]);
+			AccessTools.DeclaredMethod(artifactType, nameof(INibbsArtifact.Register))?.Invoke(null, [helper]);
 
 		// MoreDifficultiesApi?.RegisterAltStarters(NibbsDeck.Deck, new StarterDeck {
         //     cards = {

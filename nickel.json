@@ -1,6 +1,6 @@
 {
     "UniqueName": "TheJazMaster.Nibbs",
-    "Version": "0.2.3",
+    "Version": "0.2.9",
     "RequiredApiVersion": "0.1.0",
     "EntryPointAssembly": "Nibbs.dll",
     "LoadPhase": "AfterDbInit",

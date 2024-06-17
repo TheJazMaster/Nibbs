@@ -21,14 +21,13 @@ internal sealed class SpaceHoppingCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/SpaceHopping.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/SpaceHopping.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "SpaceHopping", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		art = flipped ? StableSpr.cards_ScootLeft : StableSpr.cards_ScootRight,
 		flippable = upgrade == Upgrade.B
 	};
 
@@ -57,8 +56,7 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Heat,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/WingsOfFire.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/WingsOfFire.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "WingsOfFire", "name"]).Localize
 		});
 	}
@@ -97,7 +95,7 @@ internal sealed class FireballCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_DrakeCannon,
+			Art = StableSpr.cards_Heat,
 			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Fireball.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Fireball", "name"]).Localize
 		});
@@ -123,7 +121,12 @@ internal sealed class FireballCard : Card, INibbsCard
 
 internal sealed class BlazingPathCard : Card, INibbsCard
 {
+	internal static Spr Art;
+	internal static Spr ArtFlipped;
+
 	public static void Register(IModHelper helper) {
+		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPath.png")).Sprite;
+		ArtFlipped = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPathFlipped.png")).Sprite;
 		helper.Content.Cards.RegisterCard("BlazingPath", new()
 		{
 			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
@@ -133,14 +136,13 @@ internal sealed class BlazingPathCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPath.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "BlazingPath", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		art = flipped ? StableSpr.cards_ScootLeft : StableSpr.cards_ScootRight,
+		art = flipped ? ArtFlipped : Art,
 		flippable = upgrade == Upgrade.B
 	};
 
@@ -187,8 +189,7 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Panic,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/WormholeSurfing.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/WormholeSurfing.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "WormholeSurfing", "name"]).Localize
 		});
 	}
@@ -220,8 +221,7 @@ internal sealed class OverHereCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Panic,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/OverHere.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/OverHere.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "OverHere", "name"]).Localize
 		});
 	}
@@ -262,14 +262,13 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/HotPursuit.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "HotPursuit", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = upgrade == Upgrade.A ? 1 : 2,
-		art = flipped ? StableSpr.cards_ScootLeft : StableSpr.cards_ScootRight,
+		art = flipped ? BlazingPathCard.ArtFlipped : BlazingPathCard.Art,
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
@@ -328,7 +327,12 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 
 internal sealed class BackflipCard : Card, INibbsCard
 {
+	internal static Spr Art;
+	internal static Spr ArtFlipped;
+
 	public static void Register(IModHelper helper) {
+		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Backflip.png")).Sprite;
+		ArtFlipped = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BackflipFlipped.png")).Sprite;
 		helper.Content.Cards.RegisterCard("Backflip", new()
 		{
 			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
@@ -338,8 +342,7 @@ internal sealed class BackflipCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Dodge,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Backflip.png")).Sprite,
+			
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Backflip", "name"]).Localize
 		});
 	}
@@ -347,6 +350,7 @@ internal sealed class BackflipCard : Card, INibbsCard
 	public override CardData GetData(State state) => new() {
 		cost = 1,
 		flippable = true,
+		art = flipped ? ArtFlipped : Art,
 		exhaust = upgrade == Upgrade.B
 	};
 
@@ -377,7 +381,6 @@ internal sealed class SteamCoverCard : Card, INibbsCard
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
 			Art = StableSpr.cards_TrashFumes,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/SteamCover.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "SteamCover", "name"]).Localize
 		});
 	}
@@ -413,8 +416,7 @@ internal sealed class QuantumTurbulenceCard : Card, INibbsCard
 				rarity = Rarity.uncommon,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_CombustionEngine,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/QuantumTurbulence.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/QuantumTurbulence.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "QuantumTurbulence", "name"]).Localize
 		});
 	}
@@ -468,7 +470,7 @@ internal sealed class FireBreathCard : Card, INibbsCard
 		cost = 2
 	};
 
-	private int GetHeatAmt(State s)
+	private static int GetHeatAmt(State s)
 	{
 		int num = 0;
 		if (s.route is Combat)
@@ -656,7 +658,12 @@ internal sealed class HoldOnCard : Card, INibbsCard
 
 internal sealed class DimensionalJauntCard : Card, INibbsCard
 {
+	internal static Spr HopArt;
+	internal static Spr SkipArt;
+
 	public static void Register(IModHelper helper) {
+		HopArt = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Hop.png")).Sprite;
+		SkipArt = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Skip.png")).Sprite;
 		helper.Content.Cards.RegisterCard("DimensionalJaunt", new()
 		{
 			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
@@ -725,14 +732,13 @@ internal sealed class HopCard : Card, INibbsCard
 				upgradesTo = [Upgrade.A, Upgrade.B],
 				dontOffer = true
 			},
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Hop.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Hop", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 0,
-		art = flipped ? StableSpr.cards_ScootRight : StableSpr.cards_ScootLeft,
+		art = flipped ? DimensionalJauntCard.SkipArt : DimensionalJauntCard.HopArt,
 		exhaust = upgrade == Upgrade.B,
 		temporary = true
 	};
@@ -788,7 +794,7 @@ internal sealed class SkipCard : Card, INibbsCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 0,
-		art = flipped ? StableSpr.cards_ScootLeft : StableSpr.cards_ScootRight,
+		art = flipped ? DimensionalJauntCard.HopArt : DimensionalJauntCard.SkipArt,
 		exhaust = upgrade == Upgrade.B,
 		temporary = true
 	};
@@ -902,8 +908,7 @@ internal sealed class FluxCompressorCard : Card, INibbsCard
 				rarity = Rarity.uncommon,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_StunSource,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/FluxCompressor.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/FluxCompressor.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "FluxCompressor", "name"]).Localize
 		});
 	}
@@ -954,8 +959,7 @@ internal sealed class DragonFrenzyCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_BlockerBurnout,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/DragonFrenzy.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/DragonFrenzy.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "DragonFrenzy", "name"]).Localize
 		});
 	}
@@ -993,8 +997,7 @@ internal sealed class SmokescreenCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_CloudSave,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Smokescreen.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Smokescreen.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Smokescreen", "name"]).Localize
 		});
 	}
@@ -1031,8 +1034,7 @@ internal sealed class SuperpositionCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Vamoose,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Superposition.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Superposition.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Superposition", "name"]).Localize
 		});
 	}
@@ -1119,8 +1121,7 @@ internal sealed class NovaCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_ThermalBattery,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Nova.png")).Sprite,
+			Art = StableSpr.cards_SolarFlair,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Nova", "name"]).Localize
 		});
 	}

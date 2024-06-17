@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<RootNamespace>TheJazMaster.Nibbs</RootNamespace>
-		<Version>1.0.4</Version>
+		<Version>0.2.9</Version>
 		<IncludedModProjectPaths>I18n;Sprites</IncludedModProjectPaths>
 
 		<TargetFramework>net8.0</TargetFramework>
