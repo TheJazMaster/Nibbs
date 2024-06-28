@@ -345,13 +345,6 @@ internal sealed class FledgelingOrbArtifact : Artifact, IHeatTriggerAffectorArti
 		}
 	}
 
-	public override void AfterPlayerStatusAction(State state, Combat combat, Status status, AStatusMode mode, int statusAmount)
-	{
-		if (status == Status.heat && statusAmount > 0 && active) {
-			Pulse();
-		}
-	}
-
 	private static readonly int aLot = 999999;
 	public void Update(Ship ship, int statusAmount)
 	{
