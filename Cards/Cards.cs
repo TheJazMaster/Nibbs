@@ -28,12 +28,12 @@ internal sealed class SpaceHoppingCard : Card, INibbsCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		flippable = upgrade == Upgrade.B
+		flippable = upgrade == Upgrade.A
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new ABacktrackMove {
-			dir = upgrade == Upgrade.A ? 2 : 1,
+			dir = upgrade == Upgrade.B ? 2 : 1,
 			targetPlayer = true
 		},
 		new ABacktrackMove {
@@ -65,22 +65,45 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 		cost = 1
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new ABacktrackMove {
-			dir = upgrade == Upgrade.A ? -3 : -2,
-			targetPlayer = true
-		},
-		new AStatus {
-			status = Status.hermes,
-			statusAmount = upgrade == Upgrade.B ? 2 : 1,
-			targetPlayer = true
-		},
-		new AStatus {
-			status = Status.heat,
-			statusAmount = upgrade == Upgrade.B ? 2 : 1,
-			targetPlayer = true
-		}
-	];
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new ABacktrackMove {
+				dir = -2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.hermes,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.timeStop,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.heat,
+				statusAmount = 2,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new ABacktrackMove {
+				dir = upgrade == Upgrade.A ? -3 : -2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.hermes,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.heat,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		]
+	};
 }
 
 internal sealed class FireballCard : Card, INibbsCard
@@ -143,11 +166,11 @@ internal sealed class BlazingPathCard : Card, INibbsCard
 	public override CardData GetData(State state) => new() {
 		cost = 1,
 		art = flipped ? ArtFlipped : Art,
-		flippable = upgrade == Upgrade.B
+		flippable = upgrade == Upgrade.A
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
+		Upgrade.B => [
 			new ABacktrackMove {
 				dir = 3,
 				targetPlayer = true
@@ -196,13 +219,13 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		exhaust = upgrade != Upgrade.A
+		exhaust = upgrade != Upgrade.B
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
 			status = Status.timeStop,
-			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+			statusAmount = upgrade == Upgrade.A ? 2 : 1,
 			targetPlayer = true
 		}
 	];
@@ -267,27 +290,12 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 1 : 2,
+		cost = upgrade == Upgrade.B ? 1 : 2,
 		art = flipped ? BlazingPathCard.ArtFlipped : BlazingPathCard.Art,
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.A => [
-			new AMove {
-				dir = 2,
-				targetPlayer = true
-			},
-			new AAttack {
-				damage = GetDmg(s, 1),
-				stunEnemy = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
-			}
-		],
-		Upgrade.B => [
 			new ABacktrackMove {
 				dir = 2,
 				targetPlayer = true
@@ -299,6 +307,21 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 			new ABacktrackMove {
 				dir = -2,
 				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.heat,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		],
+		Upgrade.B => [
+			new AMove {
+				dir = 2,
+				targetPlayer = true
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+				stunEnemy = true
 			},
 			new AStatus {
 				status = Status.heat,
@@ -579,14 +602,8 @@ internal sealed class FlapFlapCard : Card, INibbsCard
 	{
 		Upgrade.A => [
 			new AStatus {
-				status = Status.autododgeRight,
+				status = ModEntry.Instance.BacktrackAutododgeRightStatus.Status,
 				statusAmount = 2,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.timeStop,
-				statusAmount = 1,
-				mode = AStatusMode.Set,
 				targetPlayer = true
 			},
 		],
@@ -673,8 +690,7 @@ internal sealed class DimensionalJauntCard : Card, INibbsCard
 				rarity = Rarity.uncommon,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Reroute,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/DimensionalJaunt.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/DimensionalJaunt.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "DimensionalJaunt", "name"]).Localize
 		});
 	}
@@ -924,10 +940,11 @@ internal sealed class FluxCompressorCard : Card, INibbsCard
 				statusAmount = 3,
 				targetPlayer = true
 			},
-			new AAttack {
-				damage = GetDmg(s, 1),
-				stunEnemy = true
-			}
+			new AStatus {
+				status = Status.timeStop,
+				statusAmount = 1,
+				targetPlayer = true
+			},
 		],
 		Upgrade.A => [
 			new AStatus {
@@ -1085,8 +1102,7 @@ internal sealed class CoolantPumpCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_HeatSink,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/CoolantPump.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/CoolantPump.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "CoolantPump", "name"]).Localize
 		});
 	}
@@ -1127,7 +1143,7 @@ internal sealed class NovaCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 2 : 1,
+		cost = 1,
 		retain = true,
 		exhaust = true,
 	};
