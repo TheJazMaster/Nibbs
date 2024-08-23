@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+
 namespace TheJazMaster.Nibbs.Features;
-#nullable enable
 
 public class StatusManager : IStatusLogicHook
 {

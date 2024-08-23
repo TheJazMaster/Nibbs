@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-#nullable enable
 namespace TheJazMaster.Nibbs;
 
 public partial interface IKokoroApi

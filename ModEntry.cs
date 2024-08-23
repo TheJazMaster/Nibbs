@@ -1,33 +1,31 @@
-﻿// Total time spent: 400 min
-
-using FMOD;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
 using Nickel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Cards;
+using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features;
 using TheJazMaster.Nibbs.Patches;
 
 namespace TheJazMaster.Nibbs;
 
 public sealed class ModEntry : SimpleMod {
-    internal static ModEntry Instance { get; private set; } = null;
+    internal static ModEntry Instance { get; private set; } = null!;
 
     internal Harmony Harmony { get; }
 	internal IKokoroApi KokoroApi { get; }
-	internal IMoreDifficultiesApi MoreDifficultiesApi { get; }
+	internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
+	internal IJohnsonApi? JohnsonApi { get; }
+	internal IEddieApi? EddieApi { get; }
 
 
 	internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
 	internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
 
-    internal ICharacterEntry NibbsCharacter { get; }
+    internal IPlayableCharacterEntryV2 NibbsCharacter { get; }
 
     internal IDeckEntry NibbsDeck { get; }
 
@@ -47,23 +45,53 @@ public sealed class ModEntry : SimpleMod {
 	internal ISpriteEntry BacktrackMoveRightIcon { get; }
 	internal ISpriteEntry BacktrackMoveRandomIcon { get; }
 
+	// internal static IReadOnlyList<Type> CommonCardTypes { get; } = [
+	// 	typeof(FireballCard),
+	// 	typeof(BlazingPathCard),
+	// 	typeof(SpaceHoppingCard),
+	// 	typeof(WingsOfFireCard),
+	// 	typeof(WormholeSurfingCard),
+	// 	typeof(OverHereCard),
+	// 	typeof(HotPursuitCard),
+	// 	typeof(BackflipCard),
+    //     typeof(SteamCoverCard),
+	// ];
+
+	// internal static IReadOnlyList<Type> UncommonCardTypes { get; } = [
+	// 	typeof(QuantumTurbulenceCard),
+	// 	typeof(FireBreathCard),
+	// 	typeof(FlapFlapCard),
+	// 	typeof(FluxCompressorCard),
+	// 	typeof(HoldOnCard),
+	// 	typeof(DimensionalJauntCard),
+	// 	typeof(TauntCard),
+	// ];
+
+	// internal static IReadOnlyList<Type> RareCardTypes { get; } = [
+	// 	typeof(DragonFrenzyCard),
+	// 	typeof(SuperpositionCard),
+	// 	typeof(CoolantPumpCard),
+	// 	typeof(SmokescreenCard),
+	// 	typeof(NovaCard),
+	// ];
+
 	internal static IReadOnlyList<Type> CommonCardTypes { get; } = [
-		typeof(FireballCard),
-		typeof(BlazingPathCard),
-		typeof(SpaceHoppingCard),
+		typeof(SmeltCard),
 		typeof(WingsOfFireCard),
+		typeof(SpaceHoppingCard),
+		typeof(TrailblazerCard),
 		typeof(WormholeSurfingCard),
 		typeof(OverHereCard),
 		typeof(HotPursuitCard),
 		typeof(BackflipCard),
-        typeof(SteamCoverCard),
+        typeof(SmokescreenCard),
 	];
 
 	internal static IReadOnlyList<Type> UncommonCardTypes { get; } = [
 		typeof(QuantumTurbulenceCard),
-		typeof(FireBreathCard),
+		typeof(HydraulicsCard),
 		typeof(FlapFlapCard),
-		typeof(SmokescreenCard),
+		typeof(FluxCompressorCard),
 		typeof(HoldOnCard),
 		typeof(DimensionalJauntCard),
 		typeof(TauntCard),
@@ -72,8 +100,8 @@ public sealed class ModEntry : SimpleMod {
 	internal static IReadOnlyList<Type> RareCardTypes { get; } = [
 		typeof(DragonFrenzyCard),
 		typeof(SuperpositionCard),
-		typeof(CoolantPumpCard),
-		typeof(FluxCompressorCard),
+		typeof(QuantumCollapseCard),
+		typeof(BlurCard),
 		typeof(NovaCard),
 	];
 
@@ -81,6 +109,7 @@ public sealed class ModEntry : SimpleMod {
 	internal static IReadOnlyList<Type> SecretCardTypes { get; } = [
 		typeof(HopCard),
 		typeof(SkipCard),
+		typeof(NibbsExeCard),
 	];
 
     internal static IEnumerable<Type> AllCardTypes
@@ -90,7 +119,7 @@ public sealed class ModEntry : SimpleMod {
 			.Concat(SecretCardTypes);
 
     internal static IReadOnlyList<Type> CommonArtifacts { get; } = [
-		typeof(ChocolateSurpriseEggArtifact),
+		typeof(DragonfireCandleArtifact),
 		typeof(EyeOfCobaArtifact),
 		typeof(GalacticNewsCoverageArtifact),
 		typeof(EternalFlameArtifact),
@@ -114,6 +143,8 @@ public sealed class ModEntry : SimpleMod {
 		Instance = this;
 		Harmony = new(package.Manifest.UniqueName);
 		MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
+		JohnsonApi = helper.ModRegistry.GetApi<IJohnsonApi>("Shockah.Johnson")!;
+		EddieApi = helper.ModRegistry.GetApi<IEddieApi>("TheJazMaster.Eddie")!;
 		KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
 
 		AnyLocalizations = new JsonLocalizationProvider(
@@ -165,7 +196,11 @@ public sealed class ModEntry : SimpleMod {
 				isGood = true
 			},
 			Name = AnyLocalizations.Bind(["status", "BacktrackAutododgeLeft", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeLeft", "description"]).Localize
+			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeLeft", "description"]).Localize,
+			ShouldFlash = (State s, Combat c, Ship ship, Status status) =>
+			{
+				return true;
+			}
 		});
 
         BacktrackAutododgeRightStatus = helper.Content.Statuses.RegisterStatus("BacktrackAutododgeRight", new()
@@ -178,7 +213,11 @@ public sealed class ModEntry : SimpleMod {
 				isGood = true
 			},
 			Name = AnyLocalizations.Bind(["status", "BacktrackAutododgeRight", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeRight", "description"]).Localize
+			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeRight", "description"]).Localize,
+			ShouldFlash = (State s, Combat c, Ship ship, Status status) =>
+			{
+				return true;
+			}
 		});
 
         SmokescreenStatus = helper.Content.Statuses.RegisterStatus("Smokescreen", new()
@@ -224,32 +263,50 @@ public sealed class ModEntry : SimpleMod {
 		foreach (var artifactType in AllArtifactTypes)
 			AccessTools.DeclaredMethod(artifactType, nameof(INibbsArtifact.Register))?.Invoke(null, [helper]);
 
-		// MoreDifficultiesApi?.RegisterAltStarters(NibbsDeck.Deck, new StarterDeck {
-        //     cards = {
-        //     }
-        // });
+		MoreDifficultiesApi?.RegisterAltStarters(NibbsDeck.Deck, new StarterDeck {
+            cards = {
+				new WingsOfFireCard(),
+				new WormholeSurfingCard()
+            },
+			artifacts = {
+				new FledgelingOrbArtifact()
+			}
+        });
 		
 		_ = new StatusManager();
 		_ = new BacktrackManager();
 		CustomTTGlossary.ApplyPatches(Harmony);
 		CardPatches.Apply();
 		AMovePatches.Apply();
+		AStunPatches.Apply();
 		AAttackPatches.Apply();
+		AStatusPatches.Apply();
 		ShipPatches.Apply();
 		CombatPatches.Apply();
+		// ScriptCtxPatches.Apply();
 
-        NibbsCharacter = helper.Content.Characters.RegisterCharacter("Nibbs", new()
+		Helper.Events.OnModLoadPhaseFinished += (_, phase) => {
+			if (phase == ModLoadPhase.AfterDbInit) {
+				new CombatDialogue().Inject();
+				new EventDialogue().Inject();
+				new SwitchInjections().Inject();
+			}
+		};
+		
+        NibbsCharacter = helper.Content.Characters.V2.RegisterPlayableCharacter("Nibbs", new()
 		{
 			Deck = NibbsDeck.Deck,
 			Description = AnyLocalizations.Bind(["character", "description"]).Localize,
 			BorderSprite = NibbsFrame.Sprite,
 			Starters = new StarterDeck {
-				cards = [ new FireballCard(), new WingsOfFireCard() ],
+				// cards = [ new FireballCard(), new BlazingPathCard() ],
+				cards = [ new SmeltCard(), new TrailblazerCard() ],
 				artifacts = [ new FledgelingOrbArtifact() ]
 			},
+			ExeCardType = typeof(NibbsExeCard),
 			NeutralAnimation = new()
 			{
-				Deck = NibbsDeck.Deck,
+				CharacterType = NibbsDeck.Deck.Key(),
 				LoopTag = "neutral",
 				Frames = [
 					NibbsPortrait.Sprite
@@ -257,7 +314,7 @@ public sealed class ModEntry : SimpleMod {
 			},
 			MiniAnimation = new()
 			{
-				Deck = NibbsDeck.Deck,
+				CharacterType = NibbsDeck.Deck.Key(),
 				LoopTag = "mini",
 				Frames = [
 					NibbsPortraitMini.Sprite
@@ -265,24 +322,31 @@ public sealed class ModEntry : SimpleMod {
 			}
 		});
 
-		// MoreDifficultiesApi?.RegisterAltStarters(NibbsDeck.Deck, new StarterDeck {
-        //     cards = {
-        //         new ReboundShotCard(),
-        //         new LearningAlgorithmCard()
-        //     }
-        // });
+		RegisterAnimation(helper, "Neutral");
+		RegisterAnimation(helper, "Squint");
+		RegisterAnimation(helper, "Gameover");
+		RegisterAnimation(helper, "Mini");
+		RegisterAnimation(helper, "Cheeky");
+		RegisterAnimation(helper, "Happy");
+		RegisterAnimation(helper, "Wowza");
+		RegisterAnimation(helper, "Serious");
+    }
 
-		helper.Content.Characters.RegisterCharacterAnimation("GameOver", new()
+	private void RegisterAnimation(IModHelper helper, string name)
+    {
+        var files = Instance.Package.PackageRoot.GetRelative($"Sprites/Character/{name}").AsDirectory?.GetFilesRecursively().Where(f => f.Name.EndsWith(".png"));
+		List<Spr> sprites = [];
+		if (files != null) {
+			foreach (IFileInfo file in files) {
+				sprites.Add(Instance.Helper.Content.Sprites.RegisterSprite(file).Sprite);
+			}
+		}
+		
+		helper.Content.Characters.V2.RegisterCharacterAnimation(name, new()
 		{
-			Deck = NibbsDeck.Deck,
-			LoopTag = "gameover",
-			Frames = [NibbsPortrait.Sprite]
-		});
-		helper.Content.Characters.RegisterCharacterAnimation("Squint", new()
-		{
-			Deck = NibbsDeck.Deck,
-			LoopTag = "squint",
-			Frames = [NibbsPortrait.Sprite]
+			CharacterType = NibbsDeck.Deck.Key(),
+			LoopTag = name.ToLower(),
+			Frames = sprites
 		});
     }
 }

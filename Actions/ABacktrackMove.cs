@@ -9,11 +9,6 @@ public class ABacktrackMove : AMove
 {
 	public bool directionlessTooltip;
 
-	public ABacktrackMove() : base()
-	{
-		isTeleport = true;
-	}
-
 	public override void Begin(G g, State s, Combat c)
 	{
 		Ship ship = targetPlayer ? s.ship : c.otherShip;

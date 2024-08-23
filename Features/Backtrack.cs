@@ -1,12 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
-using FSPRO;
-using HarmonyLib;
-using Microsoft.Extensions.Logging;
-using TheJazMaster.Nibbs.Patches;
 
 namespace TheJazMaster.Nibbs.Features;
-#nullable enable
 
 class BacktrackManager : IEvadeHook, IDroneShiftHook
 {
@@ -39,7 +33,8 @@ class BacktrackManager : IEvadeHook, IDroneShiftHook
 			dir = direction,
 			targetPlayer = true,
 			ignoreHermes = true,
-			isTeleport = true
+			isTeleport = true,
+			dialogueSelector = "UsedBacktrack"
 		};
 		Instance.Helper.ModData.SetModData(move, NoStrafeKey, true);
 		return [move];

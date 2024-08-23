@@ -24,7 +24,8 @@ public class AAttackPatches
         Harmony.TryPatch(
 		    logger: Instance.Logger,
 		    original: AccessTools.DeclaredMethod(typeof(AAttack), nameof(AAttack.ApplyAutododge)),
-			prefix: new HarmonyMethod(typeof(AAttackPatches), nameof(AAttack_ApplyAutododge_Prefix))
+			prefix: new HarmonyMethod(typeof(AAttackPatches), nameof(AAttack_ApplyAutododge_Prefix)),
+			postfix: new HarmonyMethod(typeof(AAttackPatches), nameof(AAttack_ApplyAutododge_Postfix))
 		);
     }
 
@@ -43,7 +44,8 @@ public class AAttackPatches
 					new ABacktrackMove
 					{
 						targetPlayer = __instance.targetPlayer,
-						dir = dir
+						dir = dir,
+						dialogueSelector = "UsedAutododge"
 					},
 					__instance
 				});
@@ -60,7 +62,8 @@ public class AAttackPatches
 					new ABacktrackMove
 					{
 						targetPlayer = __instance.targetPlayer,
-						dir = dir2
+						dir = dir2,
+						dialogueSelector = "UsedAutododge"
 					},
 					__instance
 				});
@@ -72,25 +75,12 @@ public class AAttackPatches
 		return true;
     }
 
-    private static IEnumerable<CodeInstruction> Ship_RenderStatusRow_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il, MethodBase originalMethod)
+	private static void AAttack_ApplyAutododge_Postfix(AAttack __instance, ref bool __result, Combat c, Ship target, RaycastResult ray)
     {
-        return new SequenceBlockMatcher<CodeInstruction>(instructions).Find(
-                ILMatches.Ldloca<KeyValuePair<Status, int>>(originalMethod).CreateLdlocaInstruction(out var ldLoc1).CreateLdlocaInstruction(out var ldLoc2),
-                ILMatches.Call("get_Key"),
-                ILMatches.LdcI4((int)Enum.Parse<Status>("evade")),
-                ILMatches.Beq.GetBranchTarget(out var label)
-            )
-            .PointerMatcher(SequenceMatcherRelativeElement.Last)
-			.Insert(SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.IncludingInsertion, new List<CodeInstruction> {
-                ldLoc1,
-                new(OpCodes.Call, typeof(KeyValuePair<Status, int>).GetMethod("get_Key")),
-                new(OpCodes.Ldc_I4, (int)Instance.BacktrackLeftStatus.Status),
-                new(OpCodes.Beq, label.Value),
-                ldLoc2,
-                new(OpCodes.Call, typeof(KeyValuePair<Status, int>).GetMethod("get_Key")),
-                new(OpCodes.Ldc_I4, (int)Instance.BacktrackRightStatus.Status),
-                new(OpCodes.Beq, label.Value)
-            })
-            .AllElements();
-    }
+		if (__result == true) {
+			if (c.cardActions.First() is AMove move && move.dialogueSelector == null) {
+				move.dialogueSelector = "UsedAutododge";
+			}
+		}
+	}
 }

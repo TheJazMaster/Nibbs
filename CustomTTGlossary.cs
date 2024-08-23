@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#nullable enable
 namespace TheJazMaster.Nibbs;
 
 internal sealed class CustomTTGlossary : TTGlossary

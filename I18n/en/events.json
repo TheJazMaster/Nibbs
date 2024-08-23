@@ -1,0 +1,88 @@
+{
+    "LoseCharacterCard_{{CharacterType}}": {
+        "Basic": [
+            [ "Rawr! A daring escape!", "happy" ]
+        ]
+    },
+    "CrystallizedFriendEvent_{{CharacterType}}": {
+        "Basic": [
+            [ "Yeahyeahyeahyeahyeah, what's happening?" ]
+        ]
+    },
+    "HighPitchedStatic": {
+        "Basic": [ [
+            {"Nibbs": ["Ooo, my head hurts...", "squint" ]},
+            {"Void": [ "Ah. You all again." ]},
+            {"CAT": [ "Hello!", "transition" ]},
+            {"Void": [ "Which of you shall I teach this time?" ]}
+        ] ]
+    },
+    "ChoiceCardRewardOfYourColorChoice_{{CharacterType}}": {
+        "Basic": [ [
+            {"Nibbs": [ "Nibbs feels so smart!" ] },
+            {"CAT": [ "Energy readings are back to normal." ] }
+        ] ]
+    },
+    "ShopkeeperInfinite": {
+        "Basic": [ [
+            {"Nibbs": [ "Ooh! So shiny!" ] },
+            {"Cleo": [ "No touching." ] },
+            {"Jump": "NewShop" }
+        ], [
+            {"Nibbs": [ "Ooh! what does THIS button do?" ] },
+            {"Cleo": [ "Don't touch that." ] },
+            {"Jump": "NewShop" }
+        ], [
+            {"Nibbs": [ "Make our stuffs better!" ] },
+            {"Cleo": [ "A \"please\" wouldn't hurt..." ] },
+            {"Jump": "NewShop" }
+        ] ]
+    },
+
+    "RunStartFirst": {
+        "Basic": [ [
+            {"Nibbs": [ "Poof!" ] },
+            {"CAT": [ "Huh? Who are you?", "squint" ] },
+            {"Nibbs": [ "Ooohhh, Nibbs hit that wormhole too hard.", "serious" ] },
+            {"CAT": [ "Oh wait... Did you come here from another dimension?" ] },
+            {"Nibbs": [ "Yep! Needed a vacation!" ] },
+            {"CAT": [ "You've gotta tell me all about interdimensional travel!" ] },
+            {"Nibbs": [ "Rawr! I'll SHOW you!", "happy" ] }
+        ] ]
+    },
+    "NextNode": {
+        "Basic": [ [
+            {"Nibbs": [ "Ok, Nibbs gonna go back now!" ] },
+            {"CAT": [ "Hey, but we still need a third crew member!", "worried" ] },
+            {"Nibbs": [ "But where will I get my candy?", "serious" ] },
+            {"CAT": [ "Candy? Uhhh...", "squint" ] },
+            {"GreedySwitch": [
+                {"Dizzy": [ "Come on, CAT, can we keep her? We'll figure something out." ] },
+                {"Riggs": [ "Is this good?", "banana" ] },
+                {"Peri": [ "I have a few chocolate bars in my pocket." ] },
+                {"Isaac": [ "We can ask Grandma for some candy." ] },
+                {"Drake": [ "Let's raid some loser on the way for snacks.", "sly" ] },
+                {"Max": [ "Our entire pantry is probably still on the Cobalt." ] },
+                {"Books": [ "I can make crystal popsicles!", "paws" ] },
+                {"Eddie": [ "I should have an apple in my vest." ] },
+                {"Johnson": [ "I have a bowl of candy for exactly these occasions." ] },
+                {"Crew": [ "Maybe we'll find some on the way?" ] }
+            ]},
+            {"CAT": [ "Yeah! Sure! That works!" ] },
+            {"Nibbs": [ "Yea-ya! Rawr!", "happy" ] }
+        ] ]
+    },
+    "RunStartJohnson": {
+        "Johnson": [ [
+            {"Johnson": [ "Excuse me? No pets are allowed on this ship.", "squint" ] },
+            {"Nibbs": [ "Don't worry! Nibbs didn't bring any pets!", "happy" ] },
+            {"Johnson": [ "...", "squint" ] },
+            {"Nibbs": [ "Who brought pets?? Nibbs is hungry!", "cheeky" ] },
+            {"Johnson": [ "...", "squint" ] },
+            {"Johnson": [ "Ahem, I think I need to look at a few local labor laws." ] },
+            {"CAT": [ "Don't bother, she's from a parallel dimension.", "squint" ] },
+            {"Johnson": [ "Ah, a legal gray area."] },
+            {"Johnson": [ "I can work with that."] }
+        ] ]
+    }
+}

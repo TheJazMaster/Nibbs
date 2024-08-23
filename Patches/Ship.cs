@@ -38,7 +38,7 @@ public class ShipPatches
         if (status == Status.timeStop) {
             foreach (Artifact item in MG.inst.g.state.EnumerateAllArtifacts()) {
                 if (item is FledgelingOrbArtifact artifact) {
-                    artifact.Update(__instance, n);
+                    artifact.Update(__instance);
                 }
             }
         }

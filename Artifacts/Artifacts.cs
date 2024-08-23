@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime;
 using Nickel;
 using TheJazMaster.Nibbs.Actions;
 
-#nullable enable
 namespace TheJazMaster.Nibbs.Artifacts;
 
 internal sealed class ChocolateSurpriseEggArtifact : Artifact, INibbsArtifact
@@ -47,7 +47,40 @@ internal sealed class ChocolateSurpriseEggArtifact : Artifact, INibbsArtifact
 			});
 		active = false;
 	}
+}
 
+
+internal sealed class DragonfireCandleArtifact : Artifact, INibbsArtifact, IOnStunArtifact
+{
+	public static void Register(IModHelper helper)
+	{
+		helper.Content.Artifacts.RegisterArtifact("DragonfireCandle", new()
+		{
+			ArtifactType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				owner = ModEntry.Instance.NibbsDeck.Deck,
+				pools = [ArtifactPool.Common]
+			},
+			Sprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/DragonfireCandle.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "DragonfireCandle", "name"]).Localize,
+			Description = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "DragonfireCandle", "description"]).Localize
+		});
+	}
+
+	public override List<Tooltip>? GetExtraTooltips() =>
+		[new TTGlossary("action.stun"), new TTGlossary("action.stunShip")];
+
+
+	public void OnStun(State state, Combat combat, IOnStunArtifact.StunType type, Intent? intent = null)
+	{
+		combat.QueueImmediate(new AHurt {
+			targetPlayer = false,
+			hurtAmount = 1,
+			artifactPulse = Key(),
+			dialogueSelector = ".OnDragonfireActivation"
+		});
+	}
 }
 
 
@@ -55,8 +88,13 @@ internal sealed class EyeOfCobaArtifact : Artifact, INibbsArtifact
 {
 	public bool active = true;
 
+	private static Spr ActiveSprite;
+	private static Spr InactiveSprite;
+
 	public static void Register(IModHelper helper)
 	{
+		ActiveSprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EyeOfCoba.png")).Sprite;
+		InactiveSprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EyeOfCobaInactive.png")).Sprite;
 		helper.Content.Artifacts.RegisterArtifact("EyeOfCoba", new()
 		{
 			ArtifactType = MethodBase.GetCurrentMethod()!.DeclaringType!,
@@ -65,7 +103,7 @@ internal sealed class EyeOfCobaArtifact : Artifact, INibbsArtifact
 				owner = ModEntry.Instance.NibbsDeck.Deck,
 				pools = [ArtifactPool.Common]
 			},
-			Sprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EyeOfCoba.png")).Sprite,
+			Sprite = ActiveSprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "EyeOfCoba", "name"]).Localize,
 			Description = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "EyeOfCoba", "description"]).Localize
 		});
@@ -83,13 +121,18 @@ internal sealed class EyeOfCobaArtifact : Artifact, INibbsArtifact
 	{
 		active = true;
 	}
+
+	public override Spr GetSprite()
+	{
+		return active ? ActiveSprite : InactiveSprite;
+	}
 }
 
 
 internal sealed class GalacticNewsCoverageArtifact : Artifact, INibbsArtifact
 {
 	bool active = false;
-	private static readonly int threshold = 6;
+	private static readonly int threshold = 5;
 	static Spr ActiveSprite;
 	static Spr InactiveSprite;
 
@@ -107,7 +150,7 @@ internal sealed class GalacticNewsCoverageArtifact : Artifact, INibbsArtifact
 			},
 			Sprite = ActiveSprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "GalacticNewsCoverage", "name"]).Localize,
-			Description = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "GalacticNewsCoverage", "description"]).Localize
+			Description = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "GalacticNewsCoverage", "description"], new { Amount = threshold }).Localize
 		});
 	}
 
@@ -129,7 +172,7 @@ internal sealed class GalacticNewsCoverageArtifact : Artifact, INibbsArtifact
 		Status backflip = ModEntry.Instance.BackflipStatus.Status;
 		if (status != backflip) return;
 		if (!active) {
-			if (state.ship.Get(backflip) >= 5) {
+			if (state.ship.Get(backflip) >= threshold) {
 				active = true;
 				combat.QueueImmediate(new AStatus {
 					status = Status.tempShield,
@@ -182,14 +225,10 @@ internal sealed class GalacticNewsCoverageArtifact : Artifact, INibbsArtifact
 
 internal sealed class EternalFlameArtifact : Artifact, INibbsArtifact
 {
-	public bool active = true;
-	static Spr ActiveSprite;
-	static Spr InactiveSprite;
+	public int count = 0;
 
 	public static void Register(IModHelper helper)
 	{
-		ActiveSprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EternalFlame.png")).Sprite;
-		InactiveSprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EternalFlameInactive.png")).Sprite;
 		helper.Content.Artifacts.RegisterArtifact("EternalFlame", new()
 		{
 			ArtifactType = MethodBase.GetCurrentMethod()!.DeclaringType!,
@@ -198,32 +237,34 @@ internal sealed class EternalFlameArtifact : Artifact, INibbsArtifact
 				owner = ModEntry.Instance.NibbsDeck.Deck,
 				pools = [ArtifactPool.Common]
 			},
-			Sprite = ActiveSprite,
+			Sprite = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Artifacts/EternalFlame.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "EternalFlame", "name"]).Localize,
 			Description = ModEntry.Instance.AnyLocalizations.Bind(["artifact", "EternalFlame", "description"]).Localize
 		});
 	}
 
-	public override Spr GetSprite()
+	public override int? GetDisplayNumber(State s)
 	{
-		return active ? ActiveSprite : InactiveSprite;
+		return count;
 	}
 
-	public override List<Tooltip>? GetExtraTooltips() =>
-		[.. StatusMeta.GetTooltips(Status.heat, 3), .. StatusMeta.GetTooltips(Status.timeStop, 1)];
+	public override List<Tooltip>? GetExtraTooltips() => StatusMeta.GetTooltips(Status.timeStop, 1);
 
 
-	public override void OnCombatEnd(State state)
+	public override void OnTurnStart(State state, Combat combat)
 	{
-		active = true;
-	}
-
-	public override void OnTurnEnd(State state, Combat combat)
-	{
-		if (active && state.ship.Get(Status.timeStop) == 0 && state.ship.Get(Status.heat) >= state.ship.heatTrigger) {
-			active = false;
-			Pulse();
-			state.ship.Add(Status.timeStop, 1);
+		count++;
+		if (count == 5)
+		{
+			count = 0;
+			combat.QueueImmediate(new AStatus
+			{
+				targetPlayer = true,
+				status = Status.timeStop,
+				statusAmount = 1,
+				whoDidThis = ModEntry.Instance.NibbsDeck.Deck,
+				artifactPulse = Key()
+			});
 		}
 	}
 }
@@ -249,15 +290,16 @@ internal sealed class QuantumEnginesArtifact : Artifact, INibbsArtifact
 
 	public override void AfterPlayerStatusAction(State state, Combat combat, Status status, AStatusMode mode, int statusAmount)
 	{
-		if (statusAmount <= 0) return;
-		Status backtrackLeft = ModEntry.Instance.BacktrackLeftStatus.Status;
-		Status backtrackRight = ModEntry.Instance.BacktrackRightStatus.Status;
-		if (status == backtrackLeft) {
-			state.ship.Add(backtrackLeft, 1);
-			Pulse();
-		}
-		if (status == backtrackRight) {
-			state.ship.Add(backtrackRight, 1);
+		if (statusAmount <= 0 || mode != AStatusMode.Add) return;
+
+		if (status == ModEntry.Instance.BacktrackLeftStatus.Status ||
+			status == ModEntry.Instance.BacktrackRightStatus.Status ||
+			status == ModEntry.Instance.BacktrackAutododgeLeftStatus.Status ||
+			status == ModEntry.Instance.BacktrackAutododgeRightStatus.Status ||
+			status == Status.autododgeLeft ||
+			status == Status.autododgeRight)
+		{
+			state.ship.Add(status, 1);
 			Pulse();
 		}
 	}
@@ -297,7 +339,8 @@ internal sealed class SugarRushArtifact : Artifact, INibbsArtifact
 		combat.Queue(new ABacktrackMove {
 			dir = 1,
 			isRandom = true,
-			targetPlayer = true
+			targetPlayer = true,
+			artifactPulse = Key()
 		});
 	}
 
@@ -332,9 +375,14 @@ internal sealed class FledgelingOrbArtifact : Artifact, IHeatTriggerAffectorArti
 		return (active && ship.isPlayerShip) ? -aLot : 0;
 	}
 
+	public override void OnTurnStart(State state, Combat combat)
+	{
+		Update(state.ship);
+	}
+
 	public override void OnReceiveArtifact(State state)
 	{
-		Update(state.ship, state.ship.Get(Status.timeStop));
+		Update(state.ship);
 	}
 
 	public override void OnRemoveArtifact(State state)
@@ -345,18 +393,26 @@ internal sealed class FledgelingOrbArtifact : Artifact, IHeatTriggerAffectorArti
 		}
 	}
 
-	private static readonly int aLot = 999999;
-	public void Update(Ship ship, int statusAmount)
+	internal static readonly int aLot = 999999;
+	public void Update(Ship ship)
 	{
-		if (!active && statusAmount > 0) {
+		int statusAmount = ship.Get(Status.timeStop);
+		if (ship.heatTrigger < aLot/2 && statusAmount > 0) {
 			active = true;
 			ship.heatTrigger += aLot;
 		}
-		else if (active && statusAmount <= 0) {
+		else if (ship.heatTrigger > aLot/2 && statusAmount <= 0) {
 			active = false;
 			ship.heatTrigger -= aLot;
 		}
+
+		if (active && ship.heatTrigger < aLot/2) ship.heatTrigger += aLot;
+		if (!active && ship.heatTrigger > aLot*1.5) ship.heatTrigger -= aLot;
 	}
 	public override List<Tooltip>? GetExtraTooltips() =>
-		StatusMeta.GetTooltips(Status.timeStop, 1).Concat(StatusMeta.GetTooltips(Status.strafe, 1)).ToList();
+		[
+			.. StatusMeta.GetTooltips(Status.timeStop, 1),
+			.. StatusMeta.GetTooltips(Status.heat, 3),
+			.. StatusMeta.GetTooltips(Status.strafe, 1),
+		];
 }

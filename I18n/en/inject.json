@@ -1,0 +1,92 @@
+{
+    "ThatsALotOfDamageToThem_Multi_6": [
+        [ "Offense is much more fun!", "happy" ]
+    ],
+    "BanditThreats_Multi_0": [
+        [ "Rawr, and I'll eat them all up!", "cheeky" ]
+    ],
+    "SkunkFirstTurnShouts_Multi_0": [
+        [ "The rocks gotta be valuable! Get them!", "wowza" ]
+    ],
+    "Soggins_Infinite": [
+        [ "Woah, he's going woosh, crash, boom!" ]
+    ],
+    "Soggins_Missile_Shout_1": [
+        [ "Maybe just one time...", "cheeky" ]
+    ],
+    "SogginsSogginsEscape_1": [
+        [ "Rawr! What does toad taste like?", "cheeky" ]
+    ],
+    "SogginsEscapeIntent_1": [
+        [ "Nibbs had fun!" ]
+    ],
+    "Sasha_2_Multi_2": [
+        [ "Sports??", "serious" ]
+    ],
+    "DraculaTime": [
+        [ "Humans look weird here...", "serious" ]
+    ],
+    "LoseCharacterCard": [
+        [ "Ooo, can I eat it?" ]
+    ],
+    "LoseCharacterCard_No": [
+        [ "Hya! Let's do it again!" ]
+    ],
+    "GrandmaShop": [
+        [ "Nibbs wants ALL your treats!" ]
+    ],
+    "CrystallizedFriendEvent": [
+        [ "Nibbs wanna meet them!" ]
+    ],
+    "ForeignCardOffering_After": [
+        [ "A gift! For Nibbs!" ]
+    ],
+    "ForeignCardOffering_Refuse": [
+        [ "Ehhhh, that's enough parallel universes for one day...", "cheeky" ]
+    ],
+    "ShopKeepBattleInsult": [ 
+        [ "Hey, that's not fair!", "serious" ]
+    ],
+    "CrabFacts1_Multi_0": [ 
+        [ "Can I eat crabs?" ]
+    ],
+    "CrabFacts2_Multi_0": [ 
+        [ "So useful! We're taking him with us!" ]
+    ],
+    "CrabFactsAreOverNow_Multi_0": [ 
+        [ "Ok! We can eat him now!" ]
+    ],
+    "DillianShouts": [
+        [ "Hello little morsel!", "cheeky" ]
+    ],
+    "EphemeralCardGift": [
+        [ "Nibbs feels dizzy", "squint" ]
+    ],
+    "JustPlayedASashaCard_Multi_2": [
+        [ "Bleh! It tastes awful!", "serious" ]
+    ],
+    "ManyTurns_Multi_5": [
+        [ "Awww, for me? Nyeheh!", "cheeky" ]
+    ],
+    "OverheatDrakeFix_Multi_6": [
+        [ "Ship is exploding less!" ]
+    ],
+    "WeJustGainedHeatAndDrakeIsHere_Multi_0": [
+        [ "Playing with fire? You're not a dragon!!", "squint" ]
+    ],
+    "OverheatDrakesFault_Multi_9": [
+        [ "Uh oh, time for Nibbs to blink!", "serious" ]
+    ],
+    "AbandonedShipyard_Repaired": [
+        [ "Boring! I'm bored!", "serious" ]
+    ],
+    "ArtifactGeminiCore_Multi_4": [
+        [ "Red!", "happy" ]
+    ],
+    "ArtifactTiderunner_Multi_7": [
+        [ "And a cup of tea!" ]
+    ],
+    "RiderAvast": [
+        [ "Howdy!" ]
+    ]
+}

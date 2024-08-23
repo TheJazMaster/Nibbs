@@ -1,0 +1,878 @@
+{
+    "TookDamage": {
+        "Basic": [
+            [ "Rawr, rough ride!" ],
+            [ "Nibbs will save us next time!", "cheeky" ],
+            [
+     			{"Nibbs": [ "Let's get them back!" ] },
+     			{"Switch": [
+         			{"Drake": [ "Yeah!" ] },
+         			{"Peri": [ "On it!", "vengeful" ] }
+                ] }
+            ]
+        ],
+        "Dizzy": [ [
+ 			{"Nibbs": [ "Shields went pop! Rawr!" ] },
+ 			{"Dizzy": [ "Good that you're positive about it, I guess?", "shrug" ] }
+        ] ],
+        "Isaac": [ [
+ 			{"Dizzy": [ "Oh, could be worse." ] },
+ 			{"Nibbs": [ "I helped!" ] }
+        ] ],
+        "Max": [ [
+ 			{"Max": [ "Hm, not ideal." ] },
+ 			{"Nibbs": [ "Aw, did I do something wrong?", "serious" ] }
+        ] ],
+        "CAT": [ [
+			{"CAT": [ "Let's keep the hull damage to a minimum, guys." ] },
+			{"Nibbs": [ "Nibbs will never let the ship get hit again!" ] }
+        ] ],
+        "Eddie": [ [
+			{"Nibbs": [ "Small dent!" ] },
+			{"Eddie": [ "Maybe we can just leave it be?" ] }
+        ] ],
+        "Johnson": [ [
+			{"Johnson": [ "This doesn't bode well for the future." ] },
+			{"Nibbs": [ "Woah, tell us the future!", "wowza" ] }
+        ] ]
+    },
+    "TookALotOfDamage": {
+        "Basic": [ [
+     			{"Nibbs": [ "Where do Nibbs call for help?! Help!!", "serious" ] },
+     			{"Switch": [
+         			{"Riggs": [ "I've got this! I think." ] },
+         			{"Max": [ "We're on our own. Sorry." ] },
+         			{"Peri": [ "Don't panic. Keep a clear head.", "squint" ] }
+                ] }
+            ],
+            [ "Ow, what the..?", "serious" ],
+            [ "Nonono! Our thingy is breaking!", "serious" ],
+            [ "Uh-oh, this no good for Nibbs!", "serious" ]
+        ],
+        "Dizzy": [ [
+			{"Nibbs": [ "Shields didn't do anything!", "serious" ] },
+			{"Dizzy": [ "I'm trying my best.", "frown" ] }
+        ], [
+			{"Dizzy": [ "We need to be dodging these hits.", "intense" ] },
+			{"Nibbs": [ "Rawr, I'll try!" ] }
+        ] ],
+        "Books": [ [
+			{"Nibbs": [ "Ouch!", "serious" ] },
+			{"Books": [ "Owowouch!", "squint" ] }
+        ] ],
+        "CAT": [ [
+			{"CAT": [ "We just lost a lot of hull.", "squint" ] },
+			{"Nibbs": [ "Uh-oh! Protect our thingies!", "serious" ] }
+        ] ],
+        "Eddie": [ [
+			{"Nibbs": [ "Is everything okay?!", "serious" ] },
+			{"Eddie": [ "Yeah... it's probably nothing.", "worried" ] }
+        ] ]
+    },
+    "TookNonHullDamage": {
+        "Basic": [
+            [ "Can't get me! Nyeh!", "cheeky" ],
+            [ "All good!", "happy" ],
+            [ "This Nibbs is untouchable!", "happy" ]
+        ],
+        "Dizzy": [ [
+			{"Nibbs": [ "That attack went poof!" ] },
+			{"Dizzy": [ "The perks of having a good defence.", "explains" ] }
+        ], [
+			{"Dizzy": [ "Good thing we blocked that." ] },
+			{"Nibbs": [ "Not getting hit is better!" ] }
+        ] ],
+        "Books": [ [
+			{"Books": [ "Defensive magic!" ] },
+			{"Nibbs": [ "You can't fool Nibbs, magic isn't real!", "cheeky" ] }
+        ] ],
+        "Johnson": [ [
+			{"Johnson": [ "Let me run a linear regression on our damage taken..." ] },
+			{"Nibbs": [ "Ooo, is that how you see the future?", "wowza" ] }
+        ] ]
+    },
+    "NibbsDealtDamage": {
+        "Basic": [
+            [ "Boom!" ],
+            [ "Ya!" ],
+            [ "Get them!" ],
+            [ "Nyah!" ],
+            [ "Boop!" ],
+            [ "Tag, you're it!" ],
+            [ "Chomp!" ],
+            [ "I'm on fire!" ]
+        ],
+        "Dizzy": [ [
+			{"Dizzy": [ "Nice shot!" ] },
+			{"Nibbs": [ "I ONLY make nice shots!" ] }
+        ] ],
+        "Riggs": [ [
+			{"Riggs": [ "Bopped em." ] },
+			{"Nibbs": [ "Boop!" ] }
+        ] ],
+        "Peri": [ [
+			{"Peri": [ "We're doing damage." ] },
+			{"Nibbs": [ "We'll smash them!" ] }
+        ] ],
+        "Isaac": [ [
+			{"Isaac": [ "Good job! Do you want a treat?" ] },
+			{"Nibbs": [ "...!", "wowza" ] }
+        ] ],
+        "Drake": [ [
+			{"Nibbs": [ "Yah! Take that!" ] },
+			{"Drake": [ "Yeah, yeah, it wasn't that cool." ] }
+        ] ],
+        "Max": [ [
+			{"Nibbs": [ "Shapow!" ] },
+			{"Max": [ "Shapow?" ] }
+        ] ],
+        "Books": [ [
+			{"Books": [ "Good job! Who's a good dragon?", "blush" ] },
+			{"Nibbs": [ "Me!", "wowza" ] }
+        ] ],
+        "CAT": [ [
+			{"CAT": [ "Doing damage." ] },
+			{"Nibbs": [ "More!" ] }
+        ] ],
+        "Eddie": [ [
+			{"Eddie": [ "Slow and steady." ] },
+			{"Nibbs": [ "More!" ] }
+        ] ]
+    },
+    "DealtBigDamage": {
+        "Basic": [
+            [ "That was soo much fun!", "wowza" ],
+            [ "Attack, Attack! Attackattackattackattack, mrrnyeh!", "wowza" ]
+        ],
+        "Riggs": [ [
+			{"Nibbs": [ "They're toast!", "cheeky" ] },
+			{"Riggs": [ "I could go for some toast." ] }
+        ] ],
+        "Eddie": [ [
+			{"Eddie": [ "I've always wanted to do that.", "excited" ] },
+			{"Nibbs": [ "That's the spirit of a warrior!", "happy" ] }
+        ] ]
+    },
+    "NibbsDealtBigDamage": {
+        "Basic": [
+            [ "You're FIRED! Nyahaha!", "happy" ],
+            [ "*sniff* Do you smell burning?", "cheeky" ],
+            [
+     			{"Nibbs": [ "Does Nibbs get a treat now?", "cheeky" ] },
+     			{"Switch": [
+         			{"Riggs": [ "Do you like boba?" ] },
+         			{"Peri": [ "I'll consider it." ] },
+         			{"Books": [ "Can I get a treat too?", "paws" ] },
+         			{"CAT": [ "Now's not the time.", "grumpy" ] }
+                ] }
+            ]
+        ],
+        "Peri": [ [
+			{"Peri": [ "How'd you do that?", "squint" ] },
+			{"Nibbs": [ "Secret secret!", "cheeky" ] }
+        ] ],
+        "Books": [ [
+			{"Books": [ "Good job! Who's a good dragon?", "blush" ] },
+			{"Nibbs": [ "Me!", "wowza" ] }
+        ] ],
+        "CAT": [ [
+			{"CAT": [ "Good! More of that!" ] },
+			{"Nibbs": [ "Nyahnyah-hanynyhaya!" ] }
+        ] ],
+        "Johnson": [ [
+			{"Johnson": [ "We're smashing records!", "happy" ] },
+			{"Nibbs": [ "Nibbs has mastered smashing!" ] }
+        ] ]
+    },
+    "Missed": {
+        "Basic": [
+            [ "Guh? Where did it go?", "serious" ],
+            [ "Mrrr~\nGotta play with your food!", "happy" ],
+            [ "Almost had it!" ]
+        ]
+    },
+    "AboutToDie": {
+        "Basic": [
+            [ "I'm too cute to die!", "serious" ],
+            [ "Ashes... to ashes...", "serious" ],
+            [ "Nibbs has so much to live for!", "serious" ],
+            [
+     			{"Nibbs": [ "Are we gonna explode?", "serious" ] },
+     			{"Switch": [
+         			{"Dizzy": [ "Possibly.", "shrug" ] },
+         			{"Drake": [ "Totally. Real brutal stuff, I hope you're ready." ] },
+         			{"Max": [ "I hope it's a cool explosion." ] },
+         			{"Books": [ "INDUBITABLY!" ] },
+         			{"CAT": [ "Let's not give in to doomsaying just yet." ] }
+                ] }
+            ]
+        ],
+        "Dizzy": [ [
+			{"Dizzy": [ "Another loss for the tally, huh?" ] },
+			{"Nibbs": [ "No! I don't wanna count!", "serious" ] }
+        ] ],
+        "Riggs": [ [
+ 			{"Riggs": [ "Ladies, it's been an honor." ] },
+ 			{"Nibbs": [ "It's been a blast!" ] }
+        ] ],
+        "Peri": [ [
+			{"Nibbs": [ "It's over...", "serious" ] },
+			{"Peri": [ "Not if I can help it.", "mad" ] }
+        ] ],
+        "Isaac": [ [
+			{"Nibbs": [ "Can we bring snacks next loop?" ] },
+			{"Isaac": [ "I think I have some trail mix lying around.", "shy "] }
+        ] ],
+        "Drake": [ [
+			{"Drake": [ "This totally won't be my fault, for the record.", "mad" ] },
+			{"Nibbs": [ "Aww, but I tried!" ] }
+        ] ],
+        "Books": [ [
+			{"Nibbs": [ "Ptooey, this sucks!", "serious" ] },
+			{"Books": [ "We can still win, but we'll need to work together!", "paws" ] }
+        ] ],
+        "CAT": [ [
+			{"CAT": [ "Dang, I was really feeling this run.", "squint" ] },
+			{"Nibbs": [ "Does all your running go like this?", "serious" ] }
+        ] ],
+        "Eddie": [ [
+			{"Nibbs": [ "Uh-oh, are we gonna make it?", "serious" ] },
+			{"Eddie": [ "Well, we can always try again.", "explains" ] }
+        ] ],
+        "Johnson": [ [
+			{"Nibbs": [ "What do now?!", "serious" ] },
+			{"Johnson": [ "I wish you luck in your future endeavors." ] }
+        ] ]
+    },
+    "HitArmor": {
+        "Basic": [
+            [ "Grr, they have scales too!", "squint" ]
+        ]
+    },
+    "HitArmorALot": {
+        "Basic": [
+            [ "Yep! Indestructible scales!" ]
+        ]
+    },
+    "UsedArmor": {
+        "Basic": [
+            [ "Wow, we're so tough!", "happy" ]
+        ]
+    },
+    "UsedArmorALot": {
+        "Basic": [
+            [ "Hihihi, you can't break through dragon scales, silly!", "cheeky" ]
+        ]
+    },
+    "EmptyHandExcessEnergy": {
+        "Basic": [
+            [ "Nibbs is saving energy!" ],
+            [ "Grr, no more buttons to press.", "squint" ]
+        ]
+    },
+    "EmptyHandInsaneTurn": {
+        "Basic": [
+            [ "That was so much fun!", "happy" ]
+        ]
+    },
+    "TrashHand": {
+        "Basic": [
+            [ "Trash?? What can Nibbs do with trash??", "serious" ]
+        ]
+    },
+    "UnplayableHand": {
+        "Basic": [
+            [ "But I wanna do something! Grr...", "squint" ]
+        ]
+    },
+    "NoOverlap": {
+        "Basic": [
+            [ "Nyeh nyeh nyeh, you can't catch me~!", "cheeky" ],
+            [ "Over here!", "cheeky" ],
+            [ "Try and get me!", "cheeky" ]
+        ]
+    },
+    "NoOverlapButSeeker": {
+        "Basic": [
+            [ "That's cheating!", "squint" ],
+            [ "Grr, you'll pay for this!", "squint" ],
+            [ "Uh-oh, I forgot to break the rocket!", "serious" ]
+        ]
+    },
+    "LongFight": {
+        "Basic": [
+            [ "Can we go now?" ],
+            [ "Hrm, they're not dead yet!", "serious" ]
+        ],
+        "Books": [ [
+			{"Books": [ "This fight is really starting to drag on.", "squint" ] },
+			{"Nibbs": [ "Hey!", "serious" ] }
+        ] ],
+        "Johnson": [ [
+			{"Johnson": [ "Let's quit dragging our feet and close this out.", "fiddling" ] },
+			{"Nibbs": [ "My feet are always dragon!" ] }
+        ] ]
+    },
+    "ReturningFromMissing": {
+        "Basic": [
+            [ "Poof!" ],
+            [ "Nibbs is here!" ],
+            [ "Nibbs is back!" ]
+        ]
+    },
+    "DizzyWentMissing": {
+        "Basic": [
+            [ "No more getting hit!" ]
+        ]
+    },
+    "RiggsWentMissing": {
+        "Basic": [
+            [ "I'm taking over the piloting!" ]
+        ]
+    },
+    "PeriWentMissing": {
+        "Basic": [
+            [ "Bring her back! She had my treats!", "serious" ],
+            [ "Welp, I'll blast them myself!" ]
+        ]
+    },
+    "IsaacWentMissing": {
+        "Basic": [
+            [ "Bring him back! He had my treats!", "serious" ],
+            [ "Nibbs always had the prettier horns!", "happy" ]
+        ]
+    },
+    "DrakeWentMissing": {
+        "Basic": [
+            [ "Rawr! Couldn't stand the heat!" ]
+        ]
+    },
+    "MaxWentMissing": {
+        "Basic": [
+            [ "Can I use his computer now?", "cheeky" ]
+        ]
+    },
+    "BooksWentMissing": {
+        "Basic": [
+            [ "Rawr! The cookie stash is mine now!", "wowza" ]
+        ]
+    },
+    "CATWentMissing": {
+        "Basic": [
+            [ "Hah! No more bossing around!", "happy" ]
+        ]
+    },
+    "JohnsonWentMissing": {
+        "Basic": [
+            [ "Ah, important business!" ]
+        ]
+    },
+    "EddieWentMissing": {
+        "Basic": [
+            [ "Huh? Where did they go?", "serious" ]
+        ]
+    },
+    "GoingToOverheat": {
+        "Basic": [
+            [ "Getting hot in here!" ],
+            [ "Toasty!" ],
+            [ "I'll see what I can do, rawr!", "happy" ]
+        ],
+        "Drake": [ [
+            {"Switch": [
+                {"Drake": [ "Wanna help out?" ] },
+                {"Drake": [ "So... Wanna do something about this?", "squint" ] },
+                {"Drake": [ "Hey, can I get a hand here?" ] }
+            ] },
+            {"Switch": [
+                {"Nibbs": [ "Maaaybe~!", "cheeky" ] },
+                {"Nibbs": [ "Murrr~, I'll try!" ] },
+                {"Nibbs": [ "Yep!" ] },
+                {"Nibbs": [ "Yep! Sure", "cheeky" ] }
+            ] }
+        ] ]
+    },
+    "MissedWithGrazerBeam": {
+        "Basic": [
+            [ "You thought we missed!" ],
+            [ "Got you!" ]
+        ]
+    },
+    "MissedWithRecalibrator": {
+        "Basic": [
+            [ "Wow! Can't go wrong with this!" ],
+            [ "We're calibrating so much!" ]
+        ]
+    },
+    "MissedWithRecalibratorGrazerBeam": {
+        "Basic": [
+            [ "We have magic bullets! Nyahah!", "happy" ],
+            [ "Nibbs is gonna miss all the time!", "happy" ]
+        ]
+    },
+    "PiercedArmor": {
+        "Basic": [
+            [ "Chomp!" ],
+            [ "Strike their soft underbelly!" ],
+            [ "Sneak attack!" ]
+        ]
+    },
+    "DealtDragonfireDamage": {
+        "Basic": [
+            [ "Bleh!", "happy" ],
+            [ "By the light of Nibbs' fire!" ],
+            [ "I am fire! I am Nibbs!" ],
+            [ "Great balls of fire!" ],
+            [ "Burninate!" ],
+            [ "Burn! Hehehe!" ],
+            [ "Burnburnburnburn! Burn!" ],
+            [ "How's my breath?", "cheeky" ]
+        ]
+    },
+    "ThereIsWeakpoint": {
+        "Basic": [
+            [ "There! Hit'em-hit'em-hit'em!" ],
+            [ "They're weak! Get em!" ],
+            [ "Let me at em!" ]
+        ]
+    },
+    "ThereIsBrittlePoint": {
+        "Basic": [
+            [ "There! Hit'em-hit'em-hit'em-hit'em!" ],
+            [ "Nibbs is coming for the juicy weakpoint!", "cheeky" ]
+        ]
+    },
+    "ThereIsSecretBrittlePoint": {
+        "Basic": [
+            [ "Hrrrm, where is it?!", "squint" ],
+            [ "They're squishy! But where?", "serious" ],
+            [ "We find the brittle point, and poof!" ]
+        ]
+    },
+    "IonConverter": {
+        "Basic": [
+            [ "Wow, the energy spends itself!" ]
+        ]
+    },
+    "NoWarpPrep": {
+        "Basic": [
+            [ "Unprepared? Nibbs is here to save the day!", "happy" ]
+        ]
+    },
+    "Hifreq": {
+        "Basic": [ [
+            {"Nibbs": [ "Nibbs gets to pick the stuff from the intercom!", "happy" ]},
+            {"Switch": [
+                {"Peri": [ "Leave that to the more competent folk." ] },
+                {"Books": [ "Unfair!", "squint" ] },
+                {"CAT": [ "Absolutely not!", "squint" ] },
+                {"Eddie": [ "Sure, if it lets me offload all responsibility.", "explains" ] },
+                {"Johnson": [ "No. You'll run us into the ground.", "squint" ] }
+            ] }
+        ] ]
+    },
+    "ShieldBurst": {
+        "Dizzy": [ [
+            {"Nibbs": [ "So much extra shield... I wanna keep it!" ]},
+            {"Dizzy": [ "Yeah, I'd appreciate that" ]}
+        ] ]
+    },
+    "QuantumEngines": {
+        "Basic": [
+            [ "With these engines, maybe I can visit home!" ],
+            [ "The big rumblies are gonna take us to a new dimension!" ]
+        ]
+    },
+    "SugarRush": {
+        "Basic": [ [
+            {"Nibbs": [ "NIBBS IS GONNA PUSH AAALL THE BUTTONS!", "wowza" ] },
+            {"Switch": [
+                {"Riggs": [ "Maybe giving her candy was a bad idea.", "squint" ] },
+                {"Peri": [ "What have we done...", "nap" ] },
+                {"Max": [ "It's been nice knowing you guys..." ] },
+                {"Books": [ "Hold on tight!" ] },
+                {"Johnson": [ "Not to worry. I was top of my class in probability.", "fiddling" ] }
+            ] }
+        ] ]
+    },
+    "EyeOfCoba": {
+        "Basic": [
+            [ "Here! A souvenir from Nibbs!" ]
+        ]
+    },
+    "DragonfireCandle": {
+        "Basic": [ [
+            {"Nibbs": [ "Time to practice my firebreathing! Bleh!", "happy" ] },
+            {"Switch": [
+                {"Riggs": [ "Cool! I'll watch." ] },
+                {"Isaac": [ "In here?", "panic" ] },
+                {"Drake": [ "Oh I gotta see this." ] },
+                {"CAT": [ "Inside the ship? Absolutely not!", "squint" ] }
+            ] }
+        ] ]
+    },
+    "ControlRods": {
+        "Basic": [ [
+            {"Nibbs": [ "This ship likes war as much as I do!", "happy" ] },
+            {"Switch": [
+                {"Riggs": [ "Huh? Can you say that again? I wasn't listening but it sounded bad." ] },
+                {"Peri": [ "...!", "panic" ] },
+                {"Isaac": [ "...Do you wanna talk about that, or something?" ] },
+                {"Drake": [ "War is a bit much. Simple crime is more exciting and fulfilling." ] },
+                {"Books": [ "But... isn't war bad?", "squint" ] }
+            ] }
+        ] ]
+    },
+    "GeminiCore": {
+        "Basic": [ [
+            {"Nibbs": [ "Nibbs will confuddle her enemies with this ship!" ] }
+        ] ]
+    },
+    "GeminiCoreBooster": {
+        "Basic": [ [
+            {"Nibbs": [ "Twice as confuddling! Hehe!", "happy" ] }
+        ] ]
+    },
+    "Tiderunner": {
+        "Basic": [ [
+            {"Nibbs": [ "Hey, where's the laser anchor?" ] },
+            {"Switch": [
+                {"Dizzy": [ "Well, this thing is SUPER old.", "explains" ] },
+                {"Peri": [ "It's an antique.", "nap" ] },
+                {"Max": [ "Why would we even need an anchor?", "squint" ] }
+            ] }
+        ] ]
+    },
+    "Squadron": {
+        "Basic": [ [
+            {"Nibbs": [ "Ooo, Nibbs gets her own ship?", "wowza" ] },
+            {"Switch": [
+                {"Dizzy": [ "Try not to break anything." ] },
+                {"Peri": [ "You still need to follow orders, got that?", "squint" ] },
+                {"Drake": [ "Feels nice, right?", "sly" ] }
+            ] }
+        ] ]
+    },
+
+
+    "StartedBattleAgainstBigCrystal": {
+        "Basic": [
+            [ "Woooooah, so shiny!", "wowza" ]   
+        ]
+    },
+    "GotAutododge": {
+        "Basic": [
+            [ "Try to hit me!" ],
+            [ "We just wriggle out of this one..." ],
+            [ "Now you see me, now you don't!" ],
+            [ "Now you see me, wait for it..." ],
+            [ "And now, this magic dragon go \"poof\"!" ],
+            [ "Nibbs gonna try a little trick...", "cheeky" ]
+        ],
+        "Riggs": [ [
+            {"Riggs": [ "Primed to dodge!" ]},
+            {"Nibbs": [ "Counterattack!" ]}
+        ] ],
+        "Peri": [ [
+            {"Peri": [ "Try to line up a safe dodge." ]},
+            {"Nibbs": [ "I'll smash their cannons!" ]}
+        ] ],
+        "Max": [ [
+            {"Max": [ "What kind of ML algorithm is this?", "squint" ]},
+            {"Nibbs": [ "It's called poofing far away!" ]}
+        ] ]
+    },
+    "GotMagicAutododge": {
+        "Basic": [
+            [ "Try to hit me!" ],
+            [ "We just wriggle out of this one..." ],
+            [ "Now you see me, now you don't!" ],
+            [ "Now you see me, wait for it..." ],
+            [ "And now, this magic dragon go \"poof\"!" ],
+            [ "Nibbs gonna try a little trick...", "cheeky" ]
+        ],
+        "Riggs": [ [
+            {"Riggs": [ "Primed to dodge!" ]},
+            {"Nibbs": [ "Counterattack!" ]}
+        ] ],
+        "Peri": [ [
+            {"Peri": [ "Try to line up a safe dodge." ]},
+            {"Nibbs": [ "I'll smash their cannons!" ]}
+        ] ],
+        "Max": [ [
+            {"Max": [ "What kind of ML algorithm is this?", "squint" ]},
+            {"Nibbs": [ "It's called poofing far away!" ]}
+        ] ]
+    },
+    "GotAutododgeLeft": {
+        "Basic": [
+            [ "Slippery Nibbs!" ],
+            [ "Now you see me, now you don't!" ],
+            [ "Now you see me, wait for it..." ],
+            [ "All fixed!" ],
+            [ "Solved it!" ],
+            [ "Outsmarted by Nibbs!" ],
+            [ "Safe and sound!" ]
+        ]
+    },
+    "GotMagicAutododgeLeft": {
+        "Basic": [
+            [ "Slippery Nibbs!" ],
+            [ "Now you see me, now you don't!" ],
+            [ "Now you see me, wait for it..." ],
+            [ "All fixed!" ],
+            [ "Solved it!" ],
+            [ "Outsmarted by Nibbs!" ],
+            [ "Safe and sound!" ]
+        ]
+    },
+    "GotAutododgeLeftButTheresMissiles": {
+        "Basic": [
+            [ "Grr, rockets!", "squint" ],
+            [ "Rocket means trouble!", "serious" ],
+            [ "Nibbs never learned to dodge rockets...", "serious" ],
+            [ "Rocket! Breakitbreakitbreakit!", "squint" ]
+        ],
+        "Riggs": [ [
+            {"Riggs": [ "Do you think you can dodge that missile?" ]},
+            {"Nibbs": [ "Pff, easy peasy!", "cheeky" ]}
+        ] ],
+        "Isaac": [ [
+            {"Nibbs": [ "Robot boy! Blow up those rockets!" ]},
+            {"Isaac": [ "Huh? Me?", "shy" ]}
+        ] ]
+    },
+    "GotMagicAutododgeLeftButTheresMissiles": {
+        "Basic": [
+            [ "Grr, rockets!", "squint" ],
+            [ "Rocket means trouble!", "serious" ],
+            [ "Nibbs never learned to dodge rockets...", "serious" ],
+            [ "Rocket! Breakitbreakitbreakit!", "squint" ]
+        ],
+        "Riggs": [ [
+            {"Riggs": [ "Do you think you can dodge that missile?" ]},
+            {"Nibbs": [ "Pff, easy peasy!", "cheeky" ]}
+        ] ],
+        "Isaac": [ [
+            {"Nibbs": [ "Robot boy! Blow up those rockets!" ]},
+            {"Isaac": [ "Huh? Me?", "shy" ]}
+        ] ]
+    },
+    "UsedAutododge": {
+        "Basic": [
+            [ "Over here!", "cheeky" ],
+            [ "Made you look!", "cheeky" ],
+            [ "Surprise!" ],
+            [ "You're it!" ],
+            [ "Wee!" ],
+            [ "Swoosh!" ]
+        ]
+    },
+    "GainedBacktrack": {
+        "Basic": [
+            [ "I'll be right back!" ],
+            [ "I'll be back! Yip!" ],
+            [ "Nibbs comes back when you leeeast expect it!", "cheeky" ],
+            [ "Where am I, little marshmallow?", "cheeky" ],
+            [ "Poor chicken is confused!", "cheeky" ]
+        ]
+    },
+    "GainedBacktrackLeft": {
+        "Basic": [
+            [ "I'll be left back!" ],
+            [ "I'll be back! Yip!" ],
+            [ "Nibbs comes back when you leeeast expect it!", "cheeky" ],
+            [ "Where am I, little marshmallow?", "cheeky" ],
+            [ "Poor chicken is confused!", "cheeky" ]
+        ]
+    },
+    "UsedBacktrack": {
+        "Basic": [
+            [ "Mrrr~, forgot something!" ],
+            [ "Forgot something!" ],
+            [ "Mrrr~, gotta do something!" ],
+            [ "Nibbs forgot something in the oven!", "cheeky" ],
+            [ "Nibbs is back!" ],
+            [ "Going back!" ],
+            [ "Hello again!" ],
+            [ "Hello little marshmallow!" ],
+            [ "Nyoom!" ],
+            [ "Back to the past!" ],
+            [ "Nibbs wants a do-over!" ],
+            [ "Rawr, not done yet!" ],
+            [ "Grrr, rawr!" ],
+            [ "Gotta retrace my steps!" ],
+            [ "Remember when we were here?" ]
+        ]
+    },
+    "GainedTimestop": {
+        "Basic": [
+            [ "Hold on!" ],
+            [ "Greedy Nibbs!" ],
+            [ "I'm keeping it!" ],
+            [ "It's like waiting, but better!" ],
+            [ "This is MY hard-earned stuffs!", "squint" ],
+            [ "Woosh!" ],
+            [ "Freeze!" ],
+            [ "Nyeeop!" ],
+            [ "Later!" ]
+        ]
+    },
+    "GainedTimestopWithOverdrive": {
+        "Basic": [
+            [ "Nibbs likes the red glowing cannons!" ],
+            [ "I like it! I'm keeping it!" ],
+            [ "More destruction!" ],
+            [ "Long-term destruction!" ]
+        ],
+        "Peri": [ [
+            {"Nibbs": [ "Nibbs likes the red glowing cannons!" ] },
+            {"Peri": [ "Good. Keep the overdrive stable." ] }
+        ], [
+            {"Peri": [ "Overdrive decay paused. Good work." ] },
+            {"Nibbs": [ "Just some time shenanigans!", "cheeky" ] }
+        ], [
+            {"Nibbs": [ "This... deserves a treat!", "cheeky" ] },
+            {"Peri": [ "Fine, after this.", "nap" ] }
+        ], [
+            {"Peri": [ "Time dilation is prolonging the cannon overdrive." ] }
+        ] ],
+        "Drake": [ [
+            {"Drake": [ "Sweet. Time to dish out some hurt." ] }
+        ], [
+            {"Drake": [ "Awesome, more time for high-grade butt-kicking." ] }
+        ] ],
+        "Ilya": [ [
+            {"Ilya": [ "That should do it." ] }
+        ], [
+            {"Ilya": [ "Can't let perfectly good overdrive go to waste." ] }
+        ] ]
+    },
+    "GainedTimestopWithStunCharge": {
+        "Basic": [
+            [ "Don't let them fight back!" ],
+            [ "I like it! I'm keeping it!" ],
+            [ "Nibbs is a patient hunter!" ],
+            [ "We wait, and then we strike!" ],
+            [ "Don't let them get away!" ]
+        ],
+        "Dizzy": [ [
+            {"Dizzy": [ "The stun charge is circulating longer than should be possible. How?", "serious" ] },
+            {"Nibbs": [ "Coba dragon power!" ] }
+        ], [
+            {"Dizzy": [ "Good. We can stun them later." ] }
+        ], [
+            {"Dizzy": [ "It's not much, but there's no need to let it go to waste.", "explains" ] }
+        ] ]
+    },
+    "GainedTimestopWithCheapFix": {
+        "Basic": [
+            [ "More free stuff!" ],
+            [ "I like it! I'm keeping it!" ],
+            [ "Stay fixed!" ]
+        ],
+        "CAT": [ [
+            {"CAT": [ "Executable efficiency remains constant." ] },
+            {"Nibbs": [ "Run me next!" ] }
+        ], [
+            {"CAT": [ "My simulations are still stable. Good job." ] }
+        ] ],
+        "Johnson": [ [
+            {"Johnson": [ "Our bottom line is steadier than ever.", "happy" ] }
+        ], [
+            {"Johnson": [ "This should keep us afloat." ] }
+        ], [
+            {"Johnson": [ "You make for a good tax write-off." ] },
+            {"Nibbs": [ "Rawr?" ] }
+        ] ]
+    },
+    "GainedTimestopWithAutopilot": {
+        "Basic": [
+            [ "Woom! Nyeeeom!" ],
+            [ "I like it! I'm keeping it!" ],
+            [ "Piloting like this is fun!" ]
+        ],
+        "Max": [ [
+            {"Max": [ "We gotta reboot the autopilot." ] },
+            {"Nibbs": [ "Not anymore!" ] }
+        ], [
+            {"CAT": [ "My simulations are still stable. Good job." ] }
+        ] ],
+        "Johnson": [ [
+            {"Johnson": [ "Our bottom line is steadier than ever.", "happy" ] }
+        ], [
+            {"Johnson": [ "This should keep us afloat." ] }
+        ], [
+            {"Johnson": [ "You make for a good tax write-off." ] },
+            {"Nibbs": [ "Rawr?" ] }
+        ] ]
+    },
+    "GainedTimestopWithPerfectShield": {
+        "Basic": [
+            [ "Invincible!" ],
+            [ "We're gonna live forever!", "happy" ],
+            [ "Nibbs is no mere mortal!", "cheeky" ]
+        ],
+        "CAT": [ [
+            {"CAT": [ "Sweet. Let's keep these I frames active." ] },
+            {"Nibbs": [ "Wow! Cheating is great!", "happy" ] }
+        ] ]
+    },
+    "PreventedOverheatWithTimestop": {
+        "Basic": [
+            [ "Later!" ],   
+            [
+                {"Switch": [
+                    {"Nibbs": [ "Fixed!" ] },
+                    {"Nibbs": [ "See? Nibbs got this!", "cheeky" ]},
+                    {"Nibbs": [ "Heat? Nooo proooblem~!", "happy" ]}
+                ] },
+    			{"Switch": [
+        			{"Dizzy": [ "I see you've halted thermodynamics. I'm gonna need to research this later." ] },
+        			{"Peri": [ "For how long?", "panic" ] },
+        			{"Isaac": [ "Oooh, I'm gonna show this to CAT later", "writing" ] },
+        			{"Drake": [ "Sweet, I don't have to be careful anymore", "sly" ] },
+        			{"CAT": [ "Inventive!" ] }
+                ] }
+            ]
+        ],
+        "Isaac_Cat": [ [
+            {"Nibbs": [ "Fixed!" ] },
+            {"Isaac": [ "Hey CAT, are you seeing this?" ] },
+            {"CAT": [ "I'm taking notes!" ] }
+        ] ],
+        "Drake": [ [
+			{"Nibbs": [ "Time for more fire!", "happy" ] },
+			{"Drake": [ "That's the spirit!", "sly" ] },
+			{"Switch": [
+    			{"Riggs": [ "You do you I guess, but, uh, don't blow us up." ] },
+    			{"Peri": [ "Drake... cool us off...", "squint" ] },
+    			{"CAT": [ "Or... you could take this time to vent some heat...", "squint" ] }
+            ] }
+        ] ],
+        "Ilya": [ [
+            {"Switch": [ 
+                {"Nibbs": [ "Nibbs brings a gift: fire!", "cheeky" ]},
+                {"Nibbs": [ "You like fire, right?" ]},
+                {"Nibbs": [ "If you're looking for more heat, Nibbs is here to help!", "happy" ]}
+            ] },
+            {"Switch": [ 
+                {"Ilya": [ "I'll try to make use of it." ]},
+                {"Ilya": [ "Thanks." ]},
+                {"Ilya": [ "I won't let you down." ]}
+            ] }
+        ] ]
+    },
+    "CatSummonNibbs": {
+        "CAT": [ [
+            {"Nibbs": [ "Clever cat!", "cheeky" ]}
+        ] ]
+    },
+    "CatSummonNibbsWithoutNibbs": {
+        "CAT": [ [
+            {"CAT": [ "Let's see if I can replicate this." ]}
+        ], [
+            {"CAT": [ "Aha! I think I'm connecting to a parallel dimension!" ]}
+        ] ]
+    }
+}

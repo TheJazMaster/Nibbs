@@ -2,9 +2,6 @@ using Nickel;
 using TheJazMaster.Nibbs.Actions;
 using System.Collections.Generic;
 using System.Reflection;
-using TheJazMaster.Nibbs.Features;
-using System;
-using System.Collections.ObjectModel;
 
 namespace TheJazMaster.Nibbs.Cards;
 
@@ -31,16 +28,32 @@ internal sealed class SpaceHoppingCard : Card, INibbsCard
 		flippable = upgrade == Upgrade.A
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new ABacktrackMove {
-			dir = upgrade == Upgrade.B ? 2 : 1,
-			targetPlayer = true
-		},
-		new ABacktrackMove {
-			dir = 1,
-			targetPlayer = true
-		}
-	];
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new ABacktrackMove {
+				dir = 1,
+				targetPlayer = true
+			},
+			new ABacktrackMove {
+				dir = 1,
+				targetPlayer = true
+			},
+			new ABacktrackMove {
+				dir = 1,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new ABacktrackMove {
+				dir = 1,
+				targetPlayer = true
+			},
+			new ABacktrackMove {
+				dir = 1,
+				targetPlayer = true
+			}
+		]
+	};
 }
 
 
@@ -62,7 +75,99 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1
+		cost = upgrade == Upgrade.A ? 0 : 1
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new ABacktrackMove {
+			dir = upgrade == Upgrade.B ? 3 : 2,
+			targetPlayer = true,
+			isRandom = true
+		},
+		new AAttack {
+			damage = GetDmg(s, upgrade == Upgrade.B ? 3 : 2)
+		}
+	];
+}
+
+
+internal sealed class SmeltCard : Card, INibbsCard
+{
+	public static void Register(IModHelper helper) {
+		helper.Content.Cards.RegisterCard("Smelt", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = ModEntry.Instance.NibbsDeck.Deck,
+				rarity = Rarity.common,
+				upgradesTo = [Upgrade.A, Upgrade.B]
+			},
+			Art = StableSpr.cards_eunice,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Smelt", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 2
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AAttack {
+				damage = GetDmg(s, 5),
+				stunEnemy = true
+			},
+			new AStatus {
+				status = Status.shield,
+				statusAmount = -1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.maxShield,
+				statusAmount = -1,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AAttack {
+				damage = GetDmg(s, upgrade == Upgrade.A ? 4 : 3),
+				stunEnemy = true
+			},
+			new AStatus {
+				status = Status.shield,
+				statusAmount = -1,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class TrailblazerCard : Card, INibbsCard
+{
+	internal static Spr Art;
+	internal static Spr ArtFlipped;
+
+	public static void Register(IModHelper helper) {
+		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPathFlipped.png")).Sprite;
+		ArtFlipped = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPath.png")).Sprite;
+		helper.Content.Cards.RegisterCard("Trailblazer", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = ModEntry.Instance.NibbsDeck.Deck,
+				rarity = Rarity.common,
+				upgradesTo = [Upgrade.A, Upgrade.B]
+			},
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Trailblazer", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.B ? 2 : 1,
+		art = flipped ? ArtFlipped : Art
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
@@ -80,11 +185,6 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 				status = Status.timeStop,
 				statusAmount = 1,
 				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 2,
-				targetPlayer = true
 			}
 		],
 		_ => [
@@ -94,104 +194,6 @@ internal sealed class WingsOfFireCard : Card, INibbsCard
 			},
 			new AStatus {
 				status = Status.hermes,
-				statusAmount = 1,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
-			}
-		]
-	};
-}
-
-internal sealed class FireballCard : Card, INibbsCard
-{
-	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("Fireball", new()
-		{
-			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
-			Meta = new()
-			{
-				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.common,
-				upgradesTo = [Upgrade.A, Upgrade.B]
-			},
-			Art = StableSpr.cards_Heat,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Fireball.png")).Sprite,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Fireball", "name"]).Localize
-		});
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = 2
-	};
-
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new AAttack {
-			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
-			stunEnemy = true
-		},
-		new AStatus {
-			status = Status.heat,
-			statusAmount = upgrade == Upgrade.B ? -2 : -1,
-			targetPlayer = true
-		}
-	];
-}
-
-
-internal sealed class BlazingPathCard : Card, INibbsCard
-{
-	internal static Spr Art;
-	internal static Spr ArtFlipped;
-
-	public static void Register(IModHelper helper) {
-		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPath.png")).Sprite;
-		ArtFlipped = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPathFlipped.png")).Sprite;
-		helper.Content.Cards.RegisterCard("BlazingPath", new()
-		{
-			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
-			Meta = new()
-			{
-				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.common,
-				upgradesTo = [Upgrade.A, Upgrade.B]
-			},
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "BlazingPath", "name"]).Localize
-		});
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = 1,
-		art = flipped ? ArtFlipped : Art,
-		flippable = upgrade == Upgrade.A
-	};
-
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.B => [
-			new ABacktrackMove {
-				dir = 3,
-				targetPlayer = true
-			},
-			new ABacktrackMove {
-				dir = 1,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
-			}
-		],
-		_ => [
-			new ABacktrackMove {
-				dir = 3,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
 				statusAmount = 1,
 				targetPlayer = true
 			}
@@ -218,17 +220,30 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1,
-		exhaust = upgrade != Upgrade.B
+		cost = upgrade == Upgrade.B ? 2 : 1
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new AStatus {
-			status = Status.timeStop,
-			statusAmount = upgrade == Upgrade.A ? 2 : 1,
-			targetPlayer = true
-		}
-	];
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.None => [
+			new AStatus {
+				status = Status.timeStop,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AStatus {
+				status = Status.timeStop,
+				statusAmount = upgrade == Upgrade.B ? 2 : 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = upgrade == Upgrade.B ? 2 : 1,
+				targetPlayer = true
+			}
+		],
+	};
 }
 
 
@@ -291,7 +306,8 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 
 	public override CardData GetData(State state) => new() {
 		cost = upgrade == Upgrade.B ? 1 : 2,
-		art = flipped ? BlazingPathCard.ArtFlipped : BlazingPathCard.Art,
+		exhaust = true,
+		art = flipped ? TrailblazerCard.Art : TrailblazerCard.ArtFlipped,
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
@@ -301,16 +317,11 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 				targetPlayer = true
 			},
 			new AAttack {
-				damage = GetDmg(s, 1),
+				damage = GetDmg(s, 3),
 				stunEnemy = true
 			},
 			new ABacktrackMove {
 				dir = -2,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
 				targetPlayer = true
 			}
 		],
@@ -320,13 +331,8 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 				targetPlayer = true
 			},
 			new AAttack {
-				damage = GetDmg(s, 1),
+				damage = GetDmg(s, 2),
 				stunEnemy = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
 			}
 		],
 		_ => [
@@ -335,13 +341,8 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 				targetPlayer = true
 			},
 			new AAttack {
-				damage = GetDmg(s, 1),
+				damage = GetDmg(s, 2),
 				stunEnemy = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 1,
-				targetPlayer = true
 			}
 		],
 	};
@@ -380,7 +381,7 @@ internal sealed class BackflipCard : Card, INibbsCard
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
 			status = ModEntry.Instance.BackflipStatus.Status,
-			statusAmount = upgrade == Upgrade.B ? 4 : upgrade == Upgrade.A ? 3 : 2,
+			statusAmount = upgrade == Upgrade.B ? 5 : upgrade == Upgrade.A ? 4 : 3,
 			targetPlayer = true
 		},
 		new ABacktrackMove {
@@ -391,10 +392,10 @@ internal sealed class BackflipCard : Card, INibbsCard
 }
 
 
-internal sealed class SteamCoverCard : Card, INibbsCard
+internal sealed class SmokescreenCard : Card, INibbsCard
 {
 	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("SteamCover", new()
+		helper.Content.Cards.RegisterCard("Smokescreen", new()
 		{
 			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
 			Meta = new()
@@ -403,27 +404,41 @@ internal sealed class SteamCoverCard : Card, INibbsCard
 				rarity = Rarity.common,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_TrashFumes,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "SteamCover", "name"]).Localize
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Smokescreen.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Smokescreen", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 0 : 1
+		cost = 1
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new AStatus {
-			status = Status.tempShield,
-			statusAmount = upgrade == Upgrade.B ? 1 : upgrade == Upgrade.A ? 3 : 2,
-			targetPlayer = true
-		},
-		new AStatus {
-			status = Status.heat,
-			statusAmount = -1,
-			targetPlayer = true
-		}
-	];
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = ModEntry.Instance.BackflipStatus.Status,
+				statusAmount = 3,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = upgrade == Upgrade.A ? 3 : 2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = ModEntry.Instance.BackflipStatus.Status,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		],
+	};
 }
 
 
@@ -447,13 +462,24 @@ internal sealed class QuantumTurbulenceCard : Card, INibbsCard
 	public override CardData GetData(State state) => new() {
 		cost = 0,
 		recycle = true,
-		description = ModEntry.Instance.Localizations.Localize(["card", "QuantumTurbulence", "description", upgrade.ToString()], new { Amount = 1 + state.ship.Get(Status.hermes) } )
+		description = ModEntry.Instance.Localizations.Localize(["card", "QuantumTurbulence", "description", upgrade.ToString()], new {
+			Dir = flipped ? Loc.T("card.LoadState.desc.combat.right") : Loc.T("card.LoadState.desc.combat.left"),
+			Amount = 1 + state.ship.Get(Status.hermes) 
+		})
 	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AMove {
+			dir = 0,
+			targetPlayer = true,
+			omitFromTooltips = true
+		}
+	];
 
 	public override void OnDraw(State s, Combat c)
 	{
 		c.Queue(new ABacktrackMove {
-			dir = -1,
+			dir = flipped ? 1 : -1,
 			targetPlayer = true
 		});
 		if (upgrade == Upgrade.A)
@@ -464,114 +490,10 @@ internal sealed class QuantumTurbulenceCard : Card, INibbsCard
 			});
 		if (upgrade == Upgrade.B)
 			c.Queue(new ABacktrackMove {
-				dir = 1,
+				dir = flipped ? -1 : 1,
 				targetPlayer = true
 			});
 	}
-}
-
-
-internal sealed class FireBreathCard : Card, INibbsCard
-{
-	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("FireBreath", new()
-		{
-			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
-			Meta = new()
-			{
-				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.uncommon,
-				upgradesTo = [Upgrade.A, Upgrade.B]
-			},
-			Art = StableSpr.cards_eunice,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/FireBreath.png")).Sprite,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "FireBreath", "name"]).Localize
-		});
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = 2
-	};
-
-	private static int GetHeatAmt(State s)
-	{
-		int num = 0;
-		if (s.route is Combat)
-		{
-			num = s.ship.Get(Status.heat);
-			if (num < 0)
-			{
-				num = 0;
-			}
-		}
-		return num;
-	}
-
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch
-	{
-		Upgrade.A => [
-			new AVariableHint {
-				status = Status.heat
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s))
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s))
-			},
-			new AAttack {
-				damage = GetDmg(s, 2)
-			},
-			new AStatus {
-				status = Status.heat,
-				mode = AStatusMode.Set,
-				statusAmount = 0,
-				targetPlayer = true
-			},
-		],
-		Upgrade.B => [
-			new AVariableHint {
-				status = Status.heat
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s)),
-				stunEnemy = true
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s)),
-				stunEnemy = true
-			},
-			new AStatus {
-				status = Status.heat,
-				mode = AStatusMode.Set,
-				statusAmount = 0,
-				targetPlayer = true
-			},
-		],
-		_ => [
-			new AVariableHint {
-				status = Status.heat
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s))
-			},
-			new AAttack {
-				xHint = 1,
-				damage = GetDmg(s, GetHeatAmt(s))
-			},
-			new AStatus {
-				status = Status.heat,
-				mode = AStatusMode.Set,
-				statusAmount = 0,
-				targetPlayer = true
-			},
-		],
-	};
 }
 
 
@@ -598,30 +520,52 @@ internal sealed class FlapFlapCard : Card, INibbsCard
 		exhaust = upgrade == Upgrade.B
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch
-	{
-		Upgrade.A => [
-			new AStatus {
-				status = ModEntry.Instance.BacktrackAutododgeRightStatus.Status,
-				statusAmount = 2,
-				targetPlayer = true
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = upgrade switch {
+				Upgrade.A => ModEntry.Instance.BacktrackAutododgeRightStatus.Status,
+				Upgrade.B => Status.autododgeLeft,
+				_ => Status.autododgeRight
+			}, 
+			statusAmount = 2,
+			targetPlayer = true
+		}
+	];
+}
+
+
+internal sealed class HydraulicsCard : Card, INibbsCard
+{
+	public static void Register(IModHelper helper) {
+		helper.Content.Cards.RegisterCard("Hydraulics", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = ModEntry.Instance.NibbsDeck.Deck,
+				rarity = Rarity.uncommon,
+				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-		],
-		Upgrade.B => [
-			new AStatus {
-				status = Status.autododgeLeft,
-				statusAmount = 2,
-				targetPlayer = true
-			},
-		],
-		_ => [
-			new AStatus {
-				status = Status.autododgeRight,
-				statusAmount = 2,
-				targetPlayer = true
-			},
-		],
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/CoolantPump.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Hydraulics", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.B ? 0 : 1,
+		exhaust = upgrade == Upgrade.B
 	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = Status.hermes,
+			statusAmount = 1,
+			targetPlayer = true
+		},
+		new ADrawCard {
+			count = upgrade == Upgrade.A ? 4 : 2
+		}
+	];
 }
 
 
@@ -637,39 +581,29 @@ internal sealed class HoldOnCard : Card, INibbsCard
 				rarity = Rarity.uncommon,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = StableSpr.cards_Fleetfoot,
-			// Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/HoldOn.png")).Sprite,
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/HoldOn.png")).Sprite,
 			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "HoldOn", "name"]).Localize
 		});
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 0,
+		cost = 1,
 		retain = true,
 		exhaust = upgrade != Upgrade.B
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
-			new AStatus {
-				status = Status.hermes,
-				statusAmount = 2,
-				targetPlayer = true
-			}
-		],
-		_ => [
-			new AStatus {
-				status = Status.hermes,
-				statusAmount = 2,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.heat,
-				statusAmount = 2,
-				targetPlayer = true
-			}
-		]
-	};
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = Status.hermes,
+			statusAmount = 2,
+			targetPlayer = true
+		},
+		new AStatus {
+			status = ModEntry.Instance.BackflipStatus.Status,
+			statusAmount = upgrade == Upgrade.A ? 2 : 1,
+			targetPlayer = true
+		},
+	];
 }
 
 
@@ -865,7 +799,7 @@ internal sealed class TauntCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 0 : 1,
+		cost = upgrade == Upgrade.B ? 1 : 0,
 		exhaust = true
 	};
 
@@ -873,24 +807,16 @@ internal sealed class TauntCard : Card, INibbsCard
 		Upgrade.B => [
 			new AStatus {
 				status = ModEntry.Instance.BackflipStatus.Status,
-				statusAmount = 5,
+				statusAmount = 4,
 				targetPlayer = true
 			},
-			new ADrawCard {
-				count = 3	
-			},
+			new AStunShip(),
 			new AStatus {
 				status = Status.evade,
 				statusAmount = 0,
 				mode = AStatusMode.Set,
 				targetPlayer = true
-			},
-			new AStatus {
-				status = Status.shield,
-				statusAmount = 0,
-				mode = AStatusMode.Set,
-				targetPlayer = true
-			},
+			}
 		],
 		_ => [
 			new AStatus {
@@ -898,8 +824,8 @@ internal sealed class TauntCard : Card, INibbsCard
 				statusAmount = 4,
 				targetPlayer = true
 			},
-			new ADrawCard {
-				count = 2
+			new AEnergy {
+				changeAmount = upgrade == Upgrade.A ? 2 : 1
 			},
 			new AStatus {
 				status = Status.evade,
@@ -992,20 +918,14 @@ internal sealed class DragonFrenzyCard : Card, INibbsCard
 			damage = GetDmg(s, upgrade == Upgrade.A ? 1 : 0),
 			stunEnemy = true
 		},
-		// new AStatus {
-		// 	status = Status.temporaryCheap,
-		// 	statusAmount = 0,
-		// 	mode = AStatusMode.Set,
-		// 	targetPlayer = true
-		// },
 	];
 }
 
 
-internal sealed class SmokescreenCard : Card, INibbsCard
+internal sealed class QuantumCollapseCard : Card, INibbsCard
 {
 	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("Smokescreen", new()
+		helper.Content.Cards.RegisterCard("QuantumCollapse", new()
 		{
 			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
 			Meta = new()
@@ -1014,8 +934,81 @@ internal sealed class SmokescreenCard : Card, INibbsCard
 				rarity = Rarity.rare,
 				upgradesTo = [Upgrade.A, Upgrade.B]
 			},
-			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Smokescreen.png")).Sprite,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Smokescreen", "name"]).Localize
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/QuantumCollapse.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "QuantumCollapse", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 2
+	};
+
+	private static int GetSchmoveAmt(State s)
+	{
+		if (s.route is Combat)
+		{
+			return s.ship.Get(ModEntry.Instance.BacktrackLeftStatus.Status) + s.ship.Get(ModEntry.Instance.BacktrackRightStatus.Status);
+		}
+		return 0;
+	}
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AAttack {
+				damage = GetDmg(s, 1)
+			},
+			new AVariableHint {
+				status = ModEntry.Instance.BacktrackLeftStatus.Status,
+				secondStatus = ModEntry.Instance.BacktrackRightStatus.Status
+			},
+			new AAttack {
+				xHint = 1,
+				damage = GetDmg(s, GetSchmoveAmt(s)),
+			}
+		],
+		_ => [
+			new AAttack {
+				damage = GetDmg(s, upgrade == Upgrade.A ? 3 : 1)
+			},
+			new AVariableHint {
+				status = ModEntry.Instance.BacktrackLeftStatus.Status,
+				secondStatus = ModEntry.Instance.BacktrackRightStatus.Status
+			},
+			new AAttack {
+				xHint = 1,
+				damage = GetDmg(s, GetSchmoveAmt(s)),
+			},
+			new AStatus {
+				status = ModEntry.Instance.BacktrackLeftStatus.Status,
+				mode = AStatusMode.Set,
+				statusAmount = 0,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = ModEntry.Instance.BacktrackRightStatus.Status,
+				mode = AStatusMode.Set,
+				statusAmount = 0,
+				targetPlayer = true
+			},
+		]
+	};
+}
+
+
+internal sealed class BlurCard : Card, INibbsCard
+{
+	public static void Register(IModHelper helper) {
+		helper.Content.Cards.RegisterCard("Blur", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = ModEntry.Instance.NibbsDeck.Deck,
+				rarity = Rarity.rare,
+				upgradesTo = [Upgrade.A, Upgrade.B]
+			},
+			Art = StableSpr.cards_Ace,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "Blur", "name"]).Localize
 		});
 	}
 
@@ -1063,11 +1056,11 @@ internal sealed class SuperpositionCard : Card, INibbsCard
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.B => [
 			new ABacktrackMove {
-				dir = 6,
+				dir = 5,
 				targetPlayer = true
 			},
 			new ABacktrackMove {
-				dir = -6,
+				dir = -5,
 				targetPlayer = true
 			},
 			new AStatus {
@@ -1078,50 +1071,15 @@ internal sealed class SuperpositionCard : Card, INibbsCard
 		],
 		_ => [
 			new ABacktrackMove {
-				dir = 6,
+				dir = 5,
 				targetPlayer = true
 			},
 			new ABacktrackMove {
-				dir = -6,
+				dir = -5,
 				targetPlayer = true
 			}
 		]
 	};
-}
-
-
-internal sealed class CoolantPumpCard : Card, INibbsCard
-{
-	public static void Register(IModHelper helper) {
-		helper.Content.Cards.RegisterCard("CoolantPump", new()
-		{
-			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
-			Meta = new()
-			{
-				deck = ModEntry.Instance.NibbsDeck.Deck,
-				rarity = Rarity.rare,
-				upgradesTo = [Upgrade.A, Upgrade.B]
-			},
-			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/CoolantPump.png")).Sprite,
-			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "CoolantPump", "name"]).Localize
-		});
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 0 : 1,
-		exhaust = upgrade == Upgrade.B
-	};
-
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new AStatus {
-			status = Status.heat,
-			statusAmount = -3,
-			targetPlayer = true
-		},
-		new ADrawCard {
-			count = upgrade == Upgrade.A ? 4 : 2
-		}
-	];
 }
 
 
@@ -1143,7 +1101,7 @@ internal sealed class NovaCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1,
+		cost = 0,
 		retain = true,
 		exhaust = true,
 	};
@@ -1160,14 +1118,15 @@ internal sealed class NovaCard : Card, INibbsCard
 				statusAmount = 1,
 				targetPlayer = true
 			},
-			new ADrawCard {
-				count = 3
-			},
 			new AStatus {
-				status = Status.heat,
-				statusAmount = 3,
+				status = Status.loseEvadeNextTurn,
+				statusAmount = 1,
 				targetPlayer = true
 			},
+			new AEnergy {
+				changeAmount = 1
+			}
+			
 		],
 		_ => [
 			new AStatus {
@@ -1180,14 +1139,70 @@ internal sealed class NovaCard : Card, INibbsCard
 				statusAmount = 1,
 				targetPlayer = true
 			},
-			new ADrawCard {
-				count = 1
-			},
 			new AStatus {
-				status = Status.heat,
-				statusAmount = 3,
+				status = Status.loseEvadeNextTurn,
+				statusAmount = 1,
 				targetPlayer = true
 			},
 		]
 	};
+}
+
+internal sealed class NibbsExeCard : Card, INibbsCard
+{
+	public static void Register(IModHelper helper) {
+		helper.Content.Cards.RegisterCard("NibbsExe", new()
+		{
+			CardType = MethodBase.GetCurrentMethod()!.DeclaringType!,
+			Meta = new()
+			{
+				deck = Deck.colorless,
+				rarity = Rarity.common,
+				upgradesTo = [Upgrade.A, Upgrade.B]
+			},
+			Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/NibbsExe.png")).Sprite,
+			Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "NibbsExe", "name"]).Localize
+		});
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 0 : 1,
+		exhaust = true,
+		description = ColorlessLoc.GetDesc(state, upgrade == Upgrade.B ? 3 : 2, ModEntry.Instance.NibbsDeck.Deck),
+		artTint = "ffffff"
+    };
+
+	public override List<CardAction> GetActions(State s, Combat c)
+    {
+		Deck deck = ModEntry.Instance.NibbsDeck.Deck;
+		return upgrade switch
+		{
+			Upgrade.B => [
+				new ACardOffering
+				{
+					amount = 3,
+					limitDeck = deck,
+					makeAllCardsTemporary = true,
+					overrideUpgradeChances = false,
+					canSkip = false,
+					inCombat = true,
+					discount = -1,
+					dialogueSelector = ".summonNibbs"
+				}
+			],
+			_ => [
+				new ACardOffering
+				{
+					amount = 2,
+					limitDeck = deck,
+					makeAllCardsTemporary = true,
+					overrideUpgradeChances = false,
+					canSkip = false,
+					inCombat = true,
+					discount = -1,
+					dialogueSelector = ".summonNibbs"
+				}
+			],
+		};
+	}
 }

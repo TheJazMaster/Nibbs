@@ -3,7 +3,7 @@
         "name": "Nibbs",
         "description": [
             "<c=c74b9b>NIBBS</c>",
-            "A young warrior from another galaxy. Her cards focus on positioning using <c=keyword>backtrackable instant movement</c> and <c=keyword>time stop</c>, but often generate <c=downside>heat</c>."
+            "A young warrior from another galaxy. Her cards focus on positioning using <c=keyword>backtrackable instant movement</c> and <c=keyword>time stop</c>."
         ]
     },
     "action": {
@@ -30,7 +30,7 @@
             "description": "All cards with flippable actions, such as <c=action>move</c>, are <c=cardtrait>flippable</c> for {0} turns."
         },
         "Smokescreen": {
-            "name": "Smokescreen",
+            "name": "Blur",
             "description": "Whenever this ship moves, it gains {0} <c=status>TEMP SHIELD</c>. <c=downside>Decreases by 1 at end of turn."
         },
         "BacktrackLeft": {
@@ -55,21 +55,25 @@
             "name": "CHOCOLATE MONSTER EGG",
             "description": "At the end of every turn, if you gained any <c=status>HEAT</c> that turn, gain <c=status>TEMP SHIELD</c> equal to your <c=status>HEAT</c>."
         },
+        "DragonfireCandle": {
+            "name": "DRAGONFIRE CANDLE",
+            "description": "Whenever you <c=action>stun</c> an intent or cause a <c=action>total stun</c>, the enemy loses 1 hull."
+        },
         "EyeOfCoba": {
             "name": "EYE OF COBA",
             "description": "Your first <c=action>non-reversible move</c> each turn becomes a <c=keyword>reversible</c> move."
         },
         "GalacticNewsCoverage": {
             "name": "CHANNEL 7 COVERAGE",
-            "description": "Upon reaching 5 <c=status>BACKFLIP</c>, lose 5 backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
+            "description": "Upon reaching {{Amount}} <c=status>BACKFLIP</c>, lose {{Amount}} backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
         },
         "EternalFlame": {
             "name": "ETERNAL FLAME",
-            "description": "The first time each combat you would <c=keyword>overheat</c>, gain 1 <c=status>TIMESTOP</c> instead."
+            "description": "Every 5th turn, gain 1 <c=status>TIMESTOP</c>."
         },
         "QuantumEngines": {
             "name": "QUANTUM ENGINES",
-            "description": "Whenever you gain <c=status>BACKTRACK LEFT/RIGHT</c>, gain 1 more."
+            "description": "Whenever you gain <c=status>BACKTRACK LEFT/RIGHT</c> or any kind of <c=status>AUTODODGE</c>, gain 1 more."
         },
         "SugarRush": {
             "name": "SUGAR RUSH",
@@ -105,25 +109,40 @@
         "Backflip": {
             "name": "Backflip"
         },
-        "SteamCover": {
-            "name": "Steam Cover"
+        "Blur": {
+            "name": "Blur"
         },
         "QuantumTurbulence": {
             "name": "Quantum Turbulence",
             "description": {
-                "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}}.",
-                "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}} and gain 1 <c=status>temp shield</c>.",
-                "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move left {{Amount}} and <c=action>right {{Amount}}."
+                "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}}.",
+                "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and gain 1 <c=status>temp shield</c>.",
+                "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and <c=action>right {{Amount}}."
             }
         },
         "FireBreath": {
-            "name": "Fire-Breath"
+            "name": "Fire Breath"
+        },
+        "QuantumCollapse": {
+            "name": "Quantum Collapse"
         },
         "FlapFlap": {
             "name": "Flap-Flap"
         },
+        "Trailblazer": {
+            "name": "Trailblazer"
+        },
+        "Blink": {
+            "name": "Blink"
+        },
+        "Smelt": {
+            "name": "Smelt"
+        },
         "Smokescreen": {
             "name": "Smokescreen"
+        },
+        "SuperheatedSlug": {
+            "name": "Superheated Slug"
         },
         "HoldOn": {
             "name": "Hold On!"
@@ -151,6 +170,12 @@
         "Superposition": {
             "name": "Super-Position"
         },
+        "SearingSoar": {
+            "name": "Searing Soar"
+        },
+        "Hydraulics": {
+            "name": "Hydraulics"
+        },
         "CoolantPump": {
             "name": "Coolant Pump"
         },
@@ -159,6 +184,9 @@
         },
         "Nova": {
             "name": "Nova"
+        },
+        "NibbsExe": {
+            "name": "Nibbs.EXE"
         }
     }
 }
