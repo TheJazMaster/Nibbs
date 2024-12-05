@@ -327,11 +327,13 @@ internal sealed class SugarRushArtifact : Artifact, INibbsArtifact
 	public override void OnReceiveArtifact(State state)
 	{
 		state.ship.baseEnergy += 1;
+		state.ship.baseDraw += 1;
 	}
 
 	public override void OnRemoveArtifact(State state)
 	{
 		state.ship.baseEnergy -= 1;
+		state.ship.baseDraw -= 1;
 	}
 
 	public override void OnTurnEnd(State state, Combat combat)

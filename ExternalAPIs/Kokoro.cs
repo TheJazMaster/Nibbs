@@ -44,54 +44,6 @@ public partial interface IKokoroApi
 	}
 }
 
-public partial interface IKokoroApi
-{
-	IEvadeHook VanillaEvadeHook { get; }
-	IEvadeHook VanillaDebugEvadeHook { get; }
-	void RegisterEvadeHook(IEvadeHook hook, double priority);
-	void UnregisterEvadeHook(IEvadeHook hook);
-
-	bool IsEvadePossible(State state, Combat combat, EvadeHookContext context);
-	IEvadeHook? GetEvadeHandlingHook(State state, Combat combat, EvadeHookContext context);
-	void AfterEvade(State state, Combat combat, int direction, IEvadeHook hook);
-
-	IDroneShiftHook VanillaDroneShiftHook { get; }
-	IDroneShiftHook VanillaDebugDroneShiftHook { get; }
-	void RegisterDroneShiftHook(IDroneShiftHook hook, double priority);
-	void UnregisterDroneShiftHook(IDroneShiftHook hook);
-
-	bool IsDroneShiftPossible(State state, Combat combat, DroneShiftHookContext context);
-	IDroneShiftHook? GetDroneShiftHandlingHook(State state, Combat combat, DroneShiftHookContext context);
-	void AfterDroneShift(State state, Combat combat, int direction, IDroneShiftHook hook);
-}
-
-public enum DroneShiftHookContext
-{
-	Rendering, Action
-}
-
-public interface IDroneShiftHook
-{
-	bool? IsDroneShiftPossible(State state, Combat combat, int direction, DroneShiftHookContext context) => IsDroneShiftPossible(state, combat, context);
-	bool? IsDroneShiftPossible(State state, Combat combat, DroneShiftHookContext context) => null;
-	void PayForDroneShift(State state, Combat combat, int direction) { }
-	void AfterDroneShift(State state, Combat combat, int direction, IDroneShiftHook hook) { }
-	List<CardAction>? ProvideDroneShiftActions(State state, Combat combat, int direction) => null;
-}
-
-public enum EvadeHookContext
-{
-	Rendering, Action
-}
-
-public interface IEvadeHook
-{
-	bool? IsEvadePossible(State state, Combat combat, int direction, EvadeHookContext context) => null;
-	void PayForEvade(State state, Combat combat, int direction) { }
-	void AfterEvade(State state, Combat combat, int direction, IEvadeHook hook) { }
-	List<CardAction>? ProvideEvadeActions(State state, Combat combat, int direction) => null;
-}
-
 public interface IWrappedActionHook
 {
 	List<CardAction>? GetWrappedCardActions(CardAction action);

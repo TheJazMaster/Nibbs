@@ -24,7 +24,10 @@ internal class CombatDialogue : BaseDialogue
 			{"NibbsDealtDamage", new StoryNode {
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				playerShotJustHit = true,
-				minDamageDealtToEnemyThisAction = 1
+				minDamageDealtToEnemyThisAction = 1,
+				oncePerCombatTags = [
+					"NibbsShotThatGuy"
+				],
 			}},
 			{"DealtBigDamage", new StoryNode {
 				playerShotJustHit = true,
@@ -243,6 +246,9 @@ internal class CombatDialogue : BaseDialogue
 				hasArtifacts = [
 					"GrazerBeam"
 				],
+				lookup = [
+					"Grazed"
+				],
 				oncePerCombat = true,
 			}},
 			{"MissedWithRecalibrator", new StoryNode {
@@ -357,7 +363,7 @@ internal class CombatDialogue : BaseDialogue
 					"ArtifactSugarRush"
 				],
 				hasArtifacts = [
-					new QuantumEnginesArtifact().Key()
+					new SugarRushArtifact().Key()
 				],
 			}},
 			{"EyeOfCoba", new StoryNode {
@@ -433,6 +439,7 @@ internal class CombatDialogue : BaseDialogue
 				turnStart = true,
 				priority = true,
 				oncePerRun = true,
+				maxTurnsThisCombat = 1,
       			allPresent = [
 					"crystal",
 					TranslateChar("Nibbs")
@@ -603,7 +610,7 @@ internal class CombatDialogue : BaseDialogue
 				lookup = [
 					"summonNibbs"
 				],
-				allPresent = [
+				nonePresent = [
 					TranslateChar("Nibbs")
 				],
 				oncePerCombatTags = [
@@ -612,9 +619,24 @@ internal class CombatDialogue : BaseDialogue
 				oncePerRun = true,
 			}},
 
-
-
-			
+			{"Overcharger", new StoryNode {
+				turnStart = true,
+      			maxTurnsThisCombat = 1,
+				oncePerRunTags = [
+					"Overcharger"
+				],
+				hasArtifacts = [
+					"Overcharger"
+				],
+			}},
+			{"Wizbo", new StoryNode {
+				turnStart = true,
+				allPresent = [
+					TranslateChar("Wizbo"),
+					TranslateChar("Nibbs")
+				],
+				enemyIntent = "wizardMagic",
+			}},
 		};
 
 		InjectStory(nodePresets);

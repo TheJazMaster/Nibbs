@@ -27,6 +27,7 @@ internal abstract class BaseDialogue()
 			"CAT" => "comp",
 			"Cleo" => "nerd",
 			"Void" => "void",
+			"Wizbo" => "wizard",
 			"Nibbs" => "TheJazMaster.Nibbs::Nibbs",
 			"Johnson" => "Shockah.Johnson::Johnson",
 			"Nola" => "Mezz.TwosCompany.NolaDeck",
@@ -34,7 +35,9 @@ internal abstract class BaseDialogue()
 			"Ilya" => "Mezz.TwosCompany.IlyaDeck",
 			"Gauss" => "Mezz.TwosCompany.GaussDeck",
 			"Jost" => "Mezz.TwosCompany.JostDeck",
+			"Sorrel" => "Mezz.TwosCompany.SorrelDeck",
 			"Eddie" => "Eddie.EddieDeck",
+			"Tera" => "Teratto.TeraMod.Tera",
 			_ => "crew"
 		};
 	}
@@ -183,8 +186,7 @@ internal abstract class BaseDialogue()
 
 					node.oncePerCombatTags = (node.oncePerCombatTags != null && node.oncePerCombatTags.Count == 0) ? [key] : node.oncePerCombatTags;
 					node.oncePerRunTags = (node.oncePerRunTags != null && node.oncePerRunTags.Count == 0) ? [key] : node.oncePerRunTags;
-					node.allPresent ??= [];
-					node.allPresent.Add(TranslateChar("Nibbs"));
+					node.allPresent ??= [TranslateChar("Nibbs")];
 					if (pairs.Key != "Basic") {
 						foreach (string character in pairs.Key.Split("_"))
 							node.allPresent.Add(TranslateChar(character));

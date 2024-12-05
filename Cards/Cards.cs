@@ -220,26 +220,39 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 2 : 1
+		cost = 1
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.None => [
+		Upgrade.A => [
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
 				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = 2,
+				targetPlayer = true
+			}
+		],
+		Upgrade.B => [
+			new AStatus {
+				status = Status.timeStop,
+				statusAmount = 2,
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			}
 		],
 		_ => [
 			new AStatus {
 				status = Status.timeStop,
-				statusAmount = upgrade == Upgrade.B ? 2 : 1,
+				statusAmount = 1,
 				targetPlayer = true
 			},
 			new AStatus {
 				status = Status.tempShield,
-				statusAmount = upgrade == Upgrade.B ? 2 : 1,
+				statusAmount = 1,
 				targetPlayer = true
 			}
 		],
@@ -323,16 +336,6 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 			new ABacktrackMove {
 				dir = -2,
 				targetPlayer = true
-			}
-		],
-		Upgrade.B => [
-			new AMove {
-				dir = 2,
-				targetPlayer = true
-			},
-			new AAttack {
-				damage = GetDmg(s, 2),
-				stunEnemy = true
 			}
 		],
 		_ => [
@@ -472,7 +475,8 @@ internal sealed class QuantumTurbulenceCard : Card, INibbsCard
 		new AMove {
 			dir = 0,
 			targetPlayer = true,
-			omitFromTooltips = true
+			omitFromTooltips = true,
+			ignoreHermes = true,
 		}
 	];
 

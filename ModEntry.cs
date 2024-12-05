@@ -292,6 +292,11 @@ public sealed class ModEntry : SimpleMod {
 				new SwitchInjections().Inject();
 			}
 		};
+		Helper.Events.RegisterAfterArtifactsHook(nameof(Artifact.OnEnemyDodgePlayerAttackByOneTile), (State state, Combat combat) => {
+			combat.Queue(new ADummyAction {
+				dialogueSelector = ".Grazed"
+			});
+		}, 0);
 		
         NibbsCharacter = helper.Content.Characters.V2.RegisterPlayableCharacter("Nibbs", new()
 		{

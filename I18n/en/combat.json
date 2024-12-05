@@ -2,7 +2,7 @@
     "TookDamage": {
         "Basic": [
             [ "Rawr, rough ride!" ],
-            [ "Nibbs will save us next time!", "cheeky" ],
+            [ "Fiiine, I'll save us next time!", "cheeky" ],
             [
      			{"Nibbs": [ "Let's get them back!" ] },
      			{"Switch": [
@@ -12,28 +12,52 @@
             ]
         ],
         "Dizzy": [ [
- 			{"Nibbs": [ "Shields went pop! Rawr!" ] },
+ 			{"Nibbs": [ "Shields went pop!" ] },
  			{"Dizzy": [ "Good that you're positive about it, I guess?", "shrug" ] }
         ] ],
         "Isaac": [ [
- 			{"Dizzy": [ "Oh, could be worse." ] },
+ 			{"Isaac": [ "Oh, could be worse." ] },
  			{"Nibbs": [ "I helped!" ] }
         ] ],
         "Max": [ [
  			{"Max": [ "Hm, not ideal." ] },
- 			{"Nibbs": [ "Aw, did I do something wrong?", "serious" ] }
+ 			{"Nibbs": [ "But it's not my fault, right?", "serious" ] }
         ] ],
         "CAT": [ [
 			{"CAT": [ "Let's keep the hull damage to a minimum, guys." ] },
-			{"Nibbs": [ "Nibbs will never let the ship get hit again!" ] }
+			{"Nibbs": [ "Never get hit! Got it!!" ] }
         ] ],
         "Eddie": [ [
-			{"Nibbs": [ "Small dent!" ] },
+			{"Nibbs": [ "Rawr, a dent!" ] },
 			{"Eddie": [ "Maybe we can just leave it be?" ] }
         ] ],
         "Johnson": [ [
 			{"Johnson": [ "This doesn't bode well for the future." ] },
 			{"Nibbs": [ "Woah, tell us the future!", "wowza" ] }
+        ] ],
+        "Nola": [ [
+			{"Nola": [ "Come on, people. We need to bring our A-game.", "annoyed" ] },
+			{"Nibbs": [ "And I'll teach you how to play!" ] }
+        ] ],
+        "Isabelle": [ [
+			{"Isabelle": [ "That's right, let them get overconfident...", "happy" ] },
+			{"Nibbs": [ "And then... we strike!" ] }
+        ] ],
+        "Ilya": [ [
+			{"Nibbs": [ "Hah! Exciting!" ] },
+			{"Ilya": [ "Really? That was pretty unremarkable.", "squint" ] }
+        ] ],
+        "Gauss": [ [
+			{"Gauss": [ "What's a ship expedition without a bit of rough-and-tumble?", "happy" ] },
+			{"Nibbs": [ "Yeah, that's the best part!" ] }
+        ] ],
+        "Jost": [ [
+			{"Nibbs": [ "Battle scars!" ] },
+			{"Jost": [ "Not something to be proud of." ] }
+        ] ],
+        "Sorrel": [ [
+			{"Nibbs": [ "Oops, taking fire!" ] },
+			{"Sorrel": [ "Immaterial." ] }
         ] ]
     },
     "TookALotOfDamage": {
@@ -42,7 +66,8 @@
      			{"Switch": [
          			{"Riggs": [ "I've got this! I think." ] },
          			{"Max": [ "We're on our own. Sorry." ] },
-         			{"Peri": [ "Don't panic. Keep a clear head.", "squint" ] }
+         			{"Peri": [ "Don't panic. Keep a clear head.", "squint" ] },
+         			{"Gauss": [ "Help's not coming. You've only got yourself to rely on.", "forlorn" ] }
                 ] }
             ],
             [ "Ow, what the..?", "serious" ],
@@ -53,7 +78,7 @@
 			{"Nibbs": [ "Shields didn't do anything!", "serious" ] },
 			{"Dizzy": [ "I'm trying my best.", "frown" ] }
         ], [
-			{"Dizzy": [ "We need to be dodging these hits.", "intense" ] },
+			{"Dizzy": [ "Wow. We need to be dodging these hits.", "intense" ] },
 			{"Nibbs": [ "Rawr, I'll try!" ] }
         ] ],
         "Books": [ [
@@ -67,6 +92,14 @@
         "Eddie": [ [
 			{"Nibbs": [ "Is everything okay?!", "serious" ] },
 			{"Eddie": [ "Yeah... it's probably nothing.", "worried" ] }
+        ] ],
+        "Nola": [ [
+			{"Nibbs": [ "Don't panic. We need you to have a clear head for this." ] },
+			{"Nibbs": [ "...", "serious" ] }
+        ] ],
+        "Tera": [ [
+			{"Tera": [ "Hmm. Do you think we can get insurance for this?", "taxes" ] },
+			{"Nibbs": [ "Huh?", "serious" ] }
         ] ]
     },
     "TookNonHullDamage": {
@@ -87,8 +120,12 @@
 			{"Nibbs": [ "You can't fool Nibbs, magic isn't real!", "cheeky" ] }
         ] ],
         "Johnson": [ [
-			{"Johnson": [ "Let me run a linear regression on our damage taken..." ] },
+			{"Johnson": [ "Let me run a linear regression on our damage taken so far..." ] },
 			{"Nibbs": [ "Ooo, is that how you see the future?", "wowza" ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "We will outlast them." ] },
+			{"Nibbs": [ "And wear them down!" ] }
         ] ]
     },
     "NibbsDealtDamage": {
@@ -209,11 +246,11 @@
         ],
         "Dizzy": [ [
 			{"Dizzy": [ "Another loss for the tally, huh?" ] },
-			{"Nibbs": [ "No! I don't wanna count!", "serious" ] }
+			{"Nibbs": [ "Nooo! I don't wanna count!", "serious" ] }
         ] ],
         "Riggs": [ [
  			{"Riggs": [ "Ladies, it's been an honor." ] },
- 			{"Nibbs": [ "It's been a blast!" ] }
+ 			{"Nibbs": [ "It's been... a blast!" ] }
         ] ],
         "Peri": [ [
 			{"Nibbs": [ "It's over...", "serious" ] },
@@ -224,11 +261,11 @@
 			{"Isaac": [ "I think I have some trail mix lying around.", "shy "] }
         ] ],
         "Drake": [ [
-			{"Drake": [ "This totally won't be my fault, for the record.", "mad" ] },
-			{"Nibbs": [ "Aww, but I tried!" ] }
+			{"Drake": [ "This totally isn't my fault, for the record.", "mad" ] },
+			{"Nibbs": [ "Aww, but I tried!", "serious" ] }
         ] ],
         "Books": [ [
-			{"Nibbs": [ "Ptooey, this sucks!", "serious" ] },
+			{"Nibbs": [ "Ptooey, this isn't fun!", "serious" ] },
 			{"Books": [ "We can still win, but we'll need to work together!", "paws" ] }
         ] ],
         "CAT": [ [
@@ -242,6 +279,18 @@
         "Johnson": [ [
 			{"Nibbs": [ "What do now?!", "serious" ] },
 			{"Johnson": [ "I wish you luck in your future endeavors." ] }
+        ] ],
+        "Nola": [ [
+			{"Nibbs": [ "Nonono, we're not gonna make it!", "serious" ] },
+			{"Nola": [ "This went better than I expected, to be honest." ] }
+        ] ],
+        "Ilya": [ [
+			{"Ilya": [ "Maybe we can use this as a learning opportunity.", "side" ] },
+			{"Nibbs": [ "But Nibbs already knows everything!", "serious" ] }
+        ] ],
+        "Jost": [ [
+			{"Jost": [ "At least we had some fun on the way, aye?", "happy" ] },
+			{"Nibbs": [ "Yeah... Let's do it again!" ] }
         ] ]
     },
     "HitArmor": {
@@ -261,7 +310,7 @@
     },
     "UsedArmorALot": {
         "Basic": [
-            [ "Hihihi, you can't break through dragon scales, silly!", "cheeky" ]
+            [ "Hehehe, you can't break through dragon scales, silly!", "cheeky" ]
         ]
     },
     "EmptyHandExcessEnergy": {
@@ -311,6 +360,14 @@
         "Johnson": [ [
 			{"Johnson": [ "Let's quit dragging our feet and close this out.", "fiddling" ] },
 			{"Nibbs": [ "My feet are always dragon!" ] }
+        ] ],
+        "Gauss": [ [
+			{"Nibbs": [ "Juuuust a minute more!" ] },
+			{"Gauss": [ "This is gonna be a long day...", "side" ] }
+        ] ],
+        "Sorrel": [ [
+			{"Nibbs": [ "This is taking a long time...", "serious" ] },
+			{"Sorrel": [ "Then time better be on our side." ] }
         ] ]
     },
     "ReturningFromMissing": {
@@ -390,6 +447,10 @@
                 {"Nibbs": [ "Yep!" ] },
                 {"Nibbs": [ "Yep! Sure", "cheeky" ] }
             ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "The light that burns twice as bright..." ] },
+			{"Nibbs": [ "We're not burning! We'll be fine!", "serious" ] }
         ] ]
     },
     "MissedWithGrazerBeam": {
@@ -461,13 +522,12 @@
     },
     "Hifreq": {
         "Basic": [ [
-            {"Nibbs": [ "Nibbs gets to pick the stuff from the intercom!", "happy" ]},
+            {"Nibbs": [ "Nibbs gets to yell into the intercom!", "happy" ]},
             {"Switch": [
-                {"Peri": [ "Leave that to the more competent folk." ] },
+                {"Peri": [ "It's not a toy...", "squint" ] },
                 {"Books": [ "Unfair!", "squint" ] },
                 {"CAT": [ "Absolutely not!", "squint" ] },
-                {"Eddie": [ "Sure, if it lets me offload all responsibility.", "explains" ] },
-                {"Johnson": [ "No. You'll run us into the ground.", "squint" ] }
+                {"Johnson": [ "Please, be professional.", "fiddling" ] }
             ] }
         ] ]
     },
@@ -580,6 +640,17 @@
         "Max": [ [
             {"Max": [ "What kind of ML algorithm is this?", "squint" ]},
             {"Nibbs": [ "It's called poofing far away!" ]}
+        ] ],
+        "Nola": [ [
+            {"Nola": [ "Watch where you end up." ]},
+            {"Nibbs": [ "Come on! Trust me a little!" ]}
+        ] ],
+        "Jost": [ [
+            {"Jost": [ "Maintain your poise..." ]}
+        ] ],
+        "Sorrel": [ [
+            {"Sorrel": [ "Like a leaf in the wind." ]},
+            {"Nibbs": [ "Time to leaf!" ]}
         ] ]
     },
     "GotMagicAutododge": {
@@ -602,11 +673,23 @@
         "Max": [ [
             {"Max": [ "What kind of ML algorithm is this?", "squint" ]},
             {"Nibbs": [ "It's called poofing far away!" ]}
+        ] ],
+        "Nola": [ [
+            {"Nola": [ "Watch where you end up." ]},
+            {"Nibbs": [ "Come on! Trust me a little!" ]}
+        ] ],
+        "Jost": [ [
+            {"Jost": [ "Maintain your poise..." ]}
+        ] ],
+        "Sorrel": [ [
+            {"Sorrel": [ "Like a leaf in the wind." ]},
+            {"Nibbs": [ "Time to leaf!" ]}
         ] ]
     },
     "GotAutododgeLeft": {
         "Basic": [
             [ "Slippery Nibbs!" ],
+            [ "Sneaky Nibbs!" ],
             [ "Now you see me, now you don't!" ],
             [ "Now you see me, wait for it..." ],
             [ "All fixed!" ],
@@ -618,6 +701,7 @@
     "GotMagicAutododgeLeft": {
         "Basic": [
             [ "Slippery Nibbs!" ],
+            [ "Sneaky Nibbs!" ],
             [ "Now you see me, now you don't!" ],
             [ "Now you see me, wait for it..." ],
             [ "All fixed!" ],
@@ -673,8 +757,8 @@
             [ "I'll be right back!" ],
             [ "I'll be back! Yip!" ],
             [ "Nibbs comes back when you leeeast expect it!", "cheeky" ],
-            [ "Where am I, little marshmallow?", "cheeky" ],
-            [ "Poor chicken is confused!", "cheeky" ]
+            [ "Where did I go, little marshmallow?", "cheeky" ],
+            [ "Awww, little chicken is confused!", "cheeky" ]
         ]
     },
     "GainedBacktrackLeft": {
@@ -682,8 +766,8 @@
             [ "I'll be left back!" ],
             [ "I'll be back! Yip!" ],
             [ "Nibbs comes back when you leeeast expect it!", "cheeky" ],
-            [ "Where am I, little marshmallow?", "cheeky" ],
-            [ "Poor chicken is confused!", "cheeky" ]
+            [ "Where did I go, little marshmallow?", "cheeky" ],
+            [ "Awww, little chicken is confused!", "cheeky" ]
         ]
     },
     "UsedBacktrack": {
@@ -746,6 +830,14 @@
             {"Ilya": [ "That should do it." ] }
         ], [
             {"Ilya": [ "Can't let perfectly good overdrive go to waste." ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "Reach inside yourself... Can you feel it?", "nap" ] },
+            {"Nibbs": [ "I... I feel it!" ] }
+        ], [
+			{"Sorrel": [ "Nothing is ever truly gone." ] }
+        ], [
+			{"Sorrel": [ "Some things change, more stay the same." ] }
         ] ]
     },
     "GainedTimestopWithStunCharge": {
@@ -763,6 +855,9 @@
             {"Dizzy": [ "Good. We can stun them later." ] }
         ], [
             {"Dizzy": [ "It's not much, but there's no need to let it go to waste.", "explains" ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "We've a flickering spark. Do not let it die." ] }
         ] ]
     },
     "GainedTimestopWithCheapFix": {
@@ -782,7 +877,7 @@
         ], [
             {"Johnson": [ "This should keep us afloat." ] }
         ], [
-            {"Johnson": [ "You make for a good tax write-off." ] },
+            {"Johnson": [ "Hm, I can make this a tax write-off." ] },
             {"Nibbs": [ "Rawr?" ] }
         ] ]
     },
@@ -799,12 +894,16 @@
             {"CAT": [ "My simulations are still stable. Good job." ] }
         ] ],
         "Johnson": [ [
-            {"Johnson": [ "Our bottom line is steadier than ever.", "happy" ] }
+            {"Johnson": [ "Let's let the investors take care of this one." ] }
         ], [
-            {"Johnson": [ "This should keep us afloat." ] }
+            {"Johnson": [ "Too big to fail." ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "Let your intuition carry you.", "nap" ] }
         ], [
-            {"Johnson": [ "You make for a good tax write-off." ] },
-            {"Nibbs": [ "Rawr?" ] }
+			{"Sorrel": [ "With a wave of the hand." ] }
+        ] , [
+			{"Sorrel": [ "Forever in motion.", "nap" ] }
         ] ]
     },
     "GainedTimestopWithPerfectShield": {
@@ -815,7 +914,16 @@
         ],
         "CAT": [ [
             {"CAT": [ "Sweet. Let's keep these I frames active." ] },
-            {"Nibbs": [ "Wow! Cheating is great!", "happy" ] }
+            {"Nibbs": [ "I love cheating!" ] }
+        ] ],
+        "Sorrel": [ [
+			{"Sorrel": [ "To outrun death..." ] },
+			{"Nibbs": [ "You need to run really fast!" ] }
+        ], [
+			{"Sorrel": [ "Their efforts, in vain." ] }
+        ] , [
+			{"Nibbs": [ "Immortal!" ] },
+			{"Sorrel": [ "Briefly.", "nap" ] }
         ] ]
     },
     "PreventedOverheatWithTimestop": {
@@ -825,13 +933,14 @@
                 {"Switch": [
                     {"Nibbs": [ "Fixed!" ] },
                     {"Nibbs": [ "See? Nibbs got this!", "cheeky" ]},
-                    {"Nibbs": [ "Heat? Nooo proooblem~!", "happy" ]}
+                    {"Nibbs": [ "Heat? Noooo~ problem!", "happy" ]}
                 ] },
     			{"Switch": [
         			{"Dizzy": [ "I see you've halted thermodynamics. I'm gonna need to research this later." ] },
         			{"Peri": [ "For how long?", "panic" ] },
         			{"Isaac": [ "Oooh, I'm gonna show this to CAT later", "writing" ] },
         			{"Drake": [ "Sweet, I don't have to be careful anymore", "sly" ] },
+        			{"Ilya": [ "...That's a big weight off my shoulders." ] },
         			{"CAT": [ "Inventive!" ] }
                 ] }
             ]
@@ -861,6 +970,16 @@
                 {"Ilya": [ "Thanks." ]},
                 {"Ilya": [ "I won't let you down." ]}
             ] }
+        ] ],
+        "Sorrel": [ [
+			{"Nibbs": [ "The light that burns twice as bright...", "cheeky" ] },
+			{"Sorrel": [ "...shall outshine the rest.", "happy" ] }
+        ], [
+			{"Nibbs": [ "Mrah! Cruisin'!" ] },
+			{"Sorrel": [ "...On borrowed time." ] }
+        ] , [
+			{"Sorrel": [ "Time and tide-" ] },
+			{"Nibbs": [ "-Wait for me!", "happy" ] }
         ] ]
     },
     "CatSummonNibbs": {
@@ -873,6 +992,18 @@
             {"CAT": [ "Let's see if I can replicate this." ]}
         ], [
             {"CAT": [ "Aha! I think I'm connecting to a parallel dimension!" ]}
+        ] ]
+    },
+
+    "Overcharger": {
+        "Basic": [
+            [ "Overcharger... Nibbs can work with this!" ]
+        ]
+    },
+    "Wizbo": {
+        "Basic": [ [
+            {"Wizbo": [ "Zorble-dorp!" ] },
+            {"Nibbs": [ "Can... can he say that?", "serious" ] }
         ] ]
     }
 }

@@ -77,7 +77,7 @@
         },
         "SugarRush": {
             "name": "SUGAR RUSH",
-            "description": "Gain 1 extra <c=energy>ENERGY</c> every turn. <c=downside>At the end of each turn, reversible move 1 in a random direction.</c>"
+            "description": "Gain 1 extra <c=energy>ENERGY</c> and draw <c=card>+1 card</c> every turn. <c=downside>At the end of each turn, reversible move 1 in a random direction.</c>"
         },
         "FledgelingOrb": {
             "name": "FLEDGELING'S ORB",
