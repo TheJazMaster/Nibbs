@@ -55,6 +55,12 @@ internal static class Extensions
 		return obj;
 	}
 
+	public static T RemoveModData<T>(this T obj, string key)
+	{
+		ModEntry.Instance.Helper.ModData.RemoveModData(obj!, key);
+		return obj;
+	}
+
 	public static void QueueImmediate<T>(this List<T> source, T item)
 	{
 		source.Insert(0, item);

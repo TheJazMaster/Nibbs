@@ -1,20 +1,12 @@
-// TODO: LOOK UP RETURNING FROM MISSING
-using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
-using Newtonsoft.Json.Linq;
-using Nickel;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json.Nodes;
-using TheJazMaster.Nibbs.Artifacts;
 
 namespace TheJazMaster.Nibbs;
 
 internal class EventDialogue : BaseDialogue
 {
-	internal void Inject() {
+	internal void Inject()
+	{
 		var CharacterType = ModEntry.Instance.NibbsCharacter.CharacterType;
 		var highPitchedStaticNode = DB.story.all["ChoiceCardRewardOfYourColorChoice"];
 		highPitchedStaticNode.nonePresent ??= [];

@@ -36,8 +36,6 @@ public sealed class ModEntry : SimpleMod {
 	internal IStatusEntry BacktrackAutododgeLeftStatus { get; }
 	internal IStatusEntry BacktrackAutododgeRightStatus { get; }
 
-    internal ISpriteEntry NibbsPortrait { get; }
-    internal ISpriteEntry NibbsPortraitMini { get; }
     internal ISpriteEntry NibbsFrame { get; }
     internal ISpriteEntry NibbsCardBorder { get; }
 
@@ -155,8 +153,6 @@ public sealed class ModEntry : SimpleMod {
 			new CurrentLocaleOrEnglishLocalizationProvider<IReadOnlyList<string>>(AnyLocalizations)
 		);
 
-        NibbsPortrait = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/Nibbs_neutral_0.png"));
-        NibbsPortraitMini = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/Nibbs_mini.png"));
 		NibbsFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/Panel.png"));
         NibbsCardBorder = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/CardBorder.png"));
 
@@ -283,6 +279,8 @@ public sealed class ModEntry : SimpleMod {
 		AStatusPatches.Apply();
 		ShipPatches.Apply();
 		CombatPatches.Apply();
+		StoryVarsPatches.Apply();
+		StoryNodePatches.Apply();
 		// ScriptCtxPatches.Apply();
 
 		Helper.Events.OnModLoadPhaseFinished += (_, phase) => {
@@ -293,9 +291,7 @@ public sealed class ModEntry : SimpleMod {
 			}
 		};
 		Helper.Events.RegisterAfterArtifactsHook(nameof(Artifact.OnEnemyDodgePlayerAttackByOneTile), (State state, Combat combat) => {
-			combat.Queue(new ADummyAction {
-				dialogueSelector = ".Grazed"
-			});
+			state.storyVars.ApplyModData(StoryVarsPatches.JustGrazedKey, true);
 		}, 0);
 		
         NibbsCharacter = helper.Content.Characters.V2.RegisterPlayableCharacter("Nibbs", new()
@@ -309,49 +305,30 @@ public sealed class ModEntry : SimpleMod {
 				artifacts = [ new FledgelingOrbArtifact() ]
 			},
 			ExeCardType = typeof(NibbsExeCard),
-			NeutralAnimation = new()
-			{
-				CharacterType = NibbsDeck.Deck.Key(),
-				LoopTag = "neutral",
-				Frames = [
-					NibbsPortrait.Sprite
-				]
-			},
-			MiniAnimation = new()
-			{
-				CharacterType = NibbsDeck.Deck.Key(),
-				LoopTag = "mini",
-				Frames = [
-					NibbsPortraitMini.Sprite
-				]
-			}
+			NeutralAnimation = RegisterAnimation(helper, "Neutral").Configuration,
+			MiniAnimation = RegisterAnimation(helper, "Mini").Configuration
 		});
 
-		RegisterAnimation(helper, "Neutral");
+		;
 		RegisterAnimation(helper, "Squint");
 		RegisterAnimation(helper, "Gameover");
-		RegisterAnimation(helper, "Mini");
 		RegisterAnimation(helper, "Cheeky");
 		RegisterAnimation(helper, "Happy");
 		RegisterAnimation(helper, "Wowza");
 		RegisterAnimation(helper, "Serious");
     }
 
-	private void RegisterAnimation(IModHelper helper, string name)
+	private ICharacterAnimationEntryV2 RegisterAnimation(IModHelper helper, string name)
     {
-        var files = Instance.Package.PackageRoot.GetRelative($"Sprites/Character/{name}").AsDirectory?.GetFilesRecursively().Where(f => f.Name.EndsWith(".png"));
-		List<Spr> sprites = [];
-		if (files != null) {
-			foreach (IFileInfo file in files) {
-				sprites.Add(Instance.Helper.Content.Sprites.RegisterSprite(file).Sprite);
-			}
-		}
-		
-		helper.Content.Characters.V2.RegisterCharacterAnimation(name, new()
+		return helper.Content.Characters.V2.RegisterCharacterAnimation(name, new()
 		{
 			CharacterType = NibbsDeck.Deck.Key(),
 			LoopTag = name.ToLower(),
-			Frames = sprites
+			Frames = Enumerable.Range(1, 100)
+				.Select(i => Instance.Package.PackageRoot.GetRelativeFile($"Sprites/Character/{name}/Nibbs_{name.ToLower()}_{i}.png"))
+				.TakeWhile(f => f.Exists)
+				.Select(f => helper.Content.Sprites.RegisterSprite(f).Sprite)
+				.ToList()
 		});
     }
 }

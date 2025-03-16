@@ -179,7 +179,7 @@
     "DealtBigDamage": {
         "Basic": [
             [ "That was soo much fun!", "wowza" ],
-            [ "Attack, Attack! Attackattackattackattack, mrrnyeh!", "wowza" ]
+            [ "Attack, Attack! Attackattack-attackattack, mrrnyeh!", "wowza" ]
         ],
         "Riggs": [ [
 			{"Nibbs": [ "They're toast!", "cheeky" ] },
@@ -258,7 +258,7 @@
         ] ],
         "Isaac": [ [
 			{"Nibbs": [ "Can we bring snacks next loop?" ] },
-			{"Isaac": [ "I think I have some trail mix lying around.", "shy "] }
+			{"Isaac": [ "I think I have some trail mix lying around.", "shy"] }
         ] ],
         "Drake": [ [
 			{"Drake": [ "This totally isn't my fault, for the record.", "mad" ] },
@@ -343,8 +343,8 @@
     },
     "NoOverlapButSeeker": {
         "Basic": [
-            [ "That's cheating!", "squint" ],
-            [ "Grr, you'll pay for this!", "squint" ],
+            [ "Rockets? That's cheating!", "squint" ],
+            [ "Rockets? Grr, you'll pay for this!", "squint" ],
             [ "Uh-oh, I forgot to break the rocket!", "serious" ]
         ]
     },

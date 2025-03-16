@@ -9,7 +9,7 @@ namespace TheJazMaster.Nibbs.Artifacts;
 
 internal sealed class ChocolateSurpriseEggArtifact : Artifact, INibbsArtifact
 {
-	bool active = false;
+	public bool active = false;
 
 	public static void Register(IModHelper helper)
 	{
@@ -88,8 +88,8 @@ internal sealed class EyeOfCobaArtifact : Artifact, INibbsArtifact
 {
 	public bool active = true;
 
-	private static Spr ActiveSprite;
-	private static Spr InactiveSprite;
+	public static Spr ActiveSprite;
+	public static Spr InactiveSprite;
 
 	public static void Register(IModHelper helper)
 	{
@@ -131,10 +131,10 @@ internal sealed class EyeOfCobaArtifact : Artifact, INibbsArtifact
 
 internal sealed class GalacticNewsCoverageArtifact : Artifact, INibbsArtifact
 {
-	bool active = false;
+	public bool active = false;
 	private static readonly int threshold = 5;
-	static Spr ActiveSprite;
-	static Spr InactiveSprite;
+	public static Spr ActiveSprite;
+	public static Spr InactiveSprite;
 
 	public static void Register(IModHelper helper)
 	{

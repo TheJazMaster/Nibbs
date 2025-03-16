@@ -1,12 +1,15 @@
 using Nanoray.PluginManager;
 using System.Collections.Generic;
+using TheJazMaster.Nibbs;
 using TheJazMaster.Nibbs.Artifacts;
+using static TheJazMaster.Nibbs.Patches.StoryVarsPatches;
 
 namespace TheJazMaster.Nibbs;
 
 internal class CombatDialogue : BaseDialogue
 {
-	internal void Inject() {
+	internal void Inject()
+	{
 		var nodePresets = new Dictionary<string, StoryNode> {
 			{"TookDamage", new StoryNode {
 				enemyShotJustHit = true,
@@ -140,9 +143,9 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"ReturningFromMissing", new StoryNode {
 				priority = true,
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::ReturningFromMissing"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::ReturningFromMissing"],
 				oncePerRun = true,
-			}},
+			}.ApplyModData(JustReturnedFromMissingKey, true)},
 			{"DizzyWentMissing", new StoryNode {
 				lastTurnPlayerStatuses = [
 					Status.missingDizzy
@@ -216,7 +219,7 @@ internal class CombatDialogue : BaseDialogue
 				],
 			}},
 			{"JohnsonWentMissing", new StoryNode {
-				lastTurnPlayerStatuses = (ModEntry.Instance.JohnsonApi != null) ? [
+				lastTurnPlayerStatuses = ModEntry.Instance.JohnsonApi != null ? [
 					StatusMeta.deckToMissingStatus[ModEntry.Instance.JohnsonApi.JohnsonDeck.Deck]
 				] : null,
 				priority = true,
@@ -226,7 +229,7 @@ internal class CombatDialogue : BaseDialogue
 				],
 			}},
 			{"EddieWentMissing", new StoryNode {
-				lastTurnPlayerStatuses = (ModEntry.Instance.EddieApi != null) ? [
+				lastTurnPlayerStatuses = ModEntry.Instance.EddieApi != null ? [
 					StatusMeta.deckToMissingStatus[ModEntry.Instance.EddieApi.EddieDeck]
 				] : null,
 				priority = true,
@@ -246,11 +249,11 @@ internal class CombatDialogue : BaseDialogue
 				hasArtifacts = [
 					"GrazerBeam"
 				],
-				lookup = [
-					"Grazed"
-				],
+				// lookup = [
+				// 	"Grazed"
+				// ],
 				oncePerCombat = true,
-			}},
+			}.ApplyModData(JustGrazedKey, true)},
 			{"MissedWithRecalibrator", new StoryNode {
 				playerShotJustMissed = true,
 				hasArtifacts = [
@@ -279,7 +282,7 @@ internal class CombatDialogue : BaseDialogue
 					"OnDragonfireActivation"
 				],
 				oncePerCombatTags = [
-					"EnemyArmorPierced"
+					"DragonfireActivated"
 				],
 				oncePerRun = true,
 			}},
@@ -386,7 +389,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"ControlRods", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerRunTags = [
 					"AresCannon"
 				],
@@ -396,7 +399,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GeminiCore", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerRunTags = [
 					"GeminiCore"
 				],
@@ -406,7 +409,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GeminiCoreBooster", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerRunTags = [
 					"GeminiCoreBooster"
 				],
@@ -416,7 +419,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"Tiderunner", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerCombatTags = [
 					"Tiderunner"
 				],
@@ -427,7 +430,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"Squadron", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerRunTags = [
 					"Squadron"
 				],
@@ -440,7 +443,7 @@ internal class CombatDialogue : BaseDialogue
 				priority = true,
 				oncePerRun = true,
 				maxTurnsThisCombat = 1,
-      			allPresent = [
+				  allPresent = [
 					"crystal",
 					TranslateChar("Nibbs")
 				],
@@ -536,13 +539,13 @@ internal class CombatDialogue : BaseDialogue
 				],
 			}},
 			{"UsedBacktrack", new StoryNode {
-				lookup = [
-					"UsedBacktrack"
-				],
+				// lookup = [
+				// 	"UsedBacktrack"
+				// ],
 				oncePerCombatTags = [
 					"usedBacktrack"
 				],
-			}},
+			}.ApplyModData(JustBacktrackedKey, true)},
 			{"GainedTimestop", new StoryNode {
 				lastTurnPlayerStatuses = [
 					Status.timeStop
@@ -552,51 +555,54 @@ internal class CombatDialogue : BaseDialogue
 				],
 			}},
 			{"GainedTimestopWithOverdrive", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedOverdriveWithTimestop"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedOverdriveWithTimestop"],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "overdrive")},
 			{"GainedTimestopWithStunCharge", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedStunChargeWithTimestop"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedStunChargeWithTimestop"],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "stunCharge")},
 			{"GainedTimestopWithCheapFix", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedTempCheapWithTimestop"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedTempCheapWithTimestop"],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "temporaryCheap")},
 			{"GainedTimestopWithAutopilot", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithTimestop"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithTimestop"],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "autopilot")},
 			{"GainedTimestopWithPerfectShield", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithPerfectShield"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithPerfectShield"],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "perfectShield")},
 			{"PreventedOverheatWithTimestop", new StoryNode {
-				lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::PreventedOverheatWithTimestop"],
+				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::PreventedOverheatWithTimestop"],
+				hasArtifacts = [
+					new FledgelingOrbArtifact().Key()
+				],
 				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
 				oncePerRun = true,
 				priority = true
-			}},
+			}.ApplyModData(SavedStatusWithTimestopKey, "heat")},
 			{"CatSummonNibbs", new StoryNode {
 				lookup = [
 					"summonNibbs"
@@ -621,7 +627,7 @@ internal class CombatDialogue : BaseDialogue
 
 			{"Overcharger", new StoryNode {
 				turnStart = true,
-      			maxTurnsThisCombat = 1,
+				  maxTurnsThisCombat = 1,
 				oncePerRunTags = [
 					"Overcharger"
 				],

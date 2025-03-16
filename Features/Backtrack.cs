@@ -30,7 +30,7 @@ class BacktrackEvadeAction : IEvadeAction
 			targetPlayer = true,
 			ignoreHermes = true,
 			isTeleport = true,
-			dialogueSelector = ".UsedBacktrack"
+			// dialogueSelector = ".UsedBacktrack"
 		}.ApplyModData(BacktrackManager.NoStrafeKey, true)
 	];
 }

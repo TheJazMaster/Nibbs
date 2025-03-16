@@ -146,8 +146,8 @@ internal sealed class SmeltCard : Card, INibbsCard
 
 internal sealed class TrailblazerCard : Card, INibbsCard
 {
-	internal static Spr Art;
-	internal static Spr ArtFlipped;
+	public static Spr Art;
+	public static Spr ArtFlipped;
 
 	public static void Register(IModHelper helper) {
 		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/BlazingPathFlipped.png")).Sprite;
@@ -184,7 +184,8 @@ internal sealed class TrailblazerCard : Card, INibbsCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			}
 		],
 		_ => [
@@ -220,7 +221,7 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1
+		cost = upgrade == Upgrade.B ? 2 : 1
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
@@ -228,7 +229,8 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			},
 			new AStatus {
 				status = Status.tempShield,
@@ -242,13 +244,19 @@ internal sealed class WormholeSurfingCard : Card, INibbsCard
 				statusAmount = 2,
 				targetPlayer = true,
 				mode = AStatusMode.Set
+			},
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = 2,
+				targetPlayer = true
 			}
 		],
 		_ => [
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			},
 			new AStatus {
 				status = Status.tempShield,
@@ -354,8 +362,8 @@ internal sealed class HotPursuitCard : Card, INibbsCard
 
 internal sealed class BackflipCard : Card, INibbsCard
 {
-	internal static Spr Art;
-	internal static Spr ArtFlipped;
+	public static Spr Art;
+	public static Spr ArtFlipped;
 
 	public static void Register(IModHelper helper) {
 		Art = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Backflip.png")).Sprite;
@@ -613,8 +621,8 @@ internal sealed class HoldOnCard : Card, INibbsCard
 
 internal sealed class DimensionalJauntCard : Card, INibbsCard
 {
-	internal static Spr HopArt;
-	internal static Spr SkipArt;
+	public static Spr HopArt;
+	public static Spr SkipArt;
 
 	public static void Register(IModHelper helper) {
 		HopArt = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Hop.png")).Sprite;
@@ -771,7 +779,8 @@ internal sealed class SkipCard : Card, INibbsCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			}
 		],
 		_ => [
@@ -873,7 +882,8 @@ internal sealed class FluxCompressorCard : Card, INibbsCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			},
 		],
 		Upgrade.A => [
@@ -1070,7 +1080,8 @@ internal sealed class SuperpositionCard : Card, INibbsCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
-				targetPlayer = true
+				targetPlayer = true,
+				mode = AStatusMode.Set
 			}
 		],
 		_ => [

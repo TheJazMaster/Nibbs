@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
 using HarmonyLib;
-using Microsoft.Extensions.Logging;
-using Nanoray.Shrike;
-using Nanoray.Shrike.Harmony;
-using TheJazMaster.Nibbs.Actions;
 using TheJazMaster.Nibbs.Artifacts;
-using TheJazMaster.Nibbs.Features;
+using static TheJazMaster.Nibbs.Patches.StoryVarsPatches;
 
 namespace TheJazMaster.Nibbs.Patches;
 
@@ -40,49 +30,62 @@ public class AStatusPatches
 			return;
 
 		if (__instance.status == ModEntry.Instance.NibbsCharacter.MissingStatus.Status && __state > 0 && s.ship.Get(ModEntry.Instance.NibbsCharacter.MissingStatus.Status) <= 0)
-			c.QueueImmediate(new ADummyAction { dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::ReturningFromMissing" });
+			s.storyVars.ApplyModData(JustReturnedFromMissingKey, true);
+			// c.QueueImmediate(new ADummyAction { dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::ReturningFromMissing" });
 		
-		if (__instance.status != Status.timeStop || __instance.statusAmount <= 0 || __state > 0 || __instance.whoDidThis != ModEntry.Instance.NibbsDeck.Deck) return;
+		if (__instance.status != Status.timeStop || __instance.statusAmount <= 0 || __state > 0) return;
 
-		if (s.ship.Get(Status.overdrive) > 0) {
-			c.QueueImmediate(new ADummyAction {
-				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedOverdriveWithTimestop",
-				whoDidThis = __instance.whoDidThis
-			});
-		}
-		else if (s.ship.Get(Status.temporaryCheap) > 0) {
-			c.QueueImmediate(new ADummyAction { 
-				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedTempCheapWithTimestop",
-				whoDidThis = __instance.whoDidThis
-			});
-		}
-		else if (s.ship.Get(Status.stunCharge) > 0) {
-			c.QueueImmediate(new ADummyAction { 
-				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedStunChargeWithTimestop",
-				whoDidThis = __instance.whoDidThis
-			});
-		}
-		else if (s.ship.Get(Status.autopilot) > 0) {
-			c.QueueImmediate(new ADummyAction { 
-				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithTimestop",
-				whoDidThis = __instance.whoDidThis
-			});
-		}
-		else if (s.ship.Get(Status.perfectShield) > 0) {
-			c.QueueImmediate(new ADummyAction { 
-				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithPerfectShield",
-				whoDidThis = __instance.whoDidThis
-			});
-		}
-		else {
-			foreach (Artifact item in s.EnumerateAllArtifacts()) {
-				if (item is FledgelingOrbArtifact && s.ship.Get(Status.heat) >= s.ship.heatTrigger - FledgelingOrbArtifact.aLot) {
-					c.QueueImmediate(new ADummyAction {
-						dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::PreventedOverheatWithTimestop",
-						whoDidThis = __instance.whoDidThis
-					});
-				}
+
+		if (s.ship.Get(Status.heat) >= s.ship.heatTrigger - FledgelingOrbArtifact.aLot)
+			s.storyVars.ApplyModData(SavedStatusWithTimestopKey, Status.heat.Key());
+
+		foreach (Status status in new List<Status> {
+			Status.overdrive, Status.temporaryCheap, Status.stunCharge, Status.autopilot, Status.perfectShield
+		}) {
+			if (s.ship.Get(status) > 0) {
+				s.storyVars.ApplyModData(SavedStatusWithTimestopKey, status.Key());
+				break;
 			}
 		}
+		// if (s.ship.Get(Status.overdrive) > 0) {
+		// 	c.QueueImmediate(new ADummyAction {
+		// 		dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedOverdriveWithTimestop",
+		// 		whoDidThis = __instance.whoDidThis
+		// 	});
+		// }
+		// else if (s.ship.Get(Status.temporaryCheap) > 0) {
+		// 	c.QueueImmediate(new ADummyAction { 
+		// 		dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedTempCheapWithTimestop",
+		// 		whoDidThis = __instance.whoDidThis
+		// 	});
+		// }
+		// else if (s.ship.Get(Status.stunCharge) > 0) {
+		// 	c.QueueImmediate(new ADummyAction { 
+		// 		dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedStunChargeWithTimestop",
+		// 		whoDidThis = __instance.whoDidThis
+		// 	});
+		// }
+		// else if (s.ship.Get(Status.autopilot) > 0) {
+		// 	c.QueueImmediate(new ADummyAction { 
+		// 		dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithTimestop",
+		// 		whoDidThis = __instance.whoDidThis
+		// 	});
+		// }
+		// else if (s.ship.Get(Status.perfectShield) > 0) {
+		// 	c.QueueImmediate(new ADummyAction { 
+		// 		dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithPerfectShield",
+		// 		whoDidThis = __instance.whoDidThis
+		// 	});
+		// }
+		// else {
+		// 	foreach (Artifact item in s.EnumerateAllArtifacts()) {
+		// 		if (item is FledgelingOrbArtifact && s.ship.Get(Status.heat) >= s.ship.heatTrigger - FledgelingOrbArtifact.aLot) {
+		// 			c.QueueImmediate(new ADummyAction {
+		// 				dialogueSelector = $".{ModEntry.Instance.Package.Manifest.UniqueName}::PreventedOverheatWithTimestop",
+		// 				whoDidThis = __instance.whoDidThis
+		// 			});
+		// 		}
+		// 	}
+		// }
 	}
 }

@@ -9,6 +9,7 @@ using HarmonyLib;
 using Microsoft.Extensions.Logging;
 using Nanoray.Shrike;
 using Nanoray.Shrike.Harmony;
+using Nickel;
 using TheJazMaster.Nibbs.Actions;
 using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features;
@@ -18,6 +19,7 @@ namespace TheJazMaster.Nibbs.Patches;
 public class AMovePatches
 {
 	static ModEntry Instance => ModEntry.Instance;
+    static IModData ModData => Instance.Helper.ModData;
     static Harmony Harmony => Instance.Harmony;
 
     public static void Apply()
@@ -48,6 +50,9 @@ public class AMovePatches
                 targetPlayer = __instance.targetPlayer
             });
         }
+
+        if (ModData.TryGetModData(__instance, BacktrackManager.NoStrafeKey, out bool noStrafe) && noStrafe)
+            s.storyVars.ApplyModData(StoryVarsPatches.JustBacktrackedKey, true);
 
         if (__instance is not ABacktrackMove && __instance.targetPlayer && __instance.dir != 0) {
             foreach (Artifact item in s.EnumerateAllArtifacts()) {
@@ -84,7 +89,7 @@ public class AMovePatches
 
     private static bool CheckIfStrafeAllowed(Ship ship, State state, Combat combat, AMove move)
     {
-        if (!Instance.Helper.ModData.TryGetModData(move, BacktrackManager.NoStrafeKey, out bool value) || !value) return true;
+        if (ModData.TryGetModData(move, BacktrackManager.NoStrafeKey, out bool value) || !value) return true;
         foreach (Artifact item in state.EnumerateAllArtifacts())
         {
             if (item is FledgelingOrbArtifact artifact) {
