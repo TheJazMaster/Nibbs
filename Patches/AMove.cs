@@ -31,6 +31,24 @@ public class AMovePatches
 			postfix: new HarmonyMethod(typeof(AMovePatches), nameof(AMove_Begin_Postfix)),
 			transpiler: new HarmonyMethod(typeof(AMovePatches), nameof(AMove_Begin_Transpiler))
 		);
+        
+        if (ModEntry.Instance.Helper.ModRegistry.ResolvedMods.ContainsKey("Mezz.TwosCompany"))
+            Harmony.TryPatch(
+                logger: ModEntry.Instance.Logger,
+                original: AccessTools.AllAssemblies()
+                    .First(a => (a.GetName().Name ?? a.GetName().FullName) == "TwosCompany")
+                    .GetType("TwosCompany.PatchLogic")!
+                    .GetMethod("MoveBegin", AccessTools.all)!,
+                postfix: new HarmonyMethod(typeof(AMovePatches), nameof(StopTempStrafe))
+            );
+    }
+
+    private static void StopTempStrafe(AMove __0, State s, Combat c) {
+        if (!ModEntry.Instance.NibbsApi.IsBacktrackMovement(__0)) return;
+        if (c.cardActions.Count == 0 || c.cardActions.Last() is not AAttack attack || !attack.storyFromStrafe) return;
+        if (ModEntry.Instance.NibbsApi.ShouldBacktrackTriggerStrafe(s)) return;
+
+        c.cardActions.Remove(attack);
     }
 
     private static bool AMove_Begin_Prefix(AMove __instance, G g, State s, Combat c, ref int __state)
@@ -41,7 +59,7 @@ public class AMovePatches
 
     private static void AMove_Begin_Postfix(AMove __instance, G g, State s, Combat c, int __state)
     {
-        Status smokescreen = Instance.SmokescreenStatus.Status;
+        Status smokescreen = Instance.SmokescreenStatus;
         Ship ship = __instance.targetPlayer ? s.ship : c.otherShip;
         if (ship.Get(smokescreen) > 0) {
             c.QueueImmediate(new AStatus {
@@ -51,7 +69,7 @@ public class AMovePatches
             });
         }
 
-        if (ModData.TryGetModData(__instance, BacktrackManager.NoStrafeKey, out bool noStrafe) && noStrafe)
+        if (ModEntry.Instance.NibbsApi.IsBacktrackMovement(__instance))
             s.storyVars.ApplyModData(StoryVarsPatches.JustBacktrackedKey, true);
 
         if (__instance is not ABacktrackMove && __instance.targetPlayer && __instance.dir != 0) {
@@ -89,13 +107,8 @@ public class AMovePatches
 
     private static bool CheckIfStrafeAllowed(Ship ship, State state, Combat combat, AMove move)
     {
-        if (ModData.TryGetModData(move, BacktrackManager.NoStrafeKey, out bool value) || !value) return true;
-        foreach (Artifact item in state.EnumerateAllArtifacts())
-        {
-            if (item is FledgelingOrbArtifact artifact) {
-                return false;
-            }
-        }
-        return true;
+        if (!ModEntry.Instance.NibbsApi.IsBacktrackMovement(move)) return true;
+        
+        return ModEntry.Instance.NibbsApi.ShouldBacktrackTriggerStrafe(state);
     }   
 }

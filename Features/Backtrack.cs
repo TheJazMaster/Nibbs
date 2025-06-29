@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Numerics;
-using static TheJazMaster.Nibbs.IKokoroApi.IV2.IEvadeHookApi;
-using static TheJazMaster.Nibbs.IKokoroApi.IV2.IEvadeHookApi.IHook;
+using Shockah.Kokoro;
+using static Shockah.Kokoro.IKokoroApi.IV2.IEvadeHookApi;
 
 namespace TheJazMaster.Nibbs.Features;
 
@@ -13,10 +12,10 @@ public class BacktrackManager
 
 	public BacktrackManager() : base()
 	{
-		var action = Instance.KokoroApi.V2.EvadeHook.RegisterAction(new BacktrackEvadeAction(), 10);
+		var action = Instance.KokoroApi.EvadeHook.RegisterAction(new BacktrackEvadeAction(), 10);
 		action.RegisterPaymentOption(new BacktrackPaymentOption());
-		action.InheritPreconditions(Instance.KokoroApi.V2.EvadeHook.DefaultAction);
-		action.InheritPostconditions(Instance.KokoroApi.V2.EvadeHook.DefaultAction);
+		action.InheritPreconditions(Instance.KokoroApi.EvadeHook.DefaultAction);
+		action.InheritPostconditions(Instance.KokoroApi.EvadeHook.DefaultAction);
 	}
 }
 
@@ -39,21 +38,21 @@ class BacktrackPaymentOption : IEvadePaymentOption
 {
 	public bool CanPayForEvade(IEvadePaymentOption.ICanPayForEvadeArgs args)
 	{
-		if (args.Direction == Direction.Left && args.State.ship.Get(ModEntry.Instance.BacktrackLeftStatus.Status) > 0) return true;
-		else if (args.Direction == Direction.Right && args.State.ship.Get(ModEntry.Instance.BacktrackRightStatus.Status) > 0) return true;
+		if (args.Direction == Direction.Left && args.State.ship.Get(ModEntry.Instance.BacktrackLeftStatus) > 0) return true;
+		else if (args.Direction == Direction.Right && args.State.ship.Get(ModEntry.Instance.BacktrackRightStatus) > 0) return true;
 		return false;
 	}
 
 	public IReadOnlyList<CardAction> ProvideEvadePaymentActions(IEvadePaymentOption.IProvideEvadePaymentActionsArgs args)
 	{
-		if (args.Direction == Direction.Left) args.State.ship.Add(ModEntry.Instance.BacktrackLeftStatus.Status, -1);
-		else args.State.ship.Add(ModEntry.Instance.BacktrackRightStatus.Status, -1);
+		if (args.Direction == Direction.Left) args.State.ship.Add(ModEntry.Instance.BacktrackLeftStatus, -1);
+		else args.State.ship.Add(ModEntry.Instance.BacktrackRightStatus, -1);
 		return [];
 	}
 
 	public void EvadeButtonHovered(IEvadePaymentOption.IEvadeButtonHoveredArgs args)
 	{
-		if (args.Direction == Direction.Left) args.State.ship.statusEffectPulses[ModEntry.Instance.BacktrackLeftStatus.Status] = 0.05;
-		else args.State.ship.statusEffectPulses[ModEntry.Instance.BacktrackRightStatus.Status] = 0.05;
+		if (args.Direction == Direction.Left) args.State.ship.statusEffectPulses[ModEntry.Instance.BacktrackLeftStatus] = 0.05;
+		else args.State.ship.statusEffectPulses[ModEntry.Instance.BacktrackRightStatus] = 0.05;
 	}
 }

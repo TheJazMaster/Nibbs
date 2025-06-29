@@ -1,10 +1,29 @@
 {
     "character": {
-        "name": "Nibbs",
-        "description": [
-            "<c=c74b9b>NIBBS</c>",
-            "A young warrior from another galaxy. Her cards focus on positioning using <c=keyword>backtrackable instant movement</c> and <c=keyword>time stop</c>."
-        ]
+        "Nibbs": {
+            "name": "Nibbs",
+            "description": [
+                "<c=c74b9b>NIBBS</c>",
+                "A young warrior from another galaxy. Her cards focus on positioning using <c=keyword>backtrackable instant movement</c> and <c=keyword>time stop</c>."
+            ]
+        },
+        "Ix": {
+            "name": "Ix",
+            "description": [
+                "<c=6A9B73>IX</c>",
+                "An ecoterrorist. His cards allow you to multiply your attacks at the risk of hitting your own ship."
+            ]
+        }
+    },
+    "midrow": {
+        "prism": {
+            "name": "prism",
+            "description": "Instead of destroying the prism, attacks can refract or even be copied based on their direction:\n- Attacks at the <c=keyword>pointy end</c> destroy the prism.\n- Attacks at the <c=keyword>sides</c> are refracted through the flat end\n- Attacks at the <c=keyword>flat end</c> are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
+        },
+        "omniprism": {
+            "name": "omniprism",
+            "description": "Instead of destroying the prism, attacks are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
+        }
     },
     "action": {
         "backtrackMove": {
@@ -22,171 +41,328 @@
         "backtrackMoveRandom": {
             "name": "Reversible move random",
             "description": "Instantly move <c=keyword>{{Amount}}</c> spaces in a random direction and gain <c=status>BACKTRACK</c> of the opposite direction equal to the distance moved."
+        },
+
+        "flip": {
+            "name": {
+                "all": "Flip all midrow",
+                "left": "Flip left midrow",
+                "right": "Flip right midrow"
+            },
+            "description": {
+                "all": "Turn around all <c=midrow>objects</c>.",
+                "directional": "Turn around all <c=midrow>objects</c> <c=keyword>{{Dir}}</c> of your missile bay."
+            },
+            "left": "left",
+            "right": "right"
         }
     },
     "status": {
         "Backflip": {
-            "name": "Backflip",
+            "name": "backflip",
             "description": "All cards with flippable actions, such as <c=action>move</c>, are <c=cardtrait>flippable</c> for {0} turns."
         },
         "Smokescreen": {
-            "name": "Blur",
+            "name": "blur",
             "description": "Whenever this ship moves, it gains {0} <c=status>TEMP SHIELD</c>. <c=downside>Decreases by 1 at end of turn."
         },
         "BacktrackLeft": {
-            "name": "Backtrack Left",
+            "name": "backtrack left",
             "description": "Lets you move left with {0}. Costs 1 backtrack left per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
         },
         "BacktrackRight": {
-            "name": "Backtrack Right",
+            "name": "backtrack right",
             "description": "Lets you move right with {0}. Costs 1 backtrack right per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
         },
         "BacktrackAutododgeLeft": {
-            "name": "Reversible Autododge Left",
+            "name": "reversible autododge left",
             "description": "If fired on, will completely move out of the way <c=keyword>LEFT</c> and gain <c=status>BACKTRACK RIGHT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
         },
         "BacktrackAutododgeRight": {
-            "name": "Reversible Autododge Right",
+            "name": "reversible autododge right",
             "description": "If fired on, will completely move out of the way <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
+        },
+
+        "SafetyShield": {
+            "name": "safety shield",
+            "description": "Block up to {0} incoming damage. <c=downside>Goes away at end of turn.</c>"
+        },
+        "Fracture": {
+            "name": "fracture",
+            "description": "At the beginning of your next turn, the opposing ship gains {0} <c=status>SAFETY SHIELD</c>."
+        },
+        "Perseverance": {
+            "name": "perseverance",
+            "description": "After you're hit, gain {0} <c=status>SHIELD</c>."
         }
     },
     "artifact": {
-        "ChocolateSurpriseEgg": {
-            "name": "CHOCOLATE MONSTER EGG",
-            "description": "At the end of every turn, if you gained any <c=status>HEAT</c> that turn, gain <c=status>TEMP SHIELD</c> equal to your <c=status>HEAT</c>."
+        "Nibbs": {
+            "ChocolateSurpriseEgg": {
+                "name": "CHOCOLATE MONSTER EGG",
+                "description": "At the end of every turn, if you gained any <c=status>HEAT</c> that turn, gain <c=status>TEMP SHIELD</c> equal to your <c=status>HEAT</c>."
+            },
+            "DragonfireCandle": {
+                "name": "DRAGONFIRE CANDLE",
+                "description": "Whenever you <c=action>stun</c> an intent or cause a <c=action>total stun</c>, the enemy loses 1 hull."
+            },
+            "EyeOfCoba": {
+                "name": "EYE OF COBA",
+                "description": "Your first <c=action>non-reversible move</c> each turn becomes a <c=keyword>reversible</c> move."
+            },
+            "GalacticNewsCoverage": {
+                "name": "CHANNEL 7 COVERAGE",
+                "description": "Upon reaching {{Amount}} <c=status>BACKFLIP</c>, lose {{Amount}} backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
+            },
+            "EternalFlame": {
+                "name": "ETERNAL FLAME",
+                "description": "Every 5th turn, gain 1 <c=status>TIMESTOP</c>."
+            },
+            "QuantumEngines": {
+                "name": "QUANTUM ENGINES",
+                "description": "Whenever you gain <c=status>BACKTRACK LEFT/RIGHT</c> or any kind of <c=status>AUTODODGE</c>, gain 1 more."
+            },
+            "SugarRush": {
+                "name": "SUGAR RUSH",
+                "description": "Gain 1 extra <c=energy>ENERGY</c> and draw <c=card>+1 card</c> every turn. <c=downside>At the end of each turn, reversible move 1 in a random direction.</c>"
+            },
+            "FledgelingOrb": {
+                "name": "FLEDGELING'S ORB",
+                "description": "You cannot <c=action>OVERHEAT</c> while you have <c=status>TIMESTOP</c>. <c=downside>Your backtrack movement doesn't trigger STRAFE."
+            }
         },
-        "DragonfireCandle": {
-            "name": "DRAGONFIRE CANDLE",
-            "description": "Whenever you <c=action>stun</c> an intent or cause a <c=action>total stun</c>, the enemy loses 1 hull."
-        },
-        "EyeOfCoba": {
-            "name": "EYE OF COBA",
-            "description": "Your first <c=action>non-reversible move</c> each turn becomes a <c=keyword>reversible</c> move."
-        },
-        "GalacticNewsCoverage": {
-            "name": "CHANNEL 7 COVERAGE",
-            "description": "Upon reaching {{Amount}} <c=status>BACKFLIP</c>, lose {{Amount}} backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
-        },
-        "EternalFlame": {
-            "name": "ETERNAL FLAME",
-            "description": "Every 5th turn, gain 1 <c=status>TIMESTOP</c>."
-        },
-        "QuantumEngines": {
-            "name": "QUANTUM ENGINES",
-            "description": "Whenever you gain <c=status>BACKTRACK LEFT/RIGHT</c> or any kind of <c=status>AUTODODGE</c>, gain 1 more."
-        },
-        "SugarRush": {
-            "name": "SUGAR RUSH",
-            "description": "Gain 1 extra <c=energy>ENERGY</c> and draw <c=card>+1 card</c> every turn. <c=downside>At the end of each turn, reversible move 1 in a random direction.</c>"
-        },
-        "FledgelingOrb": {
-            "name": "FLEDGELING'S ORB",
-            "description": "You cannot <c=action>OVERHEAT</c> while you have <c=status>TIMESTOP</c>. <c=downside>Your backtrack movement doesn't trigger STRAFE."
+        "Ix": {
+            "DiamondCubic": {
+                "name": "DIAMOND CUBIC",
+                "description": "Attacks cannot <c=action>pierce</c>, <c=parttrait>weaken</c>, <c=parttrait>brittle</c> or <c=parttrait>armor</c> your ship.\nYour <c=status>payback</c> attacks are piercing."
+            },
+            "MultiFaceted": {
+                "name": "MULTI-FACETED",
+                "description": "At start of turn, gain 1 <c=status>PERSEVERANCE</c>. <c=downside>At end of turn, lose 1 PERSEVERANCE."
+            },
+            "GemOrbit": {
+                "name": "GEM ORBIT",
+                "description": "Three <c=midrow>prisms</c>, one of each type, will always be near your ship at the start of combat."
+            },
+            "ConservationEffort": {
+                "name": "CONSERVATION EFFORT",
+                "description": "Add an <c=parttrait>invincible</c>, functionless ship part randomly somewhere in the middle of your ship."
+            },
+            "Manifesto": {
+                "name": "MANIFESTO",
+                "description": "While you have 3+ <c=status>FRACTURE</c>, ALL your attacks do +1 damage."
+            },
+            "Filter": {
+                "name": "FILTER",
+                "description": "Refracted attacks deal 1 less damage to you."
+            },
+            "Thorite": {
+                "name": "THORITE",
+                "description": "During the enemy turn, all enemy parts are <c=parttrait>brittle</c>."
+            },
+
+            "SolarTreeOld": {
+                "name": "SOLAR TREE",
+                "description": "At the start of your turn, gain 2 <c=status>SAFETY SHIELD</c> if you ended your last turn with more than 0 <c=energy>ENERGY</c>."
+            },
+            "ManifestoOld": {
+                "name": "MANIFESTO",
+                "description": "Prevent up to 6 damage you take DURING each of your turns. <c=faint>Hull loss actions are unaffected.</c>"
+            },
+            "HealingCrystals": {
+                "name": "HEALING CRYSTALS",
+                "description": "The first time each combat you are hit by a twice-refracted attack, <c=heal>heal</c> 2."
+            },
+            "MultiFacetedOld": {
+                "name": "MULTI-FACETED",
+                "description": "If you start your turn with <c=status>FRACTURE</c>, gain a <c=card>Dark Side</c>."
+            }
         }
     },
     "card": {
-        "SpaceHopping": {
-            "name": "Space Hopping"
-        },
-        "WingsOfFire": {
-            "name": "Wings of Fire"
-        },
-        "Fireball": {
-            "name": "Fireball"
-        },
-        "BlazingPath": {
-            "name": "Blazing Path"
-        },
-        "WormholeSurfing": {
-            "name": "Wormhole Surfing"
-        },
-        "OverHere": {
-            "name": "Over Here!"
-        },
-        "HotPursuit": {
-            "name": "Hot Pursuit"
-        },
-        "Backflip": {
-            "name": "Backflip"
-        },
-        "Blur": {
-            "name": "Blur"
-        },
-        "QuantumTurbulence": {
-            "name": "Quantum Turbulence",
-            "description": {
-                "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}}.",
-                "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and gain 1 <c=status>temp shield</c>.",
-                "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and <c=action>right {{Amount}}."
+        "Nibbs": {
+            "SpaceHopping": {
+                "name": "Space Hopping"
+            },
+            "WingsOfFire": {
+                "name": "Wings of Fire"
+            },
+            "Fireball": {
+                "name": "Fireball"
+            },
+            "BlazingPath": {
+                "name": "Blazing Path"
+            },
+            "WormholeSurfing": {
+                "name": "Wormhole Surfing"
+            },
+            "OverHere": {
+                "name": "Over Here!"
+            },
+            "HotPursuit": {
+                "name": "Hot Pursuit"
+            },
+            "Backflip": {
+                "name": "Backflip"
+            },
+            "Blur": {
+                "name": "Blur"
+            },
+            "QuantumTurbulence": {
+                "name": "Quantum Turbulence",
+                "description": {
+                    "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}}.",
+                    "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and gain 1 <c=status>temp shield</c>.",
+                    "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and <c=action>right {{Amount}}."
+                }
+            },
+            "FireBreath": {
+                "name": "Fire Breath"
+            },
+            "QuantumCollapse": {
+                "name": "Quantum Collapse"
+            },
+            "FlapFlap": {
+                "name": "Flap-Flap"
+            },
+            "Trailblazer": {
+                "name": "Trailblazer"
+            },
+            "Blink": {
+                "name": "Blink"
+            },
+            "Smelt": {
+                "name": "Smelt"
+            },
+            "Smokescreen": {
+                "name": "Smokescreen"
+            },
+            "SuperheatedSlug": {
+                "name": "Superheated Slug"
+            },
+            "HoldOn": {
+                "name": "Hold On!"
+            },
+            "DimensionalJaunt": {
+                "name": "Dimensional Jaunt",
+                "description": {
+                    "None": "Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>.",
+                    "A": "Add a <c=card>Hop A</c> and a <c=card>Skip A</c> to your <c=keyword>draw pile</c>.",
+                    "B": "Gain 2 <c=status>backflip</c>. Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>."
+                }
+            },
+            "Hop": {
+                "name": "Hop"
+            },
+            "Skip": {
+                "name": "Skip"
+            },
+            "Taunt": {
+                "name": "Taunt"
+            },
+            "DragonFrenzy": {
+                "name": "Dragon Frenzy"
+            },
+            "Superposition": {
+                "name": "Super-Position"
+            },
+            "SearingSoar": {
+                "name": "Searing Soar"
+            },
+            "Hydraulics": {
+                "name": "Hydraulics"
+            },
+            "CoolantPump": {
+                "name": "Coolant Pump"
+            },
+            "FluxCompressor": {
+                "name": "Flux Compress"
+            },
+            "Nova": {
+                "name": "Nova"
+            },
+            "NibbsExe": {
+                "name": "Nibbs.EXE"
             }
         },
-        "FireBreath": {
-            "name": "Fire Breath"
-        },
-        "QuantumCollapse": {
-            "name": "Quantum Collapse"
-        },
-        "FlapFlap": {
-            "name": "Flap-Flap"
-        },
-        "Trailblazer": {
-            "name": "Trailblazer"
-        },
-        "Blink": {
-            "name": "Blink"
-        },
-        "Smelt": {
-            "name": "Smelt"
-        },
-        "Smokescreen": {
-            "name": "Smokescreen"
-        },
-        "SuperheatedSlug": {
-            "name": "Superheated Slug"
-        },
-        "HoldOn": {
-            "name": "Hold On!"
-        },
-        "DimensionalJaunt": {
-            "name": "Dimensional Jaunt",
-            "description": {
-                "None": "Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>.",
-                "A": "Add a <c=card>Hop A</c> and a <c=card>Skip A</c> to your <c=keyword>draw pile</c>.",
-                "B": "Gain 2 <c=status>backflip</c>. Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>."
+        "Ix": {
+            "Fracture": {
+                "name": "Fracture"
+            },
+            "Prism": {
+                "name": "Prism"
+            },
+            "Crush": {
+                "name": "Crush"
+            },
+            "Pulverize": {
+                "name": "Pulverize"
+            },
+            "LitterDisposal": {
+                "name": "Litter Disposal"
+            },
+            "PrismArray": {
+                "name": "Prism Array"
+            },
+            "RighteousShot": {
+                "name": "Righteous Shot"
+            },
+            "GreenEnergy": {
+                "name": "Green Energy"
+            },
+            "MakePeace": {
+                "name": "Make Peace"
+            },
+            "NaturesShield": {
+                "name": "Nature's Shield"
+            },
+            "Disperse": {
+                "name": "Disperse"
+            },
+            "Karma": {
+                "name": "Karma"
+            },
+            "Crystalize": {
+                "name": "Crystalize"
+            },
+            "Demonstrate": {
+                "name": "Demonstrate"
+            },
+            "Crackdown": {
+                "name": "Crackdown"
+            },
+            "HardAsDiamond": {
+                "name": "Hard as Diamond"
+            },
+            "Retaliate": {
+                "name": "Retaliate"
+            },
+            "Martyr": {
+                "name": "Martyr"
+            },
+            "Shatter": {
+                "name": "Shatter",
+                "description": {
+                    "None": "<c=keyword>Double</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>.",
+                    "A": "<c=keyword>Double</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>.",
+                    "B": "<c=keyword>Triple</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>."
+                }
+            },
+            "Reclaim": {
+                "name": "Reclaim"
+            },
+            "SolarRay": {
+                "name": "Solar Ray"
+            },
+            "ScorchedEarth": {
+                "name": "Scorched Earth"
+            },
+            "HealingCrystals": {
+                "name": "Healing Crystals"
+            },
+            "DarkSide": {
+                "name": "Dark Side"
             }
-        },
-        "Hop": {
-            "name": "Hop"
-        },
-        "Skip": {
-            "name": "Skip"
-        },
-        "Taunt": {
-            "name": "Taunt"
-        },
-        "DragonFrenzy": {
-            "name": "Dragon Frenzy"
-        },
-        "Superposition": {
-            "name": "Super-Position"
-        },
-        "SearingSoar": {
-            "name": "Searing Soar"
-        },
-        "Hydraulics": {
-            "name": "Hydraulics"
-        },
-        "CoolantPump": {
-            "name": "Coolant Pump"
-        },
-        "FluxCompressor": {
-            "name": "Flux Compress"
-        },
-        "Nova": {
-            "name": "Nova"
-        },
-        "NibbsExe": {
-            "name": "Nibbs.EXE"
         }
     }
 }

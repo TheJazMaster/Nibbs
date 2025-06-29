@@ -1,7 +1,7 @@
-// AMove
 using System;
 using System.Collections.Generic;
-using static TheJazMaster.Nibbs.CustomTTGlossary;
+using Microsoft.Xna.Framework;
+using Nickel;
 
 namespace TheJazMaster.Nibbs.Actions;
 
@@ -22,7 +22,7 @@ public class ABacktrackMove : AMove
 		if (diff == 0) return;
 		bool right = diff <= 0;
 		c.QueueImmediate(new AStatus {
-			status = right ? ModEntry.Instance.BacktrackLeftStatus.Status : ModEntry.Instance.BacktrackRightStatus.Status,
+			status = right ? ModEntry.Instance.BacktrackLeftStatus : ModEntry.Instance.BacktrackRightStatus,
 			statusAmount = Math.Abs(diff),
 			targetPlayer =  move.targetPlayer
 		});
@@ -31,11 +31,11 @@ public class ABacktrackMove : AMove
 	public override Icon? GetIcon(State s) {
 		int amount = GetDisplayAmount(s);
 		if (isRandom) {
-			return new Icon(ModEntry.Instance.BacktrackMoveRandomIcon.Sprite, amount, Colors.textMain);
+			return new Icon(ModEntry.Instance.BacktrackMoveRandomIcon, amount, Colors.textMain);
 		} else if (dir < 0) {
-			return new Icon(ModEntry.Instance.BacktrackMoveLeftIcon.Sprite, amount, Colors.textMain);
+			return new Icon(ModEntry.Instance.BacktrackMoveLeftIcon, amount, Colors.textMain);
 		} else {
-			return new Icon(ModEntry.Instance.BacktrackMoveRightIcon.Sprite, amount, Colors.textMain);
+			return new Icon(ModEntry.Instance.BacktrackMoveRightIcon, amount, Colors.textMain);
 		}
 	}
 
@@ -48,43 +48,40 @@ public class ABacktrackMove : AMove
 	public override List<Tooltip> GetTooltips(State s) {
 		if (directionlessTooltip || dir == 0) {
 			return [
-				new CustomTTGlossary(
-					GlossaryType.action,
-					() => ModEntry.Instance.BacktrackMoveRightIcon.Sprite,
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMove", "name"]),
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMove", "description"], new { Amount = GetDisplayAmount(s) }),
-					key: "action.backtrackMove"
-				)
+				new GlossaryTooltip("action.backtrackMove") {
+					TitleColor = Colors.action,
+					Icon = ModEntry.Instance.BacktrackMoveRightIcon,
+					Title = ModEntry.Instance.Localizations.Localize(["action", "backtrackMove", "name"]),
+					Description = ModEntry.Instance.Localizations.Localize(["action", "backtrackMove", "description"], new { Amount = GetDisplayAmount(s) }),
+				}
 			];
 		} if (isRandom) {
 			return [
-				new CustomTTGlossary(
-					GlossaryType.action,
-					() => ModEntry.Instance.BacktrackMoveRandomIcon.Sprite,
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRandom", "name"]),
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRandom", "description"], new { Amount = GetDisplayAmount(s) }),
-					key: "action.backtrackMoveRandom"
-				)
+				new GlossaryTooltip("action.backtrackMoveRandom") {
+					TitleColor = Colors.action,
+					Icon = ModEntry.Instance.BacktrackMoveRandomIcon,
+					Title = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRandom", "name"]),
+					Description = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRandom", "description"], new { Amount = GetDisplayAmount(s) }),
+				}
 			];
 		} else if (dir < 0) {
 			return [
-				new CustomTTGlossary(
-					GlossaryType.action,
-					() => ModEntry.Instance.BacktrackMoveLeftIcon.Sprite,
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveLeft", "name"]),
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveLeft", "description"], new { Amount = GetDisplayAmount(s) }),
-					key: "action.backtrackMoveLeft"
-				)
+				new GlossaryTooltip("action.backtrackMoveLeft") {
+					TitleColor = Colors.action,
+					Icon = ModEntry.Instance.BacktrackMoveLeftIcon,
+					Title = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveLeft", "name"]),
+					Description = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveLeft", "description"], new { Amount = GetDisplayAmount(s) }),
+				}
 			];
 		} else if (dir > 0) {
 			return [
-				new CustomTTGlossary(
-					GlossaryType.action,
-					() => ModEntry.Instance.BacktrackMoveRightIcon.Sprite,
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRight", "name"]),
-					() => ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRight", "description"], new { Amount = GetDisplayAmount(s) }),
-					key: "action.backtrackMoveRight"
-				)
+				new GlossaryTooltip("action.backtrackMoveRight") {
+					TitleColor = Colors.action,
+					Icon = ModEntry.Instance.BacktrackMoveRightIcon,
+					Title = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRight", "name"]),
+					Description = ModEntry.Instance.Localizations.Localize(["action", "backtrackMoveRight", "description"], new { Amount = GetDisplayAmount(s) }),
+					
+				}
 			];
 		} else {
 			return [];

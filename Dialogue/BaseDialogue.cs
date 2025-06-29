@@ -201,7 +201,7 @@ internal abstract class BaseDialogue()
 
 	protected void InjectLocalizations(LoadStringsForLocaleEventArgs e)
 	{
-		foreach (var (key, dict) in hashToLine[e.Locale])
+		foreach (var (key, dict) in hashToLine.TryGetValue(e.Locale, out var var) ? var : hashToLine["en"])
 		{
 			foreach (var (hash, str) in dict)
 			{

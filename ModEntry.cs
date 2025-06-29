@@ -9,6 +9,7 @@ using TheJazMaster.Nibbs.Cards;
 using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features;
 using TheJazMaster.Nibbs.Patches;
+using Shockah.Kokoro;
 
 namespace TheJazMaster.Nibbs;
 
@@ -16,7 +17,10 @@ public sealed class ModEntry : SimpleMod {
     internal static ModEntry Instance { get; private set; } = null!;
 
     internal Harmony Harmony { get; }
-	internal IKokoroApi KokoroApi { get; }
+	internal readonly HookManager<INibbsApi.IHook> HookManager;
+
+	internal INibbsApi NibbsApi { get; }
+	internal IKokoroApi.IV2 KokoroApi { get; }
 	internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
 	internal IJohnsonApi? JohnsonApi { get; }
 	internal IEddieApi? EddieApi { get; }
@@ -26,54 +30,39 @@ public sealed class ModEntry : SimpleMod {
 	internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
 
     internal IPlayableCharacterEntryV2 NibbsCharacter { get; }
+    internal IPlayableCharacterEntryV2 IxCharacter { get; }
 
-    internal IDeckEntry NibbsDeck { get; }
+    internal Deck NibbsDeck { get; }
 
-	internal IStatusEntry BackflipStatus { get; }
-	internal IStatusEntry SmokescreenStatus { get; }
-	internal IStatusEntry BacktrackLeftStatus { get; }
-    internal IStatusEntry BacktrackRightStatus { get; }
-	internal IStatusEntry BacktrackAutododgeLeftStatus { get; }
-	internal IStatusEntry BacktrackAutododgeRightStatus { get; }
+    internal Deck IxDeck { get; }
 
-    internal ISpriteEntry NibbsFrame { get; }
-    internal ISpriteEntry NibbsCardBorder { get; }
+	internal Status BackflipStatus { get; }
+	internal Status SmokescreenStatus { get; }
+	internal Status BacktrackLeftStatus { get; }
+    internal Status BacktrackRightStatus { get; }
+	internal Status BacktrackAutododgeLeftStatus { get; }
+	internal Status BacktrackAutododgeRightStatus { get; }
+	internal Status SafetyShieldStatus { get; }
+	internal Status FractureStatus { get; }
+	internal Status PerseveranceStatus { get; }
 
-    internal ISpriteEntry BacktrackMoveLeftIcon { get; }
-	internal ISpriteEntry BacktrackMoveRightIcon { get; }
-	internal ISpriteEntry BacktrackMoveRandomIcon { get; }
+    internal Spr NibbsFrame { get; }
+    internal Spr NibbsCardBorder { get; }
 
-	// internal static IReadOnlyList<Type> CommonCardTypes { get; } = [
-	// 	typeof(FireballCard),
-	// 	typeof(BlazingPathCard),
-	// 	typeof(SpaceHoppingCard),
-	// 	typeof(WingsOfFireCard),
-	// 	typeof(WormholeSurfingCard),
-	// 	typeof(OverHereCard),
-	// 	typeof(HotPursuitCard),
-	// 	typeof(BackflipCard),
-    //     typeof(SteamCoverCard),
-	// ];
+    internal Spr BacktrackMoveLeftIcon { get; }
+	internal Spr BacktrackMoveRightIcon { get; }
+	internal Spr BacktrackMoveRandomIcon { get; }
+	internal Spr PrismIcon { get; }
+	internal Spr OmniPrismIcon { get; }
+	internal Spr FlipIcon { get; }
+	internal Spr FlipLeftIcon { get; }
+	internal Spr FlipRightIcon { get; }
 
-	// internal static IReadOnlyList<Type> UncommonCardTypes { get; } = [
-	// 	typeof(QuantumTurbulenceCard),
-	// 	typeof(FireBreathCard),
-	// 	typeof(FlapFlapCard),
-	// 	typeof(FluxCompressorCard),
-	// 	typeof(HoldOnCard),
-	// 	typeof(DimensionalJauntCard),
-	// 	typeof(TauntCard),
-	// ];
+	internal Spr PrismSprite { get; }
+	internal Spr OmniPrismSprite { get; }
+	
 
-	// internal static IReadOnlyList<Type> RareCardTypes { get; } = [
-	// 	typeof(DragonFrenzyCard),
-	// 	typeof(SuperpositionCard),
-	// 	typeof(CoolantPumpCard),
-	// 	typeof(SmokescreenCard),
-	// 	typeof(NovaCard),
-	// ];
-
-	internal static IReadOnlyList<Type> CommonCardTypes { get; } = [
+	internal static IReadOnlyList<Type> NibbsCardTypes { get; } = [
 		typeof(SmeltCard),
 		typeof(WingsOfFireCard),
 		typeof(SpaceHoppingCard),
@@ -83,9 +72,7 @@ public sealed class ModEntry : SimpleMod {
 		typeof(HotPursuitCard),
 		typeof(BackflipCard),
         typeof(SmokescreenCard),
-	];
-
-	internal static IReadOnlyList<Type> UncommonCardTypes { get; } = [
+		
 		typeof(QuantumTurbulenceCard),
 		typeof(HydraulicsCard),
 		typeof(FlapFlapCard),
@@ -93,57 +80,88 @@ public sealed class ModEntry : SimpleMod {
 		typeof(HoldOnCard),
 		typeof(DimensionalJauntCard),
 		typeof(TauntCard),
-	];
 
-	internal static IReadOnlyList<Type> RareCardTypes { get; } = [
 		typeof(DragonFrenzyCard),
 		typeof(SuperpositionCard),
 		typeof(QuantumCollapseCard),
 		typeof(BlurCard),
 		typeof(NovaCard),
-	];
-
-
-	internal static IReadOnlyList<Type> SecretCardTypes { get; } = [
+		
 		typeof(HopCard),
 		typeof(SkipCard),
+	];
+
+	internal static IReadOnlyList<Type> ExeCardTypes = [
 		typeof(NibbsExeCard),
 	];
 
-    internal static IEnumerable<Type> AllCardTypes
-		=> CommonCardTypes
-			.Concat(UncommonCardTypes)
-			.Concat(RareCardTypes)
-			.Concat(SecretCardTypes);
 
-    internal static IReadOnlyList<Type> CommonArtifacts { get; } = [
+    internal static IReadOnlyList<Type> NibbsArtifactTypes { get; } = [
 		typeof(DragonfireCandleArtifact),
 		typeof(EyeOfCobaArtifact),
 		typeof(GalacticNewsCoverageArtifact),
 		typeof(EternalFlameArtifact),
-	];
-
-	internal static IReadOnlyList<Type> BossArtifacts { get; } = [
+		
 		typeof(QuantumEnginesArtifact),
 		typeof(SugarRushArtifact),
-	];
-
-	internal static IReadOnlyList<Type> StarterArtifacts { get; } = [
+		
 		typeof(FledgelingOrbArtifact),
 	];
 
-	internal static IEnumerable<Type> AllArtifactTypes
-		=> CommonArtifacts.Concat(BossArtifacts).Concat(StarterArtifacts);
+
+
+	internal static IReadOnlyList<Type> IxCardTypes { get; } = [
+		typeof(FractureCard),
+		typeof(PrismCard),
+		
+		typeof(KarmaCard),
+		typeof(LitterDisposalCard),
+		typeof(PrismArrayCard),
+		typeof(RighteousShotCard),
+		typeof(GreenEnergyCard),
+		typeof(MakePeaceCard),
+		typeof(NaturesShieldCard),
+
+		typeof(PulverizeCard),
+		typeof(DisperseCard),
+		typeof(CrystalizeCard),
+		typeof(DemonstrateCard),
+		typeof(CrackdownCard),
+		typeof(HardAsDiamondCard),
+		typeof(RetaliateCard),
+
+		typeof(MartyrCard),
+		typeof(HealingCrystalsCard),
+		typeof(ReclaimCard),
+		typeof(SolarRayCard),
+		typeof(ScorchedEarthCard),
+	];
+
+	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
+		typeof(DiamondCubicArtifact),
+
+		typeof(ConservationEffortArtifact),
+		typeof(GemOrbitArtifact),
+		typeof(ManifestoArtifact),
+		typeof(MultiFacetedArtifact),
+
+		typeof(ThoriteArtifact),
+		typeof(FilterArtifact),
+		// typeof(ManifestoOldArtifact),
+	];
 
     
     public ModEntry(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger)
 	{
 		Instance = this;
 		Harmony = new(package.Manifest.UniqueName);
+		HookManager = new(package.Manifest.UniqueName);
+
+		NibbsApi = new ApiImplementation();
 		MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
 		JohnsonApi = helper.ModRegistry.GetApi<IJohnsonApi>("Shockah.Johnson")!;
 		EddieApi = helper.ModRegistry.GetApi<IEddieApi>("TheJazMaster.Eddie")!;
-		KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
+		KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!.V2;
 
 		AnyLocalizations = new JsonLocalizationProvider(
 			tokenExtractor: new SimpleLocalizationTokenExtractor(),
@@ -153,8 +171,8 @@ public sealed class ModEntry : SimpleMod {
 			new CurrentLocaleOrEnglishLocalizationProvider<IReadOnlyList<string>>(AnyLocalizations)
 		);
 
-		NibbsFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/Panel.png"));
-        NibbsCardBorder = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Character/CardBorder.png"));
+		NibbsFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/Panel.png")).Sprite;
+        NibbsCardBorder = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/CardBorder.png")).Sprite;
 
         BacktrackLeftStatus = helper.Content.Statuses.RegisterStatus("BacktrackLeft", new()
 		{
@@ -167,7 +185,7 @@ public sealed class ModEntry : SimpleMod {
 			},
 			Name = AnyLocalizations.Bind(["status", "BacktrackLeft", "name"]).Localize,
 			Description = AnyLocalizations.Bind(["status", "BacktrackLeft", "description"]).Localize
-		});
+		}).Status;
 
         BacktrackRightStatus = helper.Content.Statuses.RegisterStatus("BacktrackRight", new()
 		{
@@ -180,7 +198,7 @@ public sealed class ModEntry : SimpleMod {
 			},
 			Name = AnyLocalizations.Bind(["status", "BacktrackRight", "name"]).Localize,
 			Description = AnyLocalizations.Bind(["status", "BacktrackRight", "description"]).Localize
-		});
+		}).Status;
 
         BacktrackAutododgeLeftStatus = helper.Content.Statuses.RegisterStatus("BacktrackAutododgeLeft", new()
 		{
@@ -197,7 +215,7 @@ public sealed class ModEntry : SimpleMod {
 			{
 				return true;
 			}
-		});
+		}).Status;
 
         BacktrackAutododgeRightStatus = helper.Content.Statuses.RegisterStatus("BacktrackAutododgeRight", new()
 		{
@@ -214,7 +232,7 @@ public sealed class ModEntry : SimpleMod {
 			{
 				return true;
 			}
-		});
+		}).Status;
 
         SmokescreenStatus = helper.Content.Statuses.RegisterStatus("Smokescreen", new()
 		{
@@ -227,7 +245,7 @@ public sealed class ModEntry : SimpleMod {
 			},
 			Name = AnyLocalizations.Bind(["status", "Smokescreen", "name"]).Localize,
 			Description = AnyLocalizations.Bind(["status", "Smokescreen", "description"]).Localize
-		});
+		}).Status;
 
         BackflipStatus = helper.Content.Statuses.RegisterStatus("Backflip", new()
 		{
@@ -240,40 +258,74 @@ public sealed class ModEntry : SimpleMod {
 			},
 			Name = AnyLocalizations.Bind(["status", "Backflip", "name"]).Localize,
 			Description = AnyLocalizations.Bind(["status", "Backflip", "description"]).Localize
-		});
+		}).Status;
 
-		BacktrackMoveLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveLeft.png"));
-		BacktrackMoveRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRight.png"));
-		BacktrackMoveRandomIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRandom.png"));
 
-		NibbsDeck = helper.Content.Decks.RegisterDeck("Nibbs", new()
+
+        SafetyShieldStatus = helper.Content.Statuses.RegisterStatus("SafetyShield", new()
 		{
-			Definition = new() { color = new Color("c74b9b"), titleColor = Colors.black },
-			DefaultCardArt = StableSpr.cards_colorless,
-			BorderSprite = NibbsCardBorder.Sprite,
-			Name = AnyLocalizations.Bind(["character", "name"]).Localize
-		});
+			Definition = new()
+			{
+				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/SafetyShield.png")).Sprite,
+				color = new("21CE39"),
+				isGood = true,
+				affectedByTimestop = true
+			},
+			Name = AnyLocalizations.Bind(["status", "SafetyShield", "name"]).Localize,
+			Description = AnyLocalizations.Bind(["status", "SafetyShield", "description"]).Localize,
+		}).Status;
 
-        foreach (var cardType in AllCardTypes)
-			AccessTools.DeclaredMethod(cardType, nameof(INibbsCard.Register))?.Invoke(null, [helper]);
-		foreach (var artifactType in AllArtifactTypes)
-			AccessTools.DeclaredMethod(artifactType, nameof(INibbsArtifact.Register))?.Invoke(null, [helper]);
+        FractureStatus = helper.Content.Statuses.RegisterStatus("Fracture", new()
+		{
+			Definition = new()
+			{
+				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Fracture.png")).Sprite,
+				color = new("6A9B73"),
+				isGood = false,
+				affectedByTimestop = true
+			},
+			Name = AnyLocalizations.Bind(["status", "Fracture", "name"]).Localize,
+			Description = AnyLocalizations.Bind(["status", "Fracture", "description"]).Localize,
+		}).Status;
 
-		MoreDifficultiesApi?.RegisterAltStarters(NibbsDeck.Deck, new StarterDeck {
-            cards = {
-				new WingsOfFireCard(),
-				new WormholeSurfingCard()
-            },
-			artifacts = {
-				new FledgelingOrbArtifact()
-			}
-        });
-		
+        PerseveranceStatus = helper.Content.Statuses.RegisterStatus("Perseverance", new()
+		{
+			Definition = new()
+			{
+				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Perseverance.png")).Sprite,
+				color = new("6A9B73"),
+				isGood = true
+			},
+			Name = AnyLocalizations.Bind(["status", "Perseverance", "name"]).Localize,
+			Description = AnyLocalizations.Bind(["status", "Perseverance", "description"]).Localize,
+		}).Status;
+
+		BacktrackMoveLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveLeft.png")).Sprite;
+		BacktrackMoveRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRight.png")).Sprite;
+		BacktrackMoveRandomIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRandom.png")).Sprite;
+		PrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Prism.png")).Sprite;
+		OmniPrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Omniprism.png")).Sprite;
+		FlipIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Flip.png")).Sprite;
+		FlipLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipLeft.png")).Sprite;
+		FlipRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipRight.png")).Sprite;
+
+		PrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Prism.png")).Sprite;
+		OmniPrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Omniprism.png")).Sprite;
+
+        foreach (var cardType in NibbsCardTypes)
+			AccessTools.DeclaredMethod(cardType, nameof(IRegisterableCard.Register))?.Invoke(null, [NibbsDeck, "Nibbs", helper, package]);
+		foreach (var artifactType in NibbsArtifactTypes)
+			AccessTools.DeclaredMethod(artifactType, nameof(IRegisterableArtifact.Register))?.Invoke(null, [NibbsDeck, "Nibbs", helper, package]);
+
 		_ = new StatusManager();
+		_ = new SafetyShieldManager();
 		_ = new BacktrackManager();
-		CustomTTGlossary.ApplyPatches(Harmony);
+		_ = new FractureManager();
+		_ = new AffectDamageDoneManager();
+		_ = new PrismManager();
 		CardPatches.Apply();
 		AMovePatches.Apply();
+		AMissileHitPatches.Apply();
 		AStunPatches.Apply();
 		AAttackPatches.Apply();
 		AStatusPatches.Apply();
@@ -281,7 +333,7 @@ public sealed class ModEntry : SimpleMod {
 		CombatPatches.Apply();
 		StoryVarsPatches.Apply();
 		StoryNodePatches.Apply();
-		// ScriptCtxPatches.Apply();
+		ScriptCtxPatches.Apply();
 
 		Helper.Events.OnModLoadPhaseFinished += (_, phase) => {
 			if (phase == ModLoadPhase.AfterDbInit) {
@@ -294,41 +346,104 @@ public sealed class ModEntry : SimpleMod {
 			state.storyVars.ApplyModData(StoryVarsPatches.JustGrazedKey, true);
 		}, 0);
 		
-        NibbsCharacter = helper.Content.Characters.V2.RegisterPlayableCharacter("Nibbs", new()
-		{
-			Deck = NibbsDeck.Deck,
-			Description = AnyLocalizations.Bind(["character", "description"]).Localize,
-			BorderSprite = NibbsFrame.Sprite,
-			Starters = new StarterDeck {
-				// cards = [ new FireballCard(), new BlazingPathCard() ],
-				cards = [ new SmeltCard(), new TrailblazerCard() ],
-				artifacts = [ new FledgelingOrbArtifact() ]
+        NibbsCharacter = RegisterCharacter("Nibbs", new Color("c74b9b"), NibbsCardTypes, NibbsArtifactTypes, 
+			new StarterDeck {
+				cards = [
+					new SmeltCard(), new TrailblazerCard()
+				],
+				artifacts = [
+					new FledgelingOrbArtifact()
+				]
 			},
-			ExeCardType = typeof(NibbsExeCard),
-			NeutralAnimation = RegisterAnimation(helper, "Neutral").Configuration,
-			MiniAnimation = RegisterAnimation(helper, "Mini").Configuration
-		});
+			new StarterDeck {
+				cards = {
+					new WingsOfFireCard(),
+					new WormholeSurfingCard()
+				},
+				artifacts = {
+					new FledgelingOrbArtifact()
+				}
+			}
+		);
+		NibbsDeck = NibbsCharacter.Configuration.Deck;
+		
+        IxCharacter = RegisterCharacter("Ix", new Color("c74b9b"), IxCardTypes, IxArtifactTypes, 
+			new StarterDeck {
+				cards = [
+					new FractureCard(), new PrismCard()
+				],
+				artifacts = [
+					new DiamondCubicArtifact()
+				]
+			},
+			new StarterDeck {
+				// cards = {
+				// 	new WingsOfFireCard(),
+				// 	new WormholeSurfingCard()
+				// },
+				// artifacts = {
+				// 	new FledgelingOrbArtifact()
+				// }
+			}
+		);
+		IxDeck = IxCharacter.Configuration.Deck;
 
-		;
-		RegisterAnimation(helper, "Squint");
-		RegisterAnimation(helper, "Gameover");
-		RegisterAnimation(helper, "Cheeky");
-		RegisterAnimation(helper, "Happy");
-		RegisterAnimation(helper, "Wowza");
-		RegisterAnimation(helper, "Serious");
+		RegisterAnimation(NibbsDeck, "Nibbs", "squint");
+		RegisterAnimation(NibbsDeck, "Nibbs", "gameover");
+		RegisterAnimation(NibbsDeck, "Nibbs", "cheeky");
+		RegisterAnimation(NibbsDeck, "Nibbs", "happy");
+		RegisterAnimation(NibbsDeck, "Nibbs", "wowza");
+		RegisterAnimation(NibbsDeck, "Nibbs", "serious");
     }
 
-	private ICharacterAnimationEntryV2 RegisterAnimation(IModHelper helper, string name)
-    {
-		return helper.Content.Characters.V2.RegisterCharacterAnimation(name, new()
+
+	public IPlayableCharacterEntryV2 RegisterCharacter(string name, Color color, IReadOnlyList<Type> cardTypes, IReadOnlyList<Type> artifactTypes, StarterDeck starters, StarterDeck altStarters) {
+		var borderSprite = Helper.Content.Sprites.RegisterSprite(Package.PackageRoot.GetRelativeFile($"Sprites/Characters/{name}/{name}CardBorder.png")).Sprite;
+		var frameSprite = Helper.Content.Sprites.RegisterSprite(Package.PackageRoot.GetRelativeFile($"Sprites/Characters/{name}/{name}Frame.png")).Sprite;
+
+		var deck = Helper.Content.Decks.RegisterDeck(name, new()
 		{
-			CharacterType = NibbsDeck.Deck.Key(),
-			LoopTag = name.ToLower(),
-			Frames = Enumerable.Range(1, 100)
-				.Select(i => Instance.Package.PackageRoot.GetRelativeFile($"Sprites/Character/{name}/Nibbs_{name.ToLower()}_{i}.png"))
-				.TakeWhile(f => f.Exists)
-				.Select(f => helper.Content.Sprites.RegisterSprite(f).Sprite)
-				.ToList()
+			Definition = new() {
+				color = color,
+				titleColor = Colors.black
+			},
+			DefaultCardArt = StableSpr.cards_colorless,
+			BorderSprite = borderSprite,
+			Name = AnyLocalizations.Bind(["character", name, "name"]).Localize
+		}).Deck;
+
+        foreach (var cardType in cardTypes)
+			AccessTools.DeclaredMethod(cardType, nameof(IRegisterableCard.Register))?.Invoke(null, [deck, name, Helper, Package]);
+		foreach (var artifactType in artifactTypes)
+			AccessTools.DeclaredMethod(artifactType, nameof(IRegisterableCard.Register))?.Invoke(null, [deck, name, Helper, Package]);
+
+		MoreDifficultiesApi?.RegisterAltStarters(deck, altStarters);
+
+        return Helper.Content.Characters.V2.RegisterPlayableCharacter(name, new()
+		{
+			Deck = deck,
+			Description = AnyLocalizations.Bind(["character", name, "description"]).Localize,
+			BorderSprite = frameSprite,
+			Starters = starters,
+			NeutralAnimation = RegisterAnimation(deck, name, "neutral"),
+			MiniAnimation = RegisterAnimation(deck, name, "mini"),
 		});
-    }
+	}
+
+	private CharacterAnimationConfigurationV2 RegisterAnimation(Deck deck, string charname, string name) =>
+		Helper.Content.Characters.V2.RegisterCharacterAnimation(charname + "_" + name, new()
+		{
+			CharacterType = deck.Key(),
+			LoopTag = name,
+			Frames = Enumerable.Range(1, 100)
+				.Select(i => Package.PackageRoot.GetRelativeFile($"Sprites/Characters/{charname}/{name}/{charname}_{name}_{i}.png"))
+				.TakeWhile(f => f.Exists)
+				.Select(f => Helper.Content.Sprites.RegisterSprite(f).Sprite)
+				.ToList()
+		}).Configuration;
+
+	public override object? GetApi(IModManifest requestingMod)
+	{
+		return NibbsApi;
+	}
 }

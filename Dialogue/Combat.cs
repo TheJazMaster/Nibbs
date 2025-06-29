@@ -25,7 +25,7 @@ internal class CombatDialogue : BaseDialogue
 				maxDamageDealtToPlayerThisTurn = 0
 			}},
 			{"NibbsDealtDamage", new StoryNode {
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				playerShotJustHit = true,
 				minDamageDealtToEnemyThisAction = 1,
 				oncePerCombatTags = [
@@ -37,7 +37,7 @@ internal class CombatDialogue : BaseDialogue
 				minDamageDealtToEnemyThisTurn = 10
 			}},
 			{"NibbsDealtBigDamage", new StoryNode {
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				playerShotJustHit = true,
 				minDamageDealtToEnemyThisTurn = 5
 			}},
@@ -458,7 +458,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GotMagicAutododge", new StoryNode {
 				lastTurnPlayerStatuses = [
-					ModEntry.Instance.BacktrackAutododgeRightStatus.Status
+					ModEntry.Instance.BacktrackAutododgeRightStatus
 				],
 				oncePerCombatTags = [
 					"gotAutododge"
@@ -474,7 +474,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GotMagicAutododgeLeft", new StoryNode {
 				lastTurnPlayerStatuses = [
-					ModEntry.Instance.BacktrackAutododgeLeftStatus.Status
+					ModEntry.Instance.BacktrackAutododgeLeftStatus
 				],
 				oncePerCombatTags = [
 					"gotAutododge"
@@ -499,7 +499,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GotMagicAutododgeLeftButTheresMissiles", new StoryNode {
 				lastTurnPlayerStatuses = [
-					ModEntry.Instance.BacktrackAutododgeLeftStatus.Status
+					ModEntry.Instance.BacktrackAutododgeLeftStatus
 				],
 				anyDronesHostile = [
 					"missile_normal",
@@ -524,7 +524,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GainedBacktrack", new StoryNode {
 				lastTurnPlayerStatuses = [
-					ModEntry.Instance.BacktrackRightStatus.Status
+					ModEntry.Instance.BacktrackRightStatus
 				],
 				oncePerCombatTags = [
 					"gotBacktrack"
@@ -532,7 +532,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GainedBacktrackLeft", new StoryNode {
 				lastTurnPlayerStatuses = [
-					ModEntry.Instance.BacktrackLeftStatus.Status
+					ModEntry.Instance.BacktrackLeftStatus
 				],
 				oncePerCombatTags = [
 					"gotBacktrack"
@@ -556,7 +556,7 @@ internal class CombatDialogue : BaseDialogue
 			}},
 			{"GainedTimestopWithOverdrive", new StoryNode {
 				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedOverdriveWithTimestop"],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
@@ -564,7 +564,7 @@ internal class CombatDialogue : BaseDialogue
 			}.ApplyModData(SavedStatusWithTimestopKey, "overdrive")},
 			{"GainedTimestopWithStunCharge", new StoryNode {
 				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedStunChargeWithTimestop"],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
@@ -572,7 +572,7 @@ internal class CombatDialogue : BaseDialogue
 			}.ApplyModData(SavedStatusWithTimestopKey, "stunCharge")},
 			{"GainedTimestopWithCheapFix", new StoryNode {
 				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedTempCheapWithTimestop"],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
@@ -580,7 +580,7 @@ internal class CombatDialogue : BaseDialogue
 			}.ApplyModData(SavedStatusWithTimestopKey, "temporaryCheap")},
 			{"GainedTimestopWithAutopilot", new StoryNode {
 				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithTimestop"],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
@@ -588,7 +588,7 @@ internal class CombatDialogue : BaseDialogue
 			}.ApplyModData(SavedStatusWithTimestopKey, "autopilot")},
 			{"GainedTimestopWithPerfectShield", new StoryNode {
 				// lookup = [$"{ModEntry.Instance.Package.Manifest.UniqueName}::SavedAutopilotWithPerfectShield"],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerCombatTags = [
 					"gotTimestopAndUsedItWell"
 				],
@@ -599,7 +599,7 @@ internal class CombatDialogue : BaseDialogue
 				hasArtifacts = [
 					new FledgelingOrbArtifact().Key()
 				],
-				whoDidThat = ModEntry.Instance.NibbsDeck.Deck,
+				whoDidThat = ModEntry.Instance.NibbsDeck,
 				oncePerRun = true,
 				priority = true
 			}.ApplyModData(SavedStatusWithTimestopKey, "heat")},
@@ -652,7 +652,7 @@ internal class CombatDialogue : BaseDialogue
 
 	internal override IFileInfo GetJsonFile()
 	{
-		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en").GetRelativeFile("combat.json");
+		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en/Nibbs").GetRelativeFile("combat.json");
 	}
 
 	internal override NodeType GetNodeType()

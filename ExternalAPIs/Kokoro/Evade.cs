@@ -1,6 +1,7 @@
 ﻿﻿using System.Collections.Generic;
+using static Shockah.Kokoro.IKokoroApi.IV2;
 
-namespace TheJazMaster.Nibbs;
+namespace Shockah.Kokoro;
 
 public partial interface IKokoroApi
 {

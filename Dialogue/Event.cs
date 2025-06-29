@@ -69,7 +69,7 @@ internal class EventDialogue : BaseDialogue
 
 	internal override IFileInfo GetJsonFile()
 	{
-		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en").GetRelativeFile("events.json");
+		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en/Nibbs").GetRelativeFile("events.json");
 	}
 
 	internal override NodeType GetNodeType()

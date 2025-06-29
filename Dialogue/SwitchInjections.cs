@@ -50,7 +50,7 @@ internal class SwitchInjections : BaseDialogue
 
 	internal override IFileInfo GetJsonFile()
 	{
-		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en").GetRelativeFile("inject.json");
+		return ModEntry.Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en/Nibbs").GetRelativeFile("inject.json");
 	}
 
 	internal override NodeType GetNodeType()

@@ -78,7 +78,7 @@ public class ShipPatches
 
     private static bool ShouldHilight(Status status)
     {
-        return status == Instance.BacktrackLeftStatus.Status && CombatPatches.hoveredButton == -1 || status == Instance.BacktrackRightStatus.Status && CombatPatches.hoveredButton == 1;
+        return status == Instance.BacktrackLeftStatus && CombatPatches.hoveredButton == -1 || status == Instance.BacktrackRightStatus && CombatPatches.hoveredButton == 1;
     }
 
     private static int HeatTriggerDisplayModifier(G g, Ship ship)

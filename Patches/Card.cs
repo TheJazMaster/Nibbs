@@ -26,7 +26,44 @@ public class CardPatches
 		    original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.GetDataWithOverrides)),
 			transpiler: new HarmonyMethod(typeof(CardPatches), nameof(Card_GetDataWithOverrides_Transpiler))
 		);
+
+		Harmony.TryPatch(
+			logger: ModEntry.Instance.Logger,
+			original: AccessTools.DeclaredMethod(typeof(Card), nameof(Card.RenderAction)),
+			prefix: new HarmonyMethod(typeof(CardPatches), nameof(Card_RenderAction_Prefix))
+		);
     }
+
+    private static bool Card_RenderAction_Prefix(G g, State state, CardAction action, bool dontDraw, int shardAvailable, int stunChargeAvailable, int bubbleJuiceAvailable, ref int __result)
+	{
+		if (action is not AAttack attack || !attack.givesEnergy.HasValue || attack.givesEnergy.Value == 0)
+			return true;
+        
+        int amt = attack.givesEnergy.Value;
+        attack.givesEnergy = null;
+
+		var position = g.Push(rect: new()).rect.xy;
+		int initialX = (int)position.x;
+
+		position.x += Card.RenderAction(g, state, attack, dontDraw, shardAvailable, stunChargeAvailable, bubbleJuiceAvailable);
+		g.Pop();
+        attack.givesEnergy = amt;
+
+		__result = (int)position.x - initialX;
+		__result += 3;
+
+		if (!dontDraw)
+		{
+			Draw.Sprite(StableSpr.icons_energy, initialX + __result, position.y, color: action.disabled ? Colors.disabledIconTint : Colors.white);
+		}
+		__result += 10;
+		if (!dontDraw) {
+			BigNumbers.Render(amt, initialX + __result, position.y, action.disabled ? Colors.disabledText : Colors.energy);
+		}
+		__result += amt.ToString().Length * 6;
+
+		return false;
+	}
 
     private static IEnumerable<CodeInstruction> Card_GetDataWithOverrides_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il, MethodBase originalMethod)
     {
@@ -51,5 +88,5 @@ public class CardPatches
     }
 
     private static bool HasBackflip(Card card, State state) =>
-        state.ship.Get(ModEntry.Instance.BackflipStatus.Status) > 0;
+        state.ship.Get(ModEntry.Instance.BackflipStatus) > 0;
 }
