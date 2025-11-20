@@ -2,223 +2,132 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
 using FMOD;
 using FSPRO;
 using HarmonyLib;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xna.Framework.Graphics;
 using Nickel;
 using TheJazMaster.Nibbs.Actions;
+using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Patches;
+using static TheJazMaster.Nibbs.Features.AngledAttacksManager;
+using static TheJazMaster.Nibbs.Features.PrismManager;
 
 namespace TheJazMaster.Nibbs.Features;
 
+[HarmonyPatch]
 public class PrismManager
 {
-	private static Harmony Harmony => ModEntry.Instance.Harmony;
 	private static IModData ModData => ModEntry.Instance.Helper.ModData;
 
-	public static readonly string RefractKey = "RefractTimes";
-	public static readonly string SidewaysAttackKey = "SidewaysDir";
-
-	public enum Sideways {
-		NONE, LEFT, RIGHT
+	private static AAttack CopyAttack(AAttack attack) {
+		var ret = Mutil.DeepCopy(attack);
+		if (ret.cardOnHit != null) ret.cardOnHit = ret.cardOnHit.CopyWithNewId();
+		return ret;
 	}
 
-	public PrismManager() {
-		Harmony.TryPatch(
-			logger: ModEntry.Instance.Logger,
-			original: AccessTools.DeclaredMethod(typeof(CombatUtils), nameof(CombatUtils.RaycastGlobal)),
-			prefix: new HarmonyMethod(GetType(), nameof(CombatUtils_RaycastGlobal_Prefix))
-		);
-		Harmony.TryPatch(
-			logger: ModEntry.Instance.Logger,
-			original: AccessTools.DeclaredMethod(typeof(EffectSpawner), nameof(EffectSpawner.Cannon)),
-			prefix: new HarmonyMethod(GetType(), nameof(EffectSpawner_Cannon_Prefix))
-		);
-	}
-
-	private static bool CombatUtils_RaycastGlobal_Prefix(Combat c, Ship target, bool fromDrone, int worldX, ref RaycastResult __result) {
-		if (AffectDamageDoneManager.AttackContext == null || !fromDrone) return true;
-
-		var side = ModData.GetModDataOrDefault(AffectDamageDoneManager.AttackContext, SidewaysAttackKey, Sideways.NONE);
-
-		if (side == Sideways.NONE) return true;
-
-		int mul = side == Sideways.LEFT ? -1 : 1;
-		for (int i = mul; i*mul < 50; i += mul) {
-			if (c.stuff.ContainsKey(worldX + i)) {
-				__result = new RaycastResult {
-					hitShip = false,
-					hitDrone = true,
-					worldX = worldX + i,
-					fromDrone = fromDrone
-				};
-				return false;
-			}
-		}
-		__result = new RaycastResult {
-			hitShip = false,
-			hitDrone = false,
-			worldX = worldX + 50*mul,
-			fromDrone = fromDrone
-		};
-		return false;
-	}
-
-	private static void SidewaysCannonTrail(Rect rect)
+	public class RefractorObject : StuffBase
 	{
-		double num = Math.Min(1000, rect.w);
-		double num2 = Mutil.NextRand();
-		for (int i = 0; i < num; i++)
+        public required RefractorStats refractor;
+
+        public override List<CardAction>? GetActionsOnShotWhileInvincible(State s, Combat c, bool wasPlayer, int damage)
 		{
-			Vec vel = Mutil.RandVel() * 5;
-			Vec pos = new Vec(rect.x, rect.y) + Mutil.RandBox01() * new Vec(rect.w, rect.h);
-			PFX.combatAdd.Add(new Particle
-			{
-				pos = pos,
-				size = 1 + Mutil.NextRand(),
-				vel = vel,
-				color = new Color(0.3, 0.3, 0.5),
-				dragCoef = Mutil.NextRand(),
-				dragVel = new Vec(Math.Sin(num2 * 6.28 + pos.x * 0.3)) * 7,
-				lifetime = 0.3 + 1.4 * Mutil.NextRand(),
-				gravity = 0
-			});
-		}
-	}
-
-	private static bool EffectSpawner_Cannon_Prefix(G g, bool targetPlayer, RaycastResult ray, DamageDone dmg, bool isBeam) {
-		if (AffectDamageDoneManager.AttackContext == null || AffectDamageDoneManager.AttackContext.fromDroneX == null || g.state.route is not Combat combat) return true;
-
-		var side = ModData.GetModDataOrDefault(AffectDamageDoneManager.AttackContext, SidewaysAttackKey, Sideways.NONE);
-
-		if (side == Sideways.NONE) return true;
-
-
-		Rect rect = Rect.FromPoints(
-			FxPositions.Drone(AffectDamageDoneManager.AttackContext.fromDroneX.Value) + new Vec(side == Sideways.LEFT ? -3 : 3, 0),
-			FxPositions.Drone(ray.worldX) + new Vec(side == Sideways.LEFT ? 3 : -3, 0)
-		);
-		combat.fx.Add(new CannonBeam
-		{
-			rect = rect
-		});
-		SidewaysCannonTrail(rect);
-		GUID? gUID = null;
-		if (isBeam) {
-			gUID = (ray.hitDrone || ray.hitShip) ? Event.Hits_BeamHit : Event.Hits_BeamMiss;
-		}
-		else
-		{
-			if (ray.hitShip)
-			{
-				Vec hitPos = new(rect.x, targetPlayer ? rect.y2 : rect.y);
-				ParticleBursts.HullImpact(g, hitPos, targetPlayer, !ray.hitDrone, ray.fromDrone);
-			}
-			if (dmg.hitShield && !dmg.hitHull)
-			{
-				combat.fx.Add(new ShieldHit
-				{
-					pos = FxPositions.Shield(ray.worldX, targetPlayer)
-				});
-				ParticleBursts.ShieldImpact(g, FxPositions.Shield(ray.worldX, targetPlayer), targetPlayer);
-			}
-			if (dmg.poppedShield)
-			{
-				combat.fx.Add(new ShieldPop
-				{
-					pos = FxPositions.Shield(ray.worldX, targetPlayer)
-				});
-			}
-			if (dmg.poppedShield)
-			{
-				gUID = Event.Hits_ShieldPop;
-			}
-			else if (dmg.hitShield)
-			{
-				gUID = Event.Hits_ShieldHit;
-			}
-			if (!ray.hitDrone && !ray.hitShip)
-			{
-				gUID = Event.Hits_Miss;
-			}
-			else if (dmg.hitHull)
-			{
-				gUID = (!targetPlayer) ? new GUID?(Event.Hits_OutgoingHit) : new GUID?(Event.Hits_HitHurt);
-			}
-			else if (ray.hitDrone)
-			{
-				gUID = Event.Hits_HitDrone;
-			}
-		}
-		if (gUID.HasValue)
-		{
-			Audio.Play(gUID.Value);
-		}
-		return false;
-	}
-
-	public abstract class Prism : StuffBase {
-		public override List<CardAction>? GetActionsOnShotWhileInvincible(State s, Combat c, bool wasPlayer, int damage)
-		{
-			if (AffectDamageDoneManager.AttackContext == null) {
+            if (!refractor.DoesRefract(this) || AffectDamageDoneManager.AttackContext == null) {
+				if (bubbleShield) {
+                    bubbleShield = false;
+                    return null;
+                }
 				c.DestroyDroneAt(s, x, wasPlayer);
 				return null;
 			}
-			var attack = Mutil.DeepCopy(AffectDamageDoneManager.AttackContext);
+			var attack = CopyAttack(AffectDamageDoneManager.AttackContext);
 			attack.fromDroneX = x;
 			ModData.SetModData(attack, RefractKey, ModData.GetModDataOrDefault(attack, RefractKey, 0) + 1);
-			var ret = Refract(s, c, attack);
+			var ret = refractor.Refract(s, c, attack, this);
 			if (ret != null) return [new ARefractedAttack {
-				attacks = ret
+				attacks = ret,
+				destroyAfter = refractor.DestroyAfter(s, c, attack, this) ? this : null,
+				wasPlayer = wasPlayer
 			}];
 			else return null;
 		}
 
-		public virtual List<CardAction>? Refract(State s, Combat c, in AAttack attack) => null;
-	}
+        public override List<CardAction>? GetActionsOnDestroyed(State s, Combat c, bool wasPlayer, int worldX)
+        {
+            if (wasPlayer && s.EnumerateAllArtifacts().OfType<HealingCrystalsArtifact>().FirstOrDefault() is { } artifact && artifact.active) {
+                artifact.active = false;
+                return [
+					new AHeal {
+						healAmount = 1,
+						targetPlayer = true,
+						artifactPulse = artifact.Key()
+					}
+				];
+            }
+            return [];
+        }
 
-	public class RegularPrism : Prism
-	{
-		public override List<CardAction>? Refract(State s, Combat c, in AAttack attack) {
-			if (ModData.GetModDataOrDefault(attack, SidewaysAttackKey, Sideways.NONE) != Sideways.NONE || attack.targetPlayer == this.targetPlayer) {
-				if (attack.paybackCounter > 0) {
-					return [attack];
-				} else {
-					Sideways dir = ModData.GetModDataOrDefault(attack, SidewaysAttackKey, Sideways.NONE);
-					return dir switch {
-						Sideways.LEFT or Sideways.RIGHT => [
-							Aim(Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.NONE))
-						],
-						_ => [
-							Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.LEFT),
-							Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.RIGHT),
-							Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.NONE)
-						]
-					};
-				}
-			} else {
-				c.DestroyDroneAt(s, x, !attack.targetPlayer);
-				return [];
-			}
+        public override bool Invincible() => AffectDamageDoneManager.AttackContext != null && refractor.DoesRefract(this);
 
-			AAttack Aim(AAttack attack) {
-				attack.targetPlayer = !targetPlayer;
-				return attack;
-			}
-		}
-
-		public override bool Invincible() => AffectDamageDoneManager.AttackContext != null && (ModData.GetModDataOrDefault(AffectDamageDoneManager.AttackContext, SidewaysAttackKey, Sideways.NONE) != Sideways.NONE 
-				|| AffectDamageDoneManager.AttackContext.targetPlayer == this.targetPlayer);
-
-		public override Spr? GetIcon() => ModEntry.Instance.PrismIcon;
+        public override Spr? GetIcon() => refractor.GetIcon(this);
 
 		public override void Render(G g, Vec v)
 		{
-			DrawWithHilight(g, ModEntry.Instance.PrismSprite, v + GetOffset(g), Mutil.Rand(x + 0.1) > 0.5, targetPlayer);
+            refractor.Render(g, v, this);
 		}
 
-		public override List<Tooltip> GetTooltips() => [
+        public override List<Tooltip> GetTooltips() => refractor.GetTooltips(this);
+    }
+
+	public abstract class RefractorStats {
+
+		public abstract List<CardAction>? Refract(State s, Combat c, in AAttack attack, StuffBase stuff);
+
+		public abstract bool DestroyAfter(State s, Combat c, in AAttack attack, StuffBase stuff);
+
+        public virtual bool DoesRefract(StuffBase stuff) => true;
+
+        public abstract Spr? GetIcon(StuffBase stuff);
+
+        public abstract void Render(G g, Vec v, StuffBase stuff);
+
+        public abstract List<Tooltip> GetTooltips(StuffBase stuff);
+    }
+
+	public class Prism : RefractorStats
+	{
+		public override List<CardAction>? Refract(State s, Combat c, in AAttack attack, StuffBase stuff) {
+			return [
+				Weaken(CopyAttack(attack)).ApplyModData(SidewaysAttackKey, Sideways.LEFT),
+				Weaken(CopyAttack(attack)).ApplyModData(SidewaysAttackKey, Sideways.RIGHT)
+			];
+
+			AAttack Weaken(AAttack attack) {
+				// if (attack.damage > 1 && !attack.targetPlayer && s.EnumerateAllArtifacts().OfType<CorrectiveLensesArtifact>().FirstOrDefault() is { } artifact) {
+                //     attack.artifactPulse = artifact.Key();
+                //     return attack;
+                // }
+				// if (attack.targetPlayer && (attack.status.HasValue || attack.cardOnHit != null) && s.EnumerateAllArtifacts().OfType<CorrectiveLensesArtifact>().FirstOrDefault() is { } fartifact) {
+                //     attack.status = null;
+                //     attack.cardOnHit = null;
+                //     attack.artifactPulse = fartifact.Key();
+                // }
+                attack.damage = 1;
+                return attack;
+            }
+		}
+        public override bool DestroyAfter(State s, Combat c, in AAttack attack, StuffBase stuff) => attack.damage >= 3;
+
+        public override Spr? GetIcon(StuffBase stuff) => ModEntry.Instance.PrismIcon;
+
+		public override void Render(G g, Vec v, StuffBase stuff)
+		{
+			stuff.DrawWithHilight(g, ModEntry.Instance.PrismSprite, v + stuff.GetOffset(g), Mutil.Rand(stuff.x + 0.1) > 0.5, stuff.targetPlayer);
+		}
+
+		public override List<Tooltip> GetTooltips(StuffBase stuff) => [
 			new GlossaryTooltip("midrow.prism") {
 				TitleColor = Colors.midrow,
 				Icon = ModEntry.Instance.PrismIcon,
@@ -226,56 +135,63 @@ public class PrismManager
 				Description = ModEntry.Instance.Localizations.Localize(["midrow", "prism", "description"]),
 			}
 		];
-	}
+    }
 
-	public class OmniPrism : Prism
+	public class PerfectPrism : Prism
 	{
-		public override List<CardAction>? Refract(State s, Combat c, in AAttack attack)
-		{
-			Sideways dir = ModData.GetModDataOrDefault(attack, SidewaysAttackKey, Sideways.NONE);
-			if (attack.paybackCounter > 0) {
-				return [attack];
-			} else {
-				return dir switch {
-					Sideways.LEFT => [
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.LEFT),
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.NONE),
-						Invert(Mutil.DeepCopy(attack)).ApplyModData(SidewaysAttackKey, Sideways.NONE),
-					],
-					Sideways.RIGHT => [
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.RIGHT),
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.NONE),
-						Invert(Mutil.DeepCopy(attack)).ApplyModData(SidewaysAttackKey, Sideways.NONE),
-					],
-					_ => [
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.LEFT),
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.RIGHT),
-						Mutil.DeepCopy(attack).ApplyModData(SidewaysAttackKey, Sideways.NONE),
-					]
-				};
-			}
+		public override List<CardAction>? Refract(State s, Combat c, in AAttack attack, StuffBase stuff) {
+			return [
+				CopyAttack(attack).ApplyModData(SidewaysAttackKey, Sideways.LEFT),
+				CopyAttack(attack).ApplyModData(SidewaysAttackKey, Sideways.RIGHT)
+			];
+		}
+        public override bool DestroyAfter(State s, Combat c, in AAttack attack, StuffBase stuff) => false;
 
-			static AAttack Invert(AAttack attack) {
+        public override Spr? GetIcon(StuffBase stuff) => ModEntry.Instance.PerfectPrismIcon;
+
+		public override void Render(G g, Vec v, StuffBase stuff)
+		{
+			stuff.DrawWithHilight(g, ModEntry.Instance.PerfectPrismIcon, v + stuff.GetOffset(g), Mutil.Rand(stuff.x + 0.1) > 0.5, stuff.targetPlayer);
+		}
+
+		public override List<Tooltip> GetTooltips(StuffBase stuff) => [
+			new GlossaryTooltip("midrow.prism") {
+				TitleColor = Colors.midrow,
+				Icon = ModEntry.Instance.PerfectPrismIcon,
+				Title = ModEntry.Instance.Localizations.Localize(["midrow", "perfectPrism", "name"]),
+				Description = ModEntry.Instance.Localizations.Localize(["midrow", "perfectPrism", "description"]),
+			}
+		];
+    }
+
+	public class Mirror : RefractorStats
+	{
+		public override List<CardAction>? Refract(State s, Combat c, in AAttack attack, StuffBase stuff) {
+			return [
+				Flip(CopyAttack(attack)).ApplyModData(SidewaysAttackKey, attack.targetPlayer ^ stuff.targetPlayer ? Sideways.LEFT : Sideways.RIGHT),
+			];
+
+			static AAttack Flip(AAttack attack) {
 				attack.targetPlayer = !attack.targetPlayer;
 				return attack;
 			}
 		}
 
-		public override bool Invincible() => AffectDamageDoneManager.AttackContext != null;
+		public override bool DestroyAfter(State s, Combat c, in AAttack attack, StuffBase stuff) => true;
 
-		public override Spr? GetIcon() => ModEntry.Instance.OmniPrismIcon;
+		public override Spr? GetIcon(StuffBase stuff) => ModEntry.Instance.MirrorIcon;
 
-		public override void Render(G g, Vec v)
+		public override void Render(G g, Vec v, StuffBase stuff)
 		{
-			DrawWithHilight(g, ModEntry.Instance.OmniPrismSprite, v + GetOffset(g), false, targetPlayer);
+			stuff.DrawWithHilight(g, ModEntry.Instance.MirrorSprite, v + stuff.GetOffset(g), stuff.targetPlayer);
 		}
 
-		public override List<Tooltip> GetTooltips() => [
-			new GlossaryTooltip("midrow.omniprism") {
+		public override List<Tooltip> GetTooltips(StuffBase stuff) => [
+			new GlossaryTooltip("midrow.mirror") {
 				TitleColor = Colors.midrow,
-				Icon = ModEntry.Instance.OmniPrismIcon,
-				Title = ModEntry.Instance.Localizations.Localize(["midrow", "omniprism", "name"]),
-				Description = ModEntry.Instance.Localizations.Localize(["midrow", "omniprism", "description"]),
+				Icon = ModEntry.Instance.MirrorIcon,
+				Title = ModEntry.Instance.Localizations.Localize(["midrow", "mirror", "name"]),
+				Description = ModEntry.Instance.Localizations.Localize(["midrow", "mirror", "description"]),
 			}
 		];
 	}
