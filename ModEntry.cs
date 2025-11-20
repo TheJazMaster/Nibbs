@@ -112,32 +112,70 @@ public sealed class ModEntry : SimpleMod {
 
 
 	internal static IReadOnlyList<Type> IxCardTypes { get; } = [
-		typeof(FractureCard),
-		typeof(PrismCard),
+		typeof(PlatitudesCard),
+		typeof(SpacePrismCard),
 		
-		typeof(KarmaCard),
-		typeof(LitterDisposalCard),
-		typeof(PrismArrayCard),
+		typeof(SpaceMirrorCard),
+		typeof(MakePeaceCard),
+
+		typeof(EqualityCard),
+
 		typeof(RighteousShotCard),
 		typeof(GreenEnergyCard),
 		typeof(MakePeaceCard),
 		typeof(NaturesShieldCard),
 
-		typeof(PulverizeCard),
-		typeof(DisperseCard),
+		typeof(InnerPeaceCard),
+		typeof(HardenCard),
+		typeof(SabotageCard),
+		typeof(FocusFireCard),
+		typeof(WeighPerspectivesCard),
+
+		typeof(MartyrCard),
+		typeof(BalanceCard),
+		typeof(SabotageCard),
+		typeof(VindicateCard),
+		typeof(EyeForAnEyeCard),
+		typeof(FaultlessCard),
+		typeof(WeighPerspectivesCard),
+
+		typeof(MartyrCard),
+		typeof(BalanceCard),
 		typeof(CrystalizeCard),
 		typeof(DemonstrateCard),
 		typeof(CrackdownCard),
 		typeof(HardAsDiamondCard),
 		typeof(RetaliateCard),
 
-		typeof(MartyrCard),
-		typeof(HealingCrystalsCard),
-		typeof(ReclaimCard),
-		typeof(SolarRayCard),
-		typeof(ScorchedEarthCard),
-	];
+		typeof(ChakraAlignerArtifact),
 
+		typeof(CorrectiveLensesArtifact),
+		typeof(HealingCrystalsArtifact),
+
+		typeof(CorrectiveLensesArtifact),
+		typeof(HealingCrystalsArtifact),
+		// typeof(ConservationEffortArtifact),
+		// typeof(SolarTreeArtifact),
+		// typeof(GemOrbitArtifact),
+		// typeof(ManifestoArtifact),
+		// typeof(MultiFacetedArtifact),
+
+		// typeof(ThoriteArtifact),
+		// typeof(FilterArtifact),
+
+		// typeof(DiamondCubicArtifact),
+		typeof(ConservationEffortArtifact)
+
+		// typeof(DiamondCubicArtifact),
+		typeof(ConservationEffortArtifact)
+		// typeof(ConservationEffortArtifact),
+		// typeof(SolarTreeArtifact),
+		// typeof(GemOrbitArtifact),
+		// typeof(ManifestoArtifact),
+		// typeof(MultiFacetedArtifact),
+
+		// typeof(ThoriteArtifact),
+		// typeof(FilterArtifact),
 	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
 		typeof(DiamondCubicArtifact),
 
