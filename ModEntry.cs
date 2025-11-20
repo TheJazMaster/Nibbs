@@ -59,7 +59,8 @@ public sealed class ModEntry : SimpleMod {
 	internal Spr FlipRightIcon { get; }
 
 	internal Spr PrismSprite { get; }
-	internal Spr OmniPrismSprite { get; }
+	internal Spr PerfectPrismSprite { get; }
+	internal Spr MirrorSprite { get; }
 	
 
 	internal static IReadOnlyList<Type> NibbsCardTypes { get; } = [
@@ -304,18 +305,17 @@ public sealed class ModEntry : SimpleMod {
 		BacktrackMoveRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRight.png")).Sprite;
 		BacktrackMoveRandomIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRandom.png")).Sprite;
 		PrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Prism.png")).Sprite;
-		OmniPrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Omniprism.png")).Sprite;
+		PerfectPrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/PerfectPrism.png")).Sprite;
+		MirrorIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Mirror.png")).Sprite;
 		FlipIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Flip.png")).Sprite;
 		FlipLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipLeft.png")).Sprite;
 		FlipRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipRight.png")).Sprite;
 
+		// ChippingSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Chipping.png")).Sprite;
+		
 		PrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Prism.png")).Sprite;
-		OmniPrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Omniprism.png")).Sprite;
-
-        foreach (var cardType in NibbsCardTypes)
-			AccessTools.DeclaredMethod(cardType, nameof(IRegisterableCard.Register))?.Invoke(null, [NibbsDeck, "Nibbs", helper, package]);
-		foreach (var artifactType in NibbsArtifactTypes)
-			AccessTools.DeclaredMethod(artifactType, nameof(IRegisterableArtifact.Register))?.Invoke(null, [NibbsDeck, "Nibbs", helper, package]);
+		PerfectPrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/PerfectPrism.png")).Sprite;
+		MirrorSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Mirror.png")).Sprite;
 
 		_ = new StatusManager();
 		_ = new SafetyShieldManager();
