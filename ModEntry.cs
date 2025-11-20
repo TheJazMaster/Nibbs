@@ -17,7 +17,7 @@ public sealed class ModEntry : SimpleMod {
     internal static ModEntry Instance { get; private set; } = null!;
 
     internal Harmony Harmony { get; }
-	internal readonly HookManager<INibbsApi.IHook> HookManager;
+	// internal readonly HookManager<INibbsApi.IHook> HookManager;
 
 	internal INibbsApi NibbsApi { get; }
 	internal IKokoroApi.IV2 KokoroApi { get; }
@@ -42,8 +42,8 @@ public sealed class ModEntry : SimpleMod {
     internal Status BacktrackRightStatus { get; }
 	internal Status BacktrackAutododgeLeftStatus { get; }
 	internal Status BacktrackAutododgeRightStatus { get; }
-	internal Status SafetyShieldStatus { get; }
-	internal Status FractureStatus { get; }
+	internal Status MidShieldStatus { get; }
+	// internal Status FractureStatus { get; }
 	internal Status PerseveranceStatus { get; }
 
     internal Spr NibbsFrame { get; }
@@ -156,7 +156,7 @@ public sealed class ModEntry : SimpleMod {
 	{
 		Instance = this;
 		Harmony = new(package.Manifest.UniqueName);
-		HookManager = new(package.Manifest.UniqueName);
+		// HookManager = new(package.Manifest.UniqueName);
 
 		NibbsApi = new ApiImplementation();
 		MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
@@ -272,22 +272,22 @@ public sealed class ModEntry : SimpleMod {
 				isGood = true,
 				affectedByTimestop = true
 			},
-			Name = AnyLocalizations.Bind(["status", "SafetyShield", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "SafetyShield", "description"]).Localize,
+			Name = AnyLocalizations.Bind(["status", "MidShield", "name"]).Localize,
+			Description = AnyLocalizations.Bind(["status", "MidShield", "description"]).Localize,
 		}).Status;
 
-        FractureStatus = helper.Content.Statuses.RegisterStatus("Fracture", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Fracture.png")).Sprite,
-				color = new("6A9B73"),
-				isGood = false,
-				affectedByTimestop = true
-			},
-			Name = AnyLocalizations.Bind(["status", "Fracture", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "Fracture", "description"]).Localize,
-		}).Status;
+        // FractureStatus = helper.Content.Statuses.RegisterStatus("Fracture", new()
+		// {
+		// 	Definition = new()
+		// 	{
+		// 		icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Fracture.png")).Sprite,
+		// 		color = new("6A9B73"),
+		// 		isGood = false,
+		// 		affectedByTimestop = true
+		// 	},
+		// 	Name = AnyLocalizations.Bind(["status", "Fracture", "name"]).Localize,
+		// 	Description = AnyLocalizations.Bind(["status", "Fracture", "description"]).Localize,
+		// }).Status;
 
         PerseveranceStatus = helper.Content.Statuses.RegisterStatus("Perseverance", new()
 		{
@@ -320,7 +320,8 @@ public sealed class ModEntry : SimpleMod {
 		_ = new StatusManager();
 		_ = new SafetyShieldManager();
 		_ = new BacktrackManager();
-		_ = new FractureManager();
+		// _ = new FractureManager();
+		// _ = new ChippingManager();
 		_ = new AffectDamageDoneManager();
 		_ = new PrismManager();
 		CardPatches.Apply();
@@ -349,7 +350,8 @@ public sealed class ModEntry : SimpleMod {
         NibbsCharacter = RegisterCharacter("Nibbs", new Color("c74b9b"), NibbsCardTypes, NibbsArtifactTypes, 
 			new StarterDeck {
 				cards = [
-					new SmeltCard(), new TrailblazerCard()
+					new SmeltCard(),
+					new TrailblazerCard()
 				],
 				artifacts = [
 					new FledgelingOrbArtifact()
@@ -389,6 +391,8 @@ public sealed class ModEntry : SimpleMod {
 		RegisterAnimation(NibbsDeck, "Nibbs", "happy");
 		RegisterAnimation(NibbsDeck, "Nibbs", "wowza");
 		RegisterAnimation(NibbsDeck, "Nibbs", "serious");
+
+        Harmony.PatchAll();
     }
 
 
