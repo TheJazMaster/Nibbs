@@ -160,8 +160,9 @@ public sealed class ModEntry : SimpleMod {
 
 		NibbsApi = new ApiImplementation();
 		MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
-		JohnsonApi = helper.ModRegistry.GetApi<IJohnsonApi>("Shockah.Johnson")!;
-		EddieApi = helper.ModRegistry.GetApi<IEddieApi>("TheJazMaster.Eddie")!;
+		DynaApi = helper.ModRegistry.GetApi<IDynaApi>("Shockah.Dyna");
+		JohnsonApi = helper.ModRegistry.GetApi<IJohnsonApi>("Shockah.Johnson");
+		EddieApi = helper.ModRegistry.GetApi<IEddieApi>("TheJazMaster.Eddie");
 		KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!.V2;
 
 		AnyLocalizations = new JsonLocalizationProvider(
@@ -263,11 +264,11 @@ public sealed class ModEntry : SimpleMod {
 
 
 
-        SafetyShieldStatus = helper.Content.Statuses.RegisterStatus("SafetyShield", new()
+        MidShieldStatus = helper.Content.Statuses.RegisterStatus("MidShield", new()
 		{
 			Definition = new()
 			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/SafetyShield.png")).Sprite,
+				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/MidShield.png")).Sprite,
 				color = new("21CE39"),
 				isGood = true,
 				affectedByTimestop = true
@@ -295,7 +296,8 @@ public sealed class ModEntry : SimpleMod {
 			{
 				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Perseverance.png")).Sprite,
 				color = new("6A9B73"),
-				isGood = true
+				isGood = true,
+				affectedByTimestop = true
 			},
 			Name = AnyLocalizations.Bind(["status", "Perseverance", "name"]).Localize,
 			Description = AnyLocalizations.Bind(["status", "Perseverance", "description"]).Localize,
@@ -324,11 +326,15 @@ public sealed class ModEntry : SimpleMod {
 		// _ = new ChippingManager();
 		_ = new AffectDamageDoneManager();
 		_ = new PrismManager();
+		_ = new AngledAttacksManager();
+		_ = new FluxManager();
+		// _ = new ToughManager();
 		CardPatches.Apply();
 		AMovePatches.Apply();
 		AMissileHitPatches.Apply();
 		AStunPatches.Apply();
 		AAttackPatches.Apply();
+		CharacterPatches.Apply();
 		AStatusPatches.Apply();
 		ShipPatches.Apply();
 		CombatPatches.Apply();
