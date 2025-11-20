@@ -370,20 +370,15 @@ public sealed class ModEntry : SimpleMod {
         IxCharacter = RegisterCharacter("Ix", new Color("c74b9b"), IxCardTypes, IxArtifactTypes, 
 			new StarterDeck {
 				cards = [
-					new FractureCard(), new PrismCard()
-				],
-				artifacts = [
-					new DiamondCubicArtifact()
+					new PlatitudesCard(),
+					new SpacePrismCard()
 				]
 			},
 			new StarterDeck {
-				// cards = {
-				// 	new WingsOfFireCard(),
-				// 	new WormholeSurfingCard()
-				// },
-				// artifacts = {
-				// 	new FledgelingOrbArtifact()
-				// }
+				cards = {
+					new MakePeaceCard(),
+					new SpaceMirrorCard()
+				}
 			}
 		);
 		IxDeck = IxCharacter.Configuration.Deck;
