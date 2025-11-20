@@ -367,7 +367,7 @@ public sealed class ModEntry : SimpleMod {
 		);
 		NibbsDeck = NibbsCharacter.Configuration.Deck;
 		
-        IxCharacter = RegisterCharacter("Ix", new Color("c74b9b"), IxCardTypes, IxArtifactTypes, 
+        IxCharacter = RegisterCharacter("Ix", new Color("22cf3a"), IxCardTypes, IxArtifactTypes, 
 			new StarterDeck {
 				cards = [
 					new PlatitudesCard(),
