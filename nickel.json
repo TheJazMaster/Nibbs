@@ -22,6 +22,11 @@
             "IsRequired": false
         },
         {
+            "UniqueName": "Shockah.Dyna",
+            "Version": "1.6.0",
+            "IsRequired": false
+        },
+        {
             "UniqueName": "TheJazMaster.Eddie",
             "Version": "2.0.0",
             "IsRequired": false

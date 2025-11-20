@@ -10,17 +10,40 @@
         "Ix": {
             "name": "Ix",
             "description": [
-                "<c=6A9B73>IX</c>",
-                "An ecoterrorist. His cards allow you to multiply your attacks at the risk of hitting your own ship."
+                "<c=22cf3a>IX</c>",
+                "An environmentalist. More of an ecoterrorist. Uses midrow to augment your offence and defence in strange ways."
             ]
+        }
+    },
+    "partModifier": {
+        "tough": {
+            "name": "tough",
+            "description": "This part takes at most 1 damage from all attacks."
+        },
+        "flux": {
+            "name": "flux",
+            "description": "The opposing ship gains 1 <c=status>TEMP SHIELD</c> when this part gets hit."
         }
     },
     "midrow": {
         "prism": {
             "name": "prism",
+            "description": "Splits attacks into two diagonal copies, hitting the closest part <c=keyword>2 to 3 spaces</c> away. <c=keyword>These copies do 1 damage.</c>\n<c=downside>3+ damage attacks destroy the prism after being copied.</c>"
+        },
+        "perfectPrism": {
+            "name": "Perfect Prism",
+            "description": "Splits attacks into two diagonal copies, hitting the closest part <c=keyword>2 to 3 spaces</c> away."
+        },
+        "mirror": {
+            "name": "space mirror",
+            "description": "Reflects an attack back diagonally, hitting the closest part <c=keyword>2 to 3 spaces</c> away, before being destroyed."
+        },
+
+        "prismOld": {
+            "name": "prism",
             "description": "Instead of destroying the prism, attacks can refract or even be copied based on their direction:\n- Attacks at the <c=keyword>pointy end</c> destroy the prism.\n- Attacks at the <c=keyword>sides</c> are refracted through the flat end\n- Attacks at the <c=keyword>flat end</c> are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
         },
-        "omniprism": {
+        "omniprismOld": {
             "name": "omniprism",
             "description": "Instead of destroying the prism, attacks are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
         }
@@ -43,6 +66,10 @@
             "description": "Instantly move <c=keyword>{{Amount}}</c> spaces in a random direction and gain <c=status>BACKTRACK</c> of the opposite direction equal to the distance moved."
         },
 
+        "chipping": {
+            "name": "CHIPPING ATTACK",
+            "description": "If this attack hits a ship, you gain <c=keyword>{{Amount}}</c> <c=status>TEMP SHIELD</c>."
+        },
         "flip": {
             "name": {
                 "all": "Flip all midrow",
@@ -83,17 +110,17 @@
             "description": "If fired on, will completely move out of the way <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
         },
 
-        "SafetyShield": {
-            "name": "safety shield",
-            "description": "Block up to {0} incoming damage. <c=downside>Goes away at end of turn.</c>"
+        "MidShield": {
+            "name": "midshield",
+            "description": "Block up to {0} incoming damage from midrow objects. Capped by max shield."
         },
         "Fracture": {
             "name": "fracture",
-            "description": "At the beginning of your next turn, the opposing ship gains {0} <c=status>SAFETY SHIELD</c>."
+            "description": "At the beginning of your next turn, lose 1 <c=status>FRACTURE</c> and the opposing ship gains 1 <c=status>TEMP SHIELD</c>."
         },
         "Perseverance": {
             "name": "perseverance",
-            "description": "After you're hit, gain {0} <c=status>SHIELD</c>."
+            "description": "After you're hit, gain {0} <c=status>SHIELD</c>. <c=downside>Decreases by 1 at start of turn.</c>"
         }
     },
     "artifact": {
@@ -132,44 +159,73 @@
             }
         },
         "Ix": {
+            "Manifesto": {
+                "name": "MANIFESTO",
+                "description": "Every 3 times you are hit, gain 1 <c=status>DRONESHIFT</c>."
+            },
+            "HealingCrystals": {
+                "name": "HEALING CRYSTALS",
+                "description": "The first time each combat you destroy a <c=midrow>prism</c> or <c=midrow>mirror</c>, <c=heal>heal 1</c>."
+            },
+            "ChakraAligner": {
+                "name": "CHAKRA ALIGNER",
+                "description": "All enemy parts are <c=parttrait>weak</c> except during your turn."
+            },
+            "CorrectiveLenses": {
+                "name": "CORRECTIVE LENSES",
+                "description": "Your <c=midrow>refracted attacks</c> can hit 1 space closer if they would otherwise miss."
+            },
+
+            "PeaceSign": {
+                "name": "PEACE SIGN",
+                "description": "ALL non-<c=midrow>midrow</c> attacks deal 1 less damage. <c=downside>Your cockpit becomes weak.</c>"
+            },
+            "ConservationEffort": {
+                "name": "CONSERVATION EFFORT",
+                "description": "Add an <c=parttrait>invincible</c>, functionless ship part randomly somewhere in the middle of your ship."
+            },
+
+
+
+
             "DiamondCubic": {
                 "name": "DIAMOND CUBIC",
                 "description": "Attacks cannot <c=action>pierce</c>, <c=parttrait>weaken</c>, <c=parttrait>brittle</c> or <c=parttrait>armor</c> your ship.\nYour <c=status>payback</c> attacks are piercing."
             },
             "MultiFaceted": {
                 "name": "MULTI-FACETED",
-                "description": "At start of turn, gain 1 <c=status>PERSEVERANCE</c>. <c=downside>At end of turn, lose 1 PERSEVERANCE."
+                "description": "Permanently gain <c=keyword>+1 max shield</c> on pickup.\nAt start of turn, gain 1 <c=status>PERSEVERANCE</c>. <c=downside>At end of turn, lose 1 perseverance."
             },
             "GemOrbit": {
                 "name": "GEM ORBIT",
                 "description": "Three <c=midrow>prisms</c>, one of each type, will always be near your ship at the start of combat."
             },
-            "ConservationEffort": {
-                "name": "CONSERVATION EFFORT",
-                "description": "Add an <c=parttrait>invincible</c>, functionless ship part randomly somewhere in the middle of your ship."
+            "SolarTree": {
+                "name": "SOLAR TREE",
+                "description": "Every 2 <c=22cf3a>Ix</c> cards played, gain 1 <c=status>MIDSHIELD</c>."
             },
-            "Manifesto": {
-                "name": "MANIFESTO",
-                "description": "While you have 3+ <c=status>FRACTURE</c>, ALL your attacks do +1 damage."
-            },
-            "Filter": {
+            "FilterOld": {
                 "name": "FILTER",
                 "description": "Refracted attacks deal 1 less damage to you."
             },
-            "Thorite": {
+            "ThoriteOld": {
                 "name": "THORITE",
                 "description": "During the enemy turn, all enemy parts are <c=parttrait>brittle</c>."
             },
 
-            "SolarTreeOld": {
-                "name": "SOLAR TREE",
-                "description": "At the start of your turn, gain 2 <c=status>SAFETY SHIELD</c> if you ended your last turn with more than 0 <c=energy>ENERGY</c>."
+            "ChakraAlignerOld": {
+                "name": "CHAKRA ALIGNER",
+                "description": "Gain 1 <c=status>OVERDRIVE</c> the first time each turn you are hit by a twice-<c=midrow>refracted</c> attack."
             },
             "ManifestoOld": {
                 "name": "MANIFESTO",
                 "description": "Prevent up to 6 damage you take DURING each of your turns. <c=faint>Hull loss actions are unaffected.</c>"
             },
-            "HealingCrystals": {
+            "ManifestoOld2": {
+                "name": "MANIFESTO",
+                "description": "While you have 3+ <c=status>FRACTURE</c>, ALL your attacks do +1 damage."
+            },
+            "HealingCrystalsOld": {
                 "name": "HEALING CRYSTALS",
                 "description": "The first time each combat you are hit by a twice-refracted attack, <c=heal>heal</c> 2."
             },
@@ -286,23 +342,23 @@
             }
         },
         "Ix": {
-            "Fracture": {
-                "name": "Fracture"
+            "Platitudes": {
+                "name": "Platitudes"
             },
-            "Prism": {
-                "name": "Prism"
+            "SpacePrism": {
+                "name": "Space Prism"
             },
-            "Crush": {
-                "name": "Crush"
+            "SpaceMirror": {
+                "name": "Space Mirror"
             },
-            "Pulverize": {
-                "name": "Pulverize"
-            },
-            "LitterDisposal": {
-                "name": "Litter Disposal"
+            "MakePeace": {
+                "name": "Make Peace"
             },
             "PrismArray": {
                 "name": "Prism Array"
+            },
+            "Equality": {
+                "name": "Equality"
             },
             "RighteousShot": {
                 "name": "Righteous Shot"
@@ -310,58 +366,49 @@
             "GreenEnergy": {
                 "name": "Green Energy"
             },
-            "MakePeace": {
-                "name": "Make Peace"
-            },
             "NaturesShield": {
                 "name": "Nature's Shield"
             },
-            "Disperse": {
-                "name": "Disperse"
+            "InnerPeace": {
+                "name": "Inner Peace",
+                "description": {
+                    "None": "Draw {{Count}} cards. Discard all cards with <c=damage>attacks</c>.",
+                    "A": "Draw {{Count}} cards. Discard all cards with <c=damage>attacks</c>.",
+                    "B": "Discard all cards with <c=damage>attacks</c>. Draw {{Count}} cards."
+                }
             },
-            "Karma": {
-                "name": "Karma"
+            "Harden": {
+                "name": "Harden"
             },
-            "Crystalize": {
-                "name": "Crystalize"
+            "Sabotage": {
+                "name": "Sabotage"
             },
-            "Demonstrate": {
-                "name": "Demonstrate"
+            "Vindicate": {
+                "name": "Vindicate"
             },
-            "Crackdown": {
-                "name": "Crackdown"
+            "EyeForAnEye": {
+                "name": "Eye for an Eye"
             },
-            "HardAsDiamond": {
-                "name": "Hard as Diamond"
+            "Faultless": {
+                "name": "Faultless"
             },
-            "Retaliate": {
-                "name": "Retaliate"
+            "WeighPerspectives": {
+                "name": "Weigh Perspectives"
             },
             "Martyr": {
                 "name": "Martyr"
             },
-            "Shatter": {
-                "name": "Shatter",
-                "description": {
-                    "None": "<c=keyword>Double</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>.",
-                    "A": "<c=keyword>Double</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>.",
-                    "B": "<c=keyword>Triple</c> and trigger all enemy <c=status>FRACTURE</c>, then all your <c=status>FRACTURE</c>."
-                }
+            "Balance": {
+                "name": "Balance"
             },
-            "Reclaim": {
-                "name": "Reclaim"
+            "Crystalize": {
+                "name": "Crystalize"
             },
-            "SolarRay": {
-                "name": "Solar Ray"
+            "FocusFire": {
+                "name": "Focus Fire"
             },
-            "ScorchedEarth": {
-                "name": "Scorched Earth"
-            },
-            "HealingCrystals": {
-                "name": "Healing Crystals"
-            },
-            "DarkSide": {
-                "name": "Dark Side"
+            "Retaliate": {
+                "name": "Retaliate"
             }
         }
     }

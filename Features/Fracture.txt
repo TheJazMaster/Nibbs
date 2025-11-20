@@ -27,7 +27,7 @@ public class FractureManager : IKokoroApi.IV2.IStatusLogicApi.IHook, IKokoroApi.
 	}
 
     internal class ATriggerFracture : CardAction {
-        public int amount = 9999;
+        public int amount = 1;
         public bool targetPlayer = false;
 
 		public override void Begin(G g, State s, Combat c)
@@ -44,7 +44,7 @@ public class FractureManager : IKokoroApi.IV2.IStatusLogicApi.IHook, IKokoroApi.
 
             c.QueueImmediate([
                 new AStatus {
-                    status = ModEntry.Instance.SafetyShieldStatus,
+                    status = Status.tempShield,
                     statusAmount = amount,
                     targetPlayer = !targetPlayer
                 },
@@ -55,6 +55,6 @@ public class FractureManager : IKokoroApi.IV2.IStatusLogicApi.IHook, IKokoroApi.
     public IReadOnlyList<Tooltip> OverrideStatusTooltips(IKokoroApi.IV2.IStatusRenderingApi.IHook.IOverrideStatusTooltipsArgs args)
 		=> args.Status == ModEntry.Instance.FractureStatus ? [
 			.. args.Tooltips,
-			.. StatusMeta.GetTooltips(ModEntry.Instance.SafetyShieldStatus, 1),
+			.. StatusMeta.GetTooltips(Status.tempShield, 1),
 		] : args.Tooltips;
 }

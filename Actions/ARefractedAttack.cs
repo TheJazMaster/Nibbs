@@ -5,8 +5,10 @@ namespace TheJazMaster.Nibbs.Actions;
 public class ARefractedAttack : CardAction
 {
 	public required List<CardAction> attacks;
+    public StuffBase? destroyAfter;
+    public bool wasPlayer;
 
-	public override void Begin(G g, State s, Combat c)
+    public override void Begin(G g, State s, Combat c)
 	{
 		for (int i = 0; i < c.cardActions.Count; i++) {
 			if (c.cardActions[i] is ARefractedAttack refAttack) {
@@ -17,5 +19,9 @@ public class ARefractedAttack : CardAction
 		foreach (AAttack attack in attacks) {
 			attack.Begin(g, s, c);
 		}
+		if (destroyAfter != null) {
+            c.DestroyDroneAt(s, destroyAfter.x, wasPlayer);
+        }
+
 	}
 }

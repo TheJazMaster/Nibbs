@@ -22,4 +22,6 @@ public class ApiImplementation : INibbsApi
 	};
 	public bool IsBacktrackMovement(AMove move) => ModEntry.Instance.Helper.ModData.TryGetModData(move, BacktrackManager.NoStrafeKey, out bool noStrafe) && noStrafe;
 	public bool ShouldBacktrackTriggerStrafe(State s) => !s.EnumerateAllArtifacts().Any(item => item is FledgelingOrbArtifact);
+
+    public AAttack? GetAttackContext() => AffectDamageDoneManager.AttackContext;
 }

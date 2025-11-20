@@ -32,15 +32,15 @@ public class AMovePatches
 			transpiler: new HarmonyMethod(typeof(AMovePatches), nameof(AMove_Begin_Transpiler))
 		);
         
-        if (ModEntry.Instance.Helper.ModRegistry.ResolvedMods.ContainsKey("Mezz.TwosCompany"))
-            Harmony.TryPatch(
-                logger: ModEntry.Instance.Logger,
-                original: AccessTools.AllAssemblies()
-                    .First(a => (a.GetName().Name ?? a.GetName().FullName) == "TwosCompany")
-                    .GetType("TwosCompany.PatchLogic")!
-                    .GetMethod("MoveBegin", AccessTools.all)!,
-                postfix: new HarmonyMethod(typeof(AMovePatches), nameof(StopTempStrafe))
-            );
+        // if (ModEntry.Instance.Helper.ModRegistry.ResolvedMods.ContainsKey("Mezz.TwosCompany"))
+        //     Harmony.TryPatch(
+        //         logger: ModEntry.Instance.Logger,
+        //         original: AccessTools.AllAssemblies()
+        //             .First(a => (a.GetName().Name ?? a.GetName().FullName) == "TwosCompany")
+        //             .GetType("TwosCompany.PatchLogic")!
+        //             .GetMethod("MoveBegin", AccessTools.all)!,
+        //         postfix: new HarmonyMethod(typeof(AMovePatches), nameof(StopTempStrafe))
+        //     );
     }
 
     private static void StopTempStrafe(AMove __0, State s, Combat c) {

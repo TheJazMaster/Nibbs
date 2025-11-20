@@ -53,7 +53,7 @@ public class AAttackPatches
                 new CodeInstruction(ldLoc).WithLabels(labels),
                 new(OpCodes.Ldarg_2),
                 new(OpCodes.Ldarg_3),
-                new(OpCodes.Ldarg_0),
+                // new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, AccessTools.DeclaredMethod(typeof(AAttackPatches), nameof(DoPerseveranceEffect))),
             ])
             .AllElements();
@@ -80,13 +80,14 @@ public class AAttackPatches
 		}
     }
 
-	internal static void DoPerseveranceEffect(Ship target, State s, Combat c, AAttack attack) {
+	internal static void DoPerseveranceEffect(Ship target, State s, Combat c) {
 		int status = target.Get(ModEntry.Instance.PerseveranceStatus);
 		if (status > 0) {
 			c.QueueImmediate(new AStatus {
 				status = Status.shield,
 				statusAmount = status,
-				targetPlayer = target.isPlayerShip
+				targetPlayer = target.isPlayerShip,
+				statusPulse = ModEntry.Instance.PerseveranceStatus
 			});
 		}
 	}

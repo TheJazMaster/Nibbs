@@ -14,9 +14,8 @@ public class StatusManager : IKokoroApi.IV2.IStatusLogicApi.IHook
         ModEntry.Instance.KokoroApi.StatusLogic.RegisterHook(this, 0);
     }
 
-    private static bool TickDownGeneric(Ship ship, Status status, ref int amount)
+    private static bool TickDownEnd(Ship ship, Status status, ref int amount)
     {
-        if (ship.Get(Status.timeStop) > 0) return false;
         if ((status == Instance.BackflipStatus ||
             status == Instance.SmokescreenStatus) && amount > 0) {
                 amount -= 1;
@@ -28,20 +27,20 @@ public class StatusManager : IKokoroApi.IV2.IStatusLogicApi.IHook
         return false;
     }
 
-    private static bool TickDownAutododge(Ship ship, Status status, ref int amount)
+    private static bool TickDownStart(Ship ship, Status status, ref int amount)
     {
-        if (ship.Get(Status.timeStop) > 0) return false;
         if (status == Instance.BacktrackAutododgeLeftStatus || status == Instance.BacktrackAutododgeRightStatus) {
             amount = 0;
         }
-        return false;
+        if (amount > 0 && status == Instance.PerseveranceStatus) amount--;
+		return false;
     }
 
     public bool HandleStatusTurnAutoStep(IHandleStatusTurnAutoStepArgs args)
 	{
         int amt = args.Amount;
-        if (args.Timing == IKokoroApi.IV2.IStatusLogicApi.StatusTurnTriggerTiming.TurnEnd) TickDownGeneric(args.Ship, args.Status, ref amt);
-        else if (args.Timing == IKokoroApi.IV2.IStatusLogicApi.StatusTurnTriggerTiming.TurnStart) TickDownAutododge(args.Ship, args.Status, ref amt);
+        if (args.Timing == IKokoroApi.IV2.IStatusLogicApi.StatusTurnTriggerTiming.TurnEnd) TickDownEnd(args.Ship, args.Status, ref amt);
+        else if (args.Timing == IKokoroApi.IV2.IStatusLogicApi.StatusTurnTriggerTiming.TurnStart) TickDownStart(args.Ship, args.Status, ref amt);
         args.Amount = amt;
         return false;
 	}

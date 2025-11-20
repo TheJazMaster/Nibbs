@@ -10,6 +10,7 @@ using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features;
 using TheJazMaster.Nibbs.Patches;
 using Shockah.Kokoro;
+using Shockah.Dyna;
 
 namespace TheJazMaster.Nibbs;
 
@@ -23,6 +24,7 @@ public sealed class ModEntry : SimpleMod {
 	internal IKokoroApi.IV2 KokoroApi { get; }
 	internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
 	internal IJohnsonApi? JohnsonApi { get; }
+	internal IDynaApi? DynaApi { get; }
 	internal IEddieApi? EddieApi { get; }
 
 
@@ -53,11 +55,13 @@ public sealed class ModEntry : SimpleMod {
 	internal Spr BacktrackMoveRightIcon { get; }
 	internal Spr BacktrackMoveRandomIcon { get; }
 	internal Spr PrismIcon { get; }
-	internal Spr OmniPrismIcon { get; }
+	internal Spr PerfectPrismIcon { get; }
+	internal Spr MirrorIcon { get; }
 	internal Spr FlipIcon { get; }
 	internal Spr FlipLeftIcon { get; }
 	internal Spr FlipRightIcon { get; }
 
+	internal Spr ChippingSprite { get; }
 	internal Spr PrismSprite { get; }
 	internal Spr PerfectPrismSprite { get; }
 	internal Spr MirrorSprite { get; }
@@ -118,21 +122,14 @@ public sealed class ModEntry : SimpleMod {
 		typeof(SpaceMirrorCard),
 		typeof(MakePeaceCard),
 
+		typeof(PrismArrayCard),
 		typeof(EqualityCard),
-
 		typeof(RighteousShotCard),
 		typeof(GreenEnergyCard),
-		typeof(MakePeaceCard),
 		typeof(NaturesShieldCard),
 
 		typeof(InnerPeaceCard),
 		typeof(HardenCard),
-		typeof(SabotageCard),
-		typeof(FocusFireCard),
-		typeof(WeighPerspectivesCard),
-
-		typeof(MartyrCard),
-		typeof(BalanceCard),
 		typeof(SabotageCard),
 		typeof(VindicateCard),
 		typeof(EyeForAnEyeCard),
@@ -142,51 +139,29 @@ public sealed class ModEntry : SimpleMod {
 		typeof(MartyrCard),
 		typeof(BalanceCard),
 		typeof(CrystalizeCard),
-		typeof(DemonstrateCard),
-		typeof(CrackdownCard),
-		typeof(HardAsDiamondCard),
+		typeof(FocusFireCard),
 		typeof(RetaliateCard),
+	];
 
-		typeof(ChakraAlignerArtifact),
-
-		typeof(CorrectiveLensesArtifact),
-		typeof(HealingCrystalsArtifact),
-
-		typeof(CorrectiveLensesArtifact),
-		typeof(HealingCrystalsArtifact),
-		// typeof(ConservationEffortArtifact),
-		// typeof(SolarTreeArtifact),
-		// typeof(GemOrbitArtifact),
-		// typeof(ManifestoArtifact),
-		// typeof(MultiFacetedArtifact),
-
-		// typeof(ThoriteArtifact),
-		// typeof(FilterArtifact),
-
-		// typeof(DiamondCubicArtifact),
-		typeof(ConservationEffortArtifact)
-
-		// typeof(DiamondCubicArtifact),
-		typeof(ConservationEffortArtifact)
-		// typeof(ConservationEffortArtifact),
-		// typeof(SolarTreeArtifact),
-		// typeof(GemOrbitArtifact),
-		// typeof(ManifestoArtifact),
-		// typeof(MultiFacetedArtifact),
-
-		// typeof(ThoriteArtifact),
-		// typeof(FilterArtifact),
 	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
-		typeof(DiamondCubicArtifact),
-
-		typeof(ConservationEffortArtifact),
-		typeof(GemOrbitArtifact),
+		typeof(ChakraAlignerArtifact),
 		typeof(ManifestoArtifact),
-		typeof(MultiFacetedArtifact),
+		typeof(CorrectiveLensesArtifact),
+		typeof(HealingCrystalsArtifact),
 
-		typeof(ThoriteArtifact),
-		typeof(FilterArtifact),
-		// typeof(ManifestoOldArtifact),
+		typeof(PeaceSignArtifact),
+		typeof(ConservationEffortArtifact)
+
+		// typeof(DiamondCubicArtifact),
+
+		// typeof(ConservationEffortArtifact),
+		// typeof(SolarTreeArtifact),
+		// typeof(GemOrbitArtifact),
+		// typeof(ManifestoArtifact),
+		// typeof(MultiFacetedArtifact),
+
+		// typeof(ThoriteArtifact),
+		// typeof(FilterArtifact),
 	];
 
     
@@ -358,7 +333,7 @@ public sealed class ModEntry : SimpleMod {
 		MirrorSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Mirror.png")).Sprite;
 
 		_ = new StatusManager();
-		_ = new SafetyShieldManager();
+		_ = new MidShieldManager();
 		_ = new BacktrackManager();
 		// _ = new FractureManager();
 		// _ = new ChippingManager();
@@ -372,10 +347,10 @@ public sealed class ModEntry : SimpleMod {
 		AMissileHitPatches.Apply();
 		AStunPatches.Apply();
 		AAttackPatches.Apply();
-		CharacterPatches.Apply();
 		AStatusPatches.Apply();
 		ShipPatches.Apply();
 		CombatPatches.Apply();
+		CharacterPatches.Apply();
 		StoryVarsPatches.Apply();
 		StoryNodePatches.Apply();
 		ScriptCtxPatches.Apply();
