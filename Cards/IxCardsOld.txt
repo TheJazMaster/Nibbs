@@ -1,0 +1,930 @@
+using Nickel;
+using TheJazMaster.Nibbs.Actions;
+using System.Collections.Generic;
+using System.Reflection;
+using Nanoray.PluginManager;
+using TheJazMaster.Nibbs.Features;
+using Microsoft.Extensions.Logging;
+using System.Globalization;
+
+namespace TheJazMaster.Nibbs.Cards;
+
+
+internal sealed class RighteousShotCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.B ? 3 : 1
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.A => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true)
+		],
+		_ => [
+			new AAttack {
+				damage = GetDmg(s, upgrade == Upgrade.B ? 3 : 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true)
+		]
+	};
+}
+
+
+internal sealed class PrismCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.B ? 0 : 1,
+		floppable = upgrade != Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new ASpawn {
+				thing = new PrismManager.OmniPrism {
+					targetPlayer = true
+				}
+			},
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+		],
+		_ => [
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				disabled = flipped
+			},
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = upgrade == Upgrade.A ? 2 : 1,
+				disabled = flipped,
+				targetPlayer = true
+			},
+			new ADummyAction(),
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = true
+				},
+				disabled = !flipped
+			},
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = upgrade == Upgrade.A ? 2 : 1,
+				disabled = !flipped,
+				targetPlayer = true
+			},
+		]
+	};
+}
+
+
+internal sealed class KarmaCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1,
+		flippable = true,
+		retain = upgrade == Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.A => [
+			new AFlip {
+				dir = flipped ? 1 : -1
+			},
+			new AStatus {
+				status = Status.evade,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AFlip {
+				dir = flipped ? 1 : -1
+			},
+			new AStatus {
+				status = Status.evade,
+				statusAmount = 1,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class LitterDisposalCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1,
+		flippable = true
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new ASpawn {
+			thing = upgrade == Upgrade.B ? new SpaceMine() : new Asteroid(),
+			offset = 1
+		},
+		new AStatus {
+			status = Status.droneShift,
+			statusAmount = upgrade == Upgrade.A ? 2 : 1,
+			targetPlayer = true
+		}
+	];
+}
+
+
+internal sealed class PrismArrayCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 0 : 1,
+		exhaust = true,
+		flippable = upgrade != Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = -3
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = true
+				},
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = 3
+			},
+		],
+		_ => [
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = true
+				},
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = 3
+			},
+		]
+	};
+}
+
+
+internal sealed class GreenEnergyCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 0,
+		exhaust = true,
+		retain = upgrade == Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AEnergy {
+			changeAmount = upgrade == Upgrade.A ? 2 : 1
+		},
+		new AStatus {
+			status = ModEntry.Instance.MidShieldStatus,
+			statusAmount = 2,
+			targetPlayer = true
+		}
+	];
+}
+
+
+internal sealed class CrystalizeCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.maxShield,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 3,
+				targetPlayer = true
+			}
+		],
+		_ => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = upgrade == Upgrade.A ? 4 : 3,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class NaturesShieldCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 0 : 1,
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.evade,
+				statusAmount = 1,
+				targetPlayer = true,
+			},
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new Asteroid()
+			}
+		],
+		_ => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true,
+			},
+			new ASpawn {
+				thing = new Asteroid()
+			}
+		]
+	};
+}
+
+
+internal sealed class DisperseCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1,
+		flippable = upgrade == Upgrade.A
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch
+	{
+		Upgrade.B => [
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				}
+			},
+			new AMove {
+				dir = 2,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = true
+				}
+			}
+		],
+		_ => [
+			new AMove {
+				dir = 2,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = true
+				}
+			}
+		]
+	};
+}
+
+
+internal sealed class TerrorizeCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 0 : 1,
+		exhaust = upgrade != Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = Status.overdrive,
+			statusAmount = 2,
+			mode = AStatusMode.Set,
+			targetPlayer = true
+		},
+		new AEndTurn(),
+	];
+}
+
+
+internal sealed class MakePeaceCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1,
+		recycle = upgrade == Upgrade.A
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AAttack {
+				damage = GetDmg(s, 0),
+				status = Status.tempShield,
+				statusAmount = 2,
+				stunEnemy = true
+			},
+			new AMove {
+				dir = 1,
+				targetPlayer = true
+			},
+			new AAttack {
+				damage = GetDmg(s, 0),
+				status = Status.shield,
+				statusAmount = 2,
+				fast = true,
+				stunEnemy = true
+			}
+		],
+		_ => [
+			new AAttack {
+				damage = GetDmg(s, 0),
+				status = Status.tempShield,
+				statusAmount = 2,
+				stunEnemy = true
+			}
+		]
+	};
+}
+
+
+internal sealed class EyeForAnEyeCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 0,
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch
+	{
+		Upgrade.A => [
+			new AStatus
+			{
+				status = Status.tempPayback,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+		],
+		Upgrade.B => [
+			new AStatus
+			{
+				status = Status.tempPayback,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus
+			{
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AEndTurn()
+		],
+		_ => [
+			new AStatus
+			{
+				status = Status.tempPayback,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AEndTurn()
+		]
+	};
+}
+
+
+internal sealed class DemonstrateCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 1 : 2
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = -1
+			},
+			new ASpawn {
+				thing = new PrismManager.OmniPrism {
+					targetPlayer = false
+				}
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = 1
+			},
+		],
+		_ => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new PrismManager.OmniPrism {
+					targetPlayer = false
+				},
+				offset = -1
+			},
+			new ASpawn {
+				thing = new PrismManager.RegularPrism {
+					targetPlayer = false
+				},
+				offset = 1
+			},
+		]
+	};
+}
+
+
+internal sealed class CrackdownCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 2
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.A => [
+			new AAttack {
+				damage = GetDmg(s, 1),
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = -2,
+				targetPlayer = true
+			}
+		],
+		Upgrade.B => [
+			new AAttack {
+				damage = GetDmg(s, 1),
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true)
+		],
+		_ => [
+			new AAttack {
+				damage = GetDmg(s, 1),
+			},
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AAttack {
+				damage = GetDmg(s, 1),
+			}.ApplyModData(ChippingManager.ChippingKey, true),
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = -2,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class HardAsDiamondCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 1 : 2,
+		exhaust = true
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.perfectShield,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.tempPayback,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.drawLessNextTurn,
+				statusAmount = 3,
+				targetPlayer = true
+			},
+		],
+		_ => [
+			new AStatus {
+				status = Status.perfectShield,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.drawLessNextTurn,
+				statusAmount = 2,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class NaturesClaimCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 2
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		_ => [
+			new AStatus {
+				status = Status.tempPayback,
+				statusAmount = upgrade == Upgrade.A ? 3 : 2,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = Status.tempShield,
+				statusAmount = upgrade == Upgrade.B ? 3 : 1,
+				targetPlayer = true
+			}
+		]
+	};
+}
+
+
+internal sealed class EveryonesACriticCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 0
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = Status.tempPayback,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new DualDrone()
+			},
+		],
+		_ => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new DualDrone {
+					bubbleShield = upgrade == Upgrade.A
+				}
+			},
+		]
+	};
+}
+
+
+internal sealed class MartyrCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = 1,
+		exhaust = upgrade == Upgrade.B
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = ModEntry.Instance.PerseveranceStatus,
+				statusAmount = 2,
+				targetPlayer = true
+			},
+		],
+		_ => [
+			new AStatus {
+				status = ModEntry.Instance.PerseveranceStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AStatus {
+				status = upgrade == Upgrade.A ? Status.tempShield : Status.drawLessNextTurn,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+		]
+	};
+}
+
+
+internal sealed class RetaliateCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 1 : 2,
+		exhaust = true
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		_ => [
+			new AStatus {
+				status = Status.payback,
+				statusAmount = upgrade == Upgrade.B ? 2 : 1,
+				targetPlayer = true
+			},
+			new ASpawn {
+				thing = new Missile {
+					missileType = MissileType.normal,
+					targetPlayer = true
+				}
+			}
+		]
+	};
+}
+
+
+internal sealed class SolarRayCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _);
+	}
+
+	private int GetDamage(State s) => upgrade switch {
+		_ => GetDmg(s, 1)
+	};
+
+	private int GetEnergy() => upgrade switch {
+		_ => 1
+	};
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 1 : 0
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = ModEntry.Instance.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AAttack {
+				damage = GetDamage(s),
+				piercing = true,
+				givesEnergy = GetEnergy(),
+			}
+		],
+		_ => [
+			new AAttack {
+				damage = GetDamage(s),
+				piercing = true,
+				givesEnergy = GetEnergy(),
+				stunEnemy = upgrade == Upgrade.A
+			}
+		]
+	};
+}
+
+
+internal sealed class ScorchedEarthCard : Card, IRegisterableCard
+{
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _);
+	}
+
+	public override CardData GetData(State state) => new() {
+		cost = upgrade == Upgrade.A ? 2 : 3,
+		exhaust = true,
+		retain = upgrade == Upgrade.B,
+	};
+
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new ASpawn {
+			thing = new PrismManager.OmniPrism {
+				targetPlayer = false
+			},
+			offset = -3
+		},
+		new ASpawn {
+			thing = new PrismManager.OmniPrism {
+				targetPlayer = false
+			}
+		},
+		new ASpawn {
+			thing = new PrismManager.OmniPrism {
+				targetPlayer = false
+			},
+			offset = 3
+		},
+		new AStatus {
+			status = Status.droneShift,
+			statusAmount = 2,
+			targetPlayer = true
+		}
+	];
+}
+
+
+// internal sealed class DarkSideCard : Card, IRegisterableCard, IHasCustomCardTraits
+// {
+// 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+// 		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _, true);
+// 	}
+
+// 	public override CardData GetData(State state) => new() {
+// 		cost = 0,
+// 		exhaust = true,
+// 		temporary = true
+// 	};
+
+// 	public IReadOnlySet<ICardTraitEntry> GetInnateTraits(State state) => new HashSet<ICardTraitEntry> {
+// 		ModEntry.Instance.KokoroApi.Fleeting.Trait
+// 	};
+
+// 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+// 		_ => [
+// 			new AAttack {
+// 				damage = GetDmg(s, 2),
+// 				piercing = upgrade == Upgrade.B,
+// 				statusAmount = 1,
+// 				status = upgrade == Upgrade.A ? ModEntry.Instance.FractureStatus : null
+// 			}
+// 		]
+// 	};
+// }
+
+
+// internal sealed class ShatterCard : Card, IRegisterableCard
+// {
+// 	private static string CardName = null!;
+// 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+// 		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out CardName);
+// 	}
+
+// 	private int GetMult() => 2;
+
+// 	public override CardData GetData(State state) => new() {
+// 		cost = upgrade == Upgrade.A ? 1 : 2,
+// 		exhaust = true
+// 	};
+
+// 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+// 		Upgrade.B => [
+// 			ModEntry.Instance.KokoroApi.VariableHintTargetPlayerTargetPlayer.MakeVariableHint(
+// 				new AVariableHint {
+// 					status = ModEntry.Instance.FractureStatus,
+// 				}
+// 			).SetTargetPlayer(false).AsCardAction,
+// 			new AStatus {
+// 				status = Status.tempShield,
+// 				statusAmount = GetMult() * c.otherShip.Get(ModEntry.Instance.FractureStatus),
+// 				xHint = GetMult(),
+// 				targetPlayer = true
+// 			},
+// 			new AHurt {
+// 				hurtAmount = GetMult() * c.otherShip.Get(ModEntry.Instance.FractureStatus),
+// 				xHint = GetMult(),
+// 			},
+// 			new AStatus {
+// 				status = ModEntry.Instance.FractureStatus,
+// 				statusAmount = 0,
+// 				mode = AStatusMode.Set,
+// 				targetPlayer = false
+// 			},
+// 		],
+// 		_ => [
+// 			ModEntry.Instance.KokoroApi.VariableHintTargetPlayerTargetPlayer.MakeVariableHint(
+// 				new AVariableHint {
+// 					status = ModEntry.Instance.FractureStatus,
+// 				}
+// 			).SetTargetPlayer(false).AsCardAction,
+// 			new AHurt {
+// 				hurtAmount = GetMult() * c.otherShip.Get(ModEntry.Instance.FractureStatus),
+// 				xHint = GetMult(),
+// 			},
+// 			new AStatus {
+// 				status = ModEntry.Instance.FractureStatus,
+// 				statusAmount = 0,
+// 				mode = AStatusMode.Set,
+// 				targetPlayer = false
+// 			},
+// 		]
+// 	};
+// }
