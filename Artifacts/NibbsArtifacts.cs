@@ -6,6 +6,7 @@ using System.Runtime;
 using Nanoray.PluginManager;
 using Nickel;
 using TheJazMaster.Nibbs.Actions;
+using TheJazMaster.Nibbs.Features;
 
 namespace TheJazMaster.Nibbs.Artifacts;
 
@@ -116,11 +117,11 @@ internal sealed class GalacticNewsCoverageArtifact : Artifact, IRegisterableArti
 	}
 
 	public override List<Tooltip>? GetExtraTooltips() =>
-		StatusMeta.GetTooltips(ModEntry.Instance.BackflipStatus, threshold);
+		StatusMeta.GetTooltips(ModEntry.Instance.NibbsManager.BackflipStatus, threshold);
 
 	public override void AfterPlayerStatusAction(State state, Combat combat, Status status, AStatusMode mode, int statusAmount)
 	{
-		Status backflip = ModEntry.Instance.BackflipStatus;
+		Status backflip = ModEntry.Instance.NibbsManager.BackflipStatus;
 		if (status != backflip) return;
 		if (!active) {
 			if (state.ship.Get(backflip) >= threshold) {
@@ -154,7 +155,7 @@ internal sealed class GalacticNewsCoverageArtifact : Artifact, IRegisterableArti
 
 	public override void OnQueueEmptyDuringPlayerTurn(State state, Combat combat)
 	{
-		Status backflip = ModEntry.Instance.BackflipStatus;
+		Status backflip = ModEntry.Instance.NibbsManager.BackflipStatus;
 		if (active && state.ship.Get(backflip) > 0) {
 			combat.QueueImmediate(new AStatus {
 				status = Status.tempShield,
@@ -201,7 +202,7 @@ internal sealed class EternalFlameArtifact : Artifact, IRegisterableArtifact
 				targetPlayer = true,
 				status = Status.timeStop,
 				statusAmount = 1,
-				whoDidThis = ModEntry.Instance.NibbsDeck,
+				whoDidThis = ModEntry.Instance.NibbsManager.NibbsDeck,
 				artifactPulse = Key()
 			});
 		}
@@ -219,10 +220,10 @@ internal sealed class QuantumEnginesArtifact : Artifact, IRegisterableArtifact
 	{
 		if (statusAmount <= 0 || mode != AStatusMode.Add) return;
 
-		if (status == ModEntry.Instance.BacktrackLeftStatus ||
-			status == ModEntry.Instance.BacktrackRightStatus ||
-			status == ModEntry.Instance.BacktrackAutododgeLeftStatus ||
-			status == ModEntry.Instance.BacktrackAutododgeRightStatus ||
+		if (status == ModEntry.Instance.NibbsManager.BacktrackLeftStatus ||
+			status == ModEntry.Instance.NibbsManager.BacktrackRightStatus ||
+			status == ModEntry.Instance.NibbsManager.BacktrackAutododgeLeftStatus ||
+			status == ModEntry.Instance.NibbsManager.BacktrackAutododgeRightStatus ||
 			status == Status.autododgeLeft ||
 			status == Status.autododgeRight)
 		{
