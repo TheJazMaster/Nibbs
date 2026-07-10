@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Nanoray.PluginManager;
 using Nickel;
-using TheJazMaster.Nibbs.Features;
 
 namespace TheJazMaster.Nibbs.Artifacts;
 
@@ -41,44 +38,6 @@ internal sealed class ManifestoArtifact : Artifact, IRegisterableArtifact
 }
 
 
-internal sealed class ChakraAlignerArtifact : Artifact, IRegisterableArtifact
-{
-	private static IModData ModData => ModEntry.Instance.Helper.ModData;
-	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
-	}
-
-	public override void OnTurnEnd(State state, Combat combat)
-	{
-		foreach (Part part in combat.otherShip.parts) {
-			if (part.type == PType.empty) continue;
-
-			ModData.SetModData(part, Key(), part.damageModifier);
-			ModData.SetModData(part, Key() + "Hidden", part.brittleIsHidden);
-			part.damageModifier = PDamMod.weak;
-			part.brittleIsHidden = false;
-		}
-		Pulse();
-	}
-
-	public override void OnTurnStart(State state, Combat combat)
-	{
-		foreach (Part part in combat.otherShip.parts) {
-			if (part.type == PType.empty) continue;
-
-			var mod = ModData.GetOptionalModData<PDamMod>(part, Key());
-			if (mod.HasValue) part.damageModifier = mod.Value;
-			var hid = ModData.GetOptionalModData<bool>(part, Key() + "Hidden");
-			if (hid.HasValue) part.brittleIsHidden = hid.Value;
-		}
-	}
-
-	public override List<Tooltip>? GetExtraTooltips() => [
-		new TTGlossary("parttrait.brittle")
-	];
-}
-
-
 internal sealed class HealingCrystalsArtifact : Artifact, IRegisterableArtifact
 {
     public bool active = true;
@@ -100,7 +59,14 @@ internal sealed class HealingCrystalsArtifact : Artifact, IRegisterableArtifact
 
 internal sealed class CorrectiveLensesArtifact : Artifact, IRegisterableArtifact
 {
-	private static IModData ModData => ModEntry.Instance.Helper.ModData;
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
+	}
+}
+
+
+internal sealed class RayleighScatteringArtifact : Artifact, IRegisterableArtifact
+{
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
 	}
@@ -117,15 +83,19 @@ internal sealed class ConservationEffortArtifact : Artifact, IRegisterableArtifa
 
 	public override void OnReceiveArtifact(State state)
 	{
-		(state.GetDialogue()?.actionQueue ?? state.GetCurrentQueue()).Queue(new AInsertPart {
-			targetPlayer = true,
-			x = state.rngActions.NextInt() % (state.ship.parts.Count - 1) + 1,
-			part = new Part {
-				type = PType.special,
-				skin = "crystal_1",
-				invincible = true
-				// damageModifier = ToughManager.ToughDamageModifier
-			}
+		(state.GetDialogue()?.actionQueue ?? state.GetCurrentQueue()).Queue(new AShipUpgrades {
+			actions = [
+				new AInsertPart {
+					targetPlayer = true,
+					x = state.rngActions.NextInt() % (state.ship.parts.Count - 1) + 1,
+					part = new Part {
+						type = PType.special,
+						skin = "crystal_1",
+						invincible = true
+						// damageModifier = ToughManager.ToughDamageModifier
+					}
+				}
+			]
 		});
 	}
 
@@ -138,34 +108,34 @@ internal sealed class ConservationEffortArtifact : Artifact, IRegisterableArtifa
 
 internal sealed class PeaceSignArtifact : Artifact, IRegisterableArtifact
 {
-	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+    public bool active = true;
+
+    public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Boss], helper, package, out _);
 	}
 
-	public override void OnTurnStart(State state, Combat combat)
-	{
-        int n = 0;
-        foreach (Part part in state.ship.parts)
-		{
-			if (part.type == PType.cockpit)
-			{
-				// Remove the hardmode brittling
-				if (combat.cardActions.Where(action => action is ABrittle brittle && brittle.worldX == state.ship.x + n).FirstOrDefault() is { } action)
-                    combat.cardActions.Remove(action);
+    public override void OnReceiveArtifact(State state) {
+        state.ship.baseEnergy++;
+    }
 
-                combat.QueueImmediate(new AWeaken
-				{
-					targetPlayer = true,
-					worldX = state.ship.x + n
-				});
-			}
-			n++;
-		}
-	}
+    public override void OnRemoveArtifact(State state) {
+        state.ship.baseEnergy--;
+    }
+
+    public override void OnTurnStart(State state, Combat combat) {
+        active = true;
+    }
+
+    public override void OnPlayerAttack(State state, Combat combat) {
+        if (active) {
+            Pulse();
+            active = false;
+        }
+    }
 
     public override int ModifyBaseDamage(int baseDamage, Card? card, State state, Combat? combat, bool fromPlayer)
     {
-        return -1;
+        return (fromPlayer && active) ? -9999 : 0;
     }
 }
 
