@@ -1,20 +1,21 @@
 using System.Linq;
 using TheJazMaster.Nibbs.Actions;
 using TheJazMaster.Nibbs.Artifacts;
-using TheJazMaster.Nibbs.Features;
+using TheJazMaster.Nibbs.Features.Ix;
+using TheJazMaster.Nibbs.Features.Nibbs;
 
 namespace TheJazMaster.Nibbs;
 
 public class ApiImplementation : INibbsApi
 {
 
-	public Deck NibbsDeck => ModEntry.Instance.NibbsDeck;
-	public Status BacktrackLeftStatus => ModEntry.Instance.BacktrackLeftStatus;
-	public Status BacktrackRightStatus => ModEntry.Instance.BacktrackRightStatus;
-	public Status ReversibleAutotodgeLeftStatus => ModEntry.Instance.BacktrackAutododgeLeftStatus;
-	public Status ReversibleAutotodgeRightStatus => ModEntry.Instance.BacktrackAutododgeRightStatus;
-	public Status BlurStatus => ModEntry.Instance.SmokescreenStatus;
-	public Status BackflipStatus => ModEntry.Instance.BackflipStatus;
+	public Deck NibbsDeck => ModEntry.Instance.NibbsManager.NibbsDeck;
+	public Status BacktrackLeftStatus => ModEntry.Instance.NibbsManager.BacktrackLeftStatus;
+	public Status BacktrackRightStatus => ModEntry.Instance.NibbsManager.BacktrackRightStatus;
+	public Status ReversibleAutotodgeLeftStatus => ModEntry.Instance.NibbsManager.BacktrackAutododgeLeftStatus;
+	public Status ReversibleAutotodgeRightStatus => ModEntry.Instance.NibbsManager.BacktrackAutododgeRightStatus;
+	public Status BlurStatus => ModEntry.Instance.NibbsManager.SmokescreenStatus;
+	public Status BackflipStatus => ModEntry.Instance.NibbsManager.BackflipStatus;
 	public CardAction MakeReversibleMove(int dir, bool isRandom = false) => new ABacktrackMove {
 		dir = dir,
 		targetPlayer = true,
