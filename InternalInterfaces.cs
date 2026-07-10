@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Nanoray.PluginManager;
 using Nickel;
 
@@ -6,6 +7,7 @@ namespace TheJazMaster.Nibbs;
 
 internal interface IRegisterableCard
 {
+
 	private static Spr RegisterSpriteOrDefault(string path, Spr defaultSprite, IModHelper helper, IPluginPackage<IModManifest> package) {
 		var file = package.PackageRoot.GetRelativeFile(path);
 		if (file.Exists)
@@ -13,27 +15,27 @@ internal interface IRegisterableCard
 		return defaultSprite;
 	}
 
-	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, bool dontOffer = false) {
+	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, bool dontOffer = false, Upgrade[]? upgradesTo = null) {
 		name = type.Name[..^4];
-		return Register(type, deck, charname, rarity, dontOffer, name, RegisterSpriteOrDefault($"Sprites/Cards/{name}.png", StableSpr.cards_colorless, helper, package), helper, package);
+		return Register(type, deck, charname, rarity, dontOffer, name, RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}.png", StableSpr.cards_colorless, helper, package), helper, package, upgradesTo);
 	}
-	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, out Spr unflippedSprite, out Spr flippedSprite, bool dontOffer = false) {
+	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, out Spr unflippedSprite, out Spr flippedSprite, bool dontOffer = false, Upgrade[]? upgradesTo = null) {
 		name = type.Name[..^4];
 		unflippedSprite = RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}Unflipped.png", StableSpr.cards_colorless, helper, package);
 		flippedSprite = RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}Flipped.png", unflippedSprite, helper, package);
-		return Register(type, deck, charname, rarity, dontOffer, name, unflippedSprite, helper, package);
+		return Register(type, deck, charname, rarity, dontOffer, name, unflippedSprite, helper, package, upgradesTo);
 	}
-	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, out Spr normalSprite, out Spr unflippedSprite, out Spr flippedSprite, bool dontOffer = false) {
+	static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, IModHelper helper, IPluginPackage<IModManifest> package, out string name, out Spr normalSprite, out Spr unflippedSprite, out Spr flippedSprite, bool dontOffer = false, Upgrade[]? upgradesTo = null) {
 		name = type.Name[..^4];
 		normalSprite = RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}.png", StableSpr.cards_colorless, helper, package);
 		unflippedSprite = RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}Unflipped.png", normalSprite, helper, package);
 		flippedSprite = RegisterSpriteOrDefault($"Sprites/Cards/{charname}/{name}Flipped.png", normalSprite, helper, package);
-		return Register(type, deck, charname, rarity, dontOffer, name, normalSprite, helper, package);
+		return Register(type, deck, charname, rarity, dontOffer, name, normalSprite, helper, package, upgradesTo);
 	}
 
 	static abstract void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package);
 
-	private static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, bool dontOffer, string name, Spr sprite, IModHelper helper, IPluginPackage<IModManifest> package) {
+	private static ICardEntry Register(Type type, Deck deck, string charname, Rarity rarity, bool dontOffer, string name, Spr sprite, IModHelper helper, IPluginPackage<IModManifest> package, Upgrade[]? upgradesTo) {
 		return helper.Content.Cards.RegisterCard(name, new()
 		{
 			CardType = type,
@@ -41,7 +43,7 @@ internal interface IRegisterableCard
 			{
 				deck = deck,
 				rarity = rarity,
-				upgradesTo = [Upgrade.A, Upgrade.B],
+				upgradesTo = upgradesTo ?? [Upgrade.A, Upgrade.B],
 				dontOffer = dontOffer
 			},
 			Art = sprite,
