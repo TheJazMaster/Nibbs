@@ -123,7 +123,7 @@ internal sealed class TrailblazerCard : Card, IRegisterableCard
 
 	public override CardData GetData(State state) => new() {
 		cost = upgrade == Upgrade.B ? 2 : 1,
-		art = flipped ? ArtFlipped : Art
+		art = flipped ? Art : ArtFlipped
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
@@ -226,14 +226,14 @@ internal sealed class OverHereCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.B => [
 			new AStatus {
-				status = ModEntry.Instance.BacktrackAutododgeLeftStatus,
+				status = ModEntry.Instance.NibbsManager.BacktrackAutododgeLeftStatus,
 				statusAmount = 1,
 				targetPlayer = true
 			}
 		],
 		_ => [
 			new AStatus {
-				status = ModEntry.Instance.BacktrackAutododgeRightStatus,
+				status = ModEntry.Instance.NibbsManager.BacktrackAutododgeRightStatus,
 				statusAmount = upgrade == Upgrade.A ? 2 : 1,
 				targetPlayer = true
 			}
@@ -249,13 +249,13 @@ internal sealed class HotPursuitCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 1 : 2,
+		cost = upgrade == Upgrade.A ? 1 : 2,
 		exhaust = true,
-		art = flipped ? TrailblazerCard.Art : TrailblazerCard.ArtFlipped,
+		art = flipped ? TrailblazerCard.ArtFlipped : TrailblazerCard.Art,
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
+		Upgrade.B => [
 			new ABacktrackMove {
 				dir = 2,
 				targetPlayer = true
@@ -301,7 +301,7 @@ internal sealed class BackflipCard : Card, IRegisterableCard
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
-			status = ModEntry.Instance.BackflipStatus,
+			status = ModEntry.Instance.NibbsManager.BackflipStatus,
 			statusAmount = upgrade == Upgrade.B ? 6 : upgrade == Upgrade.A ? 4 : 3,
 			targetPlayer = true
 		},
@@ -323,32 +323,18 @@ internal sealed class SmokescreenCard : Card, IRegisterableCard
 		cost = 1
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.B => [
-			new AStatus {
-				status = Status.tempShield,
-				statusAmount = 2,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
-				statusAmount = 3,
-				targetPlayer = true
-			}
-		],
-		_ => [
-			new AStatus {
-				status = Status.tempShield,
-				statusAmount = upgrade == Upgrade.A ? 3 : 2,
-				targetPlayer = true
-			},
-			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
-				statusAmount = 1,
-				targetPlayer = true
-			}
-		],
-	};
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = Status.tempShield,
+			statusAmount = upgrade == Upgrade.A ? 3 : 2,
+			targetPlayer = true
+		},
+		new AStatus {
+			status = ModEntry.Instance.NibbsManager.BackflipStatus,
+			statusAmount = upgrade == Upgrade.B ? 3 : 1,
+			targetPlayer = true
+		}
+	];
 }
 
 
@@ -364,6 +350,7 @@ internal sealed class QuantumTurbulenceCard : Card, IRegisterableCard
 		recycle = true,
 		description = ModEntry.Instance.Localizations.Localize(["card", "Nibbs", CardName, "description", upgrade.ToString()], new {
 			Dir = flipped ? Loc.T("card.LoadState.desc.combat.right") : Loc.T("card.LoadState.desc.combat.left"),
+			Dir2 = flipped ? Loc.T("card.LoadState.desc.combat.left") : Loc.T("card.LoadState.desc.combat.right"),
 			Amount = 1 + state.ship.Get(Status.hermes) 
 		})
 	};
@@ -413,7 +400,7 @@ internal sealed class FlapFlapCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
 			status = upgrade switch {
-				Upgrade.A => ModEntry.Instance.BacktrackAutododgeRightStatus,
+				Upgrade.A => ModEntry.Instance.NibbsManager.BacktrackAutododgeRightStatus,
 				Upgrade.B => Status.autododgeLeft,
 				_ => Status.autododgeRight
 			}, 
@@ -455,7 +442,7 @@ internal sealed class HoldOnCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1,
+		cost = 2,
 		retain = true,
 		exhaust = upgrade != Upgrade.B
 	};
@@ -463,12 +450,12 @@ internal sealed class HoldOnCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
 			status = Status.hermes,
-			statusAmount = 2,
+			statusAmount = upgrade == Upgrade.A ? 3 : 2,
 			targetPlayer = true
 		},
 		new AStatus {
-			status = ModEntry.Instance.BackflipStatus,
-			statusAmount = upgrade == Upgrade.A ? 2 : 1,
+			status = ModEntry.Instance.NibbsManager.BackflipStatus,
+			statusAmount = upgrade == Upgrade.A ? 3 : 2,
 			targetPlayer = true
 		},
 	];
@@ -496,8 +483,8 @@ internal sealed class DimensionalJauntCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.B => [
 			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
-				statusAmount = 2,
+				status = ModEntry.Instance.NibbsManager.BackflipStatus,
+				statusAmount = 3,
 				targetPlayer = true
 			},
 			new AAddCard {
@@ -551,7 +538,7 @@ internal sealed class HopCard : Card, IRegisterableCard
 			}
 		],
 		Upgrade.B => [
-			new AMove {
+			new ABacktrackMove {
 				dir = -1,
 				targetPlayer = true
 			},
@@ -622,42 +609,22 @@ internal sealed class TauntCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 1 : 0,
+		cost = 1,
 		exhaust = true
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.B => [
-			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
-				statusAmount = 4,
-				targetPlayer = true
-			},
-			new AStunShip(),
-			new AStatus {
-				status = Status.evade,
-				statusAmount = 0,
-				mode = AStatusMode.Set,
-				targetPlayer = true
-			}
-		],
-		_ => [
-			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
-				statusAmount = 4,
-				targetPlayer = true
-			},
-			new AEnergy {
-				changeAmount = upgrade == Upgrade.A ? 2 : 1
-			},
-			new AStatus {
-				status = Status.evade,
-				statusAmount = 0,
-				mode = AStatusMode.Set,
-				targetPlayer = true
-			},
-		],
-	};
+	public override List<CardAction> GetActions(State s, Combat c) => [
+		new AStatus {
+			status = Status.autododgeRight,
+			statusAmount = upgrade == Upgrade.A ? 2 : 1,
+			targetPlayer = true
+		},
+		new AStatus {
+			status = Status.energyNextTurn,
+			statusAmount = upgrade == Upgrade.B ? 2 : 1,
+			targetPlayer = true
+		},
+	];
 }
 
 
@@ -681,6 +648,7 @@ internal sealed class FluxCompressorCard : Card, IRegisterableCard
 			new AStatus {
 				status = Status.timeStop,
 				statusAmount = 1,
+				mode = AStatusMode.Set,
 				targetPlayer = true
 			},
 		],
@@ -730,27 +698,23 @@ internal sealed class QuantumCollapseCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 2,
-		retain = upgrade == Upgrade.A
+		cost = 1
 	};
 
 	private static int GetSchmoveAmt(State s)
 	{
 		if (s.route is Combat)
 		{
-			return s.ship.Get(ModEntry.Instance.BacktrackLeftStatus) + s.ship.Get(ModEntry.Instance.BacktrackRightStatus);
+			return s.ship.Get(ModEntry.Instance.NibbsManager.BacktrackLeftStatus) + s.ship.Get(ModEntry.Instance.NibbsManager.BacktrackRightStatus);
 		}
 		return 0;
 	}
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.B => [
-			new AAttack {
-				damage = GetDmg(s, 1)
-			},
 			new AVariableHint {
-				status = ModEntry.Instance.BacktrackLeftStatus,
-				secondStatus = ModEntry.Instance.BacktrackRightStatus
+				status = ModEntry.Instance.NibbsManager.BacktrackLeftStatus,
+				secondStatus = ModEntry.Instance.NibbsManager.BacktrackRightStatus
 			},
 			new AAttack {
 				xHint = 1,
@@ -759,24 +723,24 @@ internal sealed class QuantumCollapseCard : Card, IRegisterableCard
 		],
 		_ => [
 			new AAttack {
-				damage = GetDmg(s, 1)
+				damage = GetDmg(s, upgrade == Upgrade.A ? 1 : 0)
 			},
 			new AVariableHint {
-				status = ModEntry.Instance.BacktrackLeftStatus,
-				secondStatus = ModEntry.Instance.BacktrackRightStatus
+				status = ModEntry.Instance.NibbsManager.BacktrackLeftStatus,
+				secondStatus = ModEntry.Instance.NibbsManager.BacktrackRightStatus
 			},
 			new AAttack {
 				xHint = 1,
 				damage = GetDmg(s, GetSchmoveAmt(s)),
 			},
 			new AStatus {
-				status = ModEntry.Instance.BacktrackLeftStatus,
+				status = ModEntry.Instance.NibbsManager.BacktrackLeftStatus,
 				mode = AStatusMode.Set,
 				statusAmount = 0,
 				targetPlayer = true
 			},
 			new AStatus {
-				status = ModEntry.Instance.BacktrackRightStatus,
+				status = ModEntry.Instance.NibbsManager.BacktrackRightStatus,
 				mode = AStatusMode.Set,
 				statusAmount = 0,
 				targetPlayer = true
@@ -800,7 +764,7 @@ internal sealed class BlurCard : Card, IRegisterableCard
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AStatus {
-			status = ModEntry.Instance.SmokescreenStatus,
+			status = ModEntry.Instance.NibbsManager.SmokescreenStatus,
 			statusAmount = 1,
 			targetPlayer = true
 		},
@@ -872,13 +836,13 @@ internal sealed class NovaCard : Card, IRegisterableCard
 				targetPlayer = true
 			},
 			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
+				status = ModEntry.Instance.NibbsManager.BackflipStatus,
 				statusAmount = 1,
 				targetPlayer = true
 			},
 			new AStatus {
-				status = Status.loseEvadeNextTurn,
-				statusAmount = 1,
+				status = Status.heat,
+				statusAmount = 3,
 				targetPlayer = true
 			},
 			new AEnergy {
@@ -893,18 +857,19 @@ internal sealed class NovaCard : Card, IRegisterableCard
 				targetPlayer = true
 			},
 			new AStatus {
-				status = ModEntry.Instance.BackflipStatus,
+				status = ModEntry.Instance.NibbsManager.BackflipStatus,
 				statusAmount = 1,
 				targetPlayer = true
 			},
 			new AStatus {
-				status = Status.loseEvadeNextTurn,
-				statusAmount = 1,
+				status = Status.heat,
+				statusAmount = 3,
 				targetPlayer = true
 			},
 		]
 	};
 }
+
 
 internal sealed class NibbsExeCard : Card, IRegisterableCard
 {
@@ -915,13 +880,13 @@ internal sealed class NibbsExeCard : Card, IRegisterableCard
 	public override CardData GetData(State state) => new() {
 		cost = upgrade == Upgrade.A ? 0 : 1,
 		exhaust = true,
-		description = ColorlessLoc.GetDesc(state, upgrade == Upgrade.B ? 3 : 2, ModEntry.Instance.NibbsDeck),
+		description = ColorlessLoc.GetDesc(state, upgrade == Upgrade.B ? 3 : 2, ModEntry.Instance.NibbsManager.NibbsDeck),
 		artTint = "ffffff"
     };
 
 	public override List<CardAction> GetActions(State s, Combat c)
     {
-		Deck deck = ModEntry.Instance.NibbsDeck;
+		Deck deck = ModEntry.Instance.NibbsManager.NibbsDeck;
 		return upgrade switch
 		{
 			Upgrade.B => [
