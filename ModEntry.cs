@@ -5,12 +5,10 @@ using Nickel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheJazMaster.Nibbs.Cards;
-using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features;
-using TheJazMaster.Nibbs.Patches;
 using Shockah.Kokoro;
 using Shockah.Dyna;
+using TheJazMaster.Nibbs.Characters;
 
 namespace TheJazMaster.Nibbs;
 
@@ -33,139 +31,6 @@ public sealed class ModEntry : SimpleMod {
 
 	internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
 	internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
-
-    internal IPlayableCharacterEntryV2 NibbsCharacter { get; }
-    internal IPlayableCharacterEntryV2 IxCharacter { get; }
-
-    internal Deck NibbsDeck { get; }
-
-    internal Deck IxDeck { get; }
-
-	internal Status BackflipStatus { get; }
-	internal Status SmokescreenStatus { get; }
-	internal Status BacktrackLeftStatus { get; }
-    internal Status BacktrackRightStatus { get; }
-	internal Status BacktrackAutododgeLeftStatus { get; }
-	internal Status BacktrackAutododgeRightStatus { get; }
-	internal Status MidShieldStatus { get; }
-	// internal Status FractureStatus { get; }
-	internal Status PerseveranceStatus { get; }
-
-    internal Spr NibbsFrame { get; }
-    internal Spr NibbsCardBorder { get; }
-
-    internal Spr BacktrackMoveLeftIcon { get; }
-	internal Spr BacktrackMoveRightIcon { get; }
-	internal Spr BacktrackMoveRandomIcon { get; }
-	internal Spr PrismIcon { get; }
-	internal Spr PerfectPrismIcon { get; }
-	internal Spr MirrorIcon { get; }
-	internal Spr FlipIcon { get; }
-	internal Spr FlipLeftIcon { get; }
-	internal Spr FlipRightIcon { get; }
-
-	internal Spr ChippingSprite { get; }
-	internal Spr PrismSprite { get; }
-	internal Spr PerfectPrismSprite { get; }
-	internal Spr MirrorSprite { get; }
-	
-
-	internal static IReadOnlyList<Type> NibbsCardTypes { get; } = [
-		typeof(SmeltCard),
-		typeof(WingsOfFireCard),
-		typeof(SpaceHoppingCard),
-		typeof(TrailblazerCard),
-		typeof(WormholeSurfingCard),
-		typeof(OverHereCard),
-		typeof(HotPursuitCard),
-		typeof(BackflipCard),
-        typeof(SmokescreenCard),
-		
-		typeof(QuantumTurbulenceCard),
-		typeof(HydraulicsCard),
-		typeof(FlapFlapCard),
-		typeof(FluxCompressorCard),
-		typeof(HoldOnCard),
-		typeof(DimensionalJauntCard),
-		typeof(TauntCard),
-
-		typeof(DragonFrenzyCard),
-		typeof(SuperpositionCard),
-		typeof(QuantumCollapseCard),
-		typeof(BlurCard),
-		typeof(NovaCard),
-		
-		typeof(HopCard),
-		typeof(SkipCard),
-	];
-
-	internal static IReadOnlyList<Type> ExeCardTypes = [
-		typeof(NibbsExeCard),
-	];
-
-
-    internal static IReadOnlyList<Type> NibbsArtifactTypes { get; } = [
-		typeof(DragonfireCandleArtifact),
-		typeof(EyeOfCobaArtifact),
-		typeof(GalacticNewsCoverageArtifact),
-		typeof(EternalFlameArtifact),
-		
-		typeof(QuantumEnginesArtifact),
-		typeof(SugarRushArtifact),
-		
-		typeof(FledgelingOrbArtifact),
-	];
-
-
-
-	internal static IReadOnlyList<Type> IxCardTypes { get; } = [
-		typeof(PlatitudesCard),
-		typeof(SpacePrismCard),
-		
-		typeof(SpaceMirrorCard),
-		typeof(MakePeaceCard),
-
-		typeof(PrismArrayCard),
-		typeof(EqualityCard),
-		typeof(RighteousShotCard),
-		typeof(GreenEnergyCard),
-		typeof(NaturesShieldCard),
-
-		typeof(InnerPeaceCard),
-		typeof(HardenCard),
-		typeof(SabotageCard),
-		typeof(VindicateCard),
-		typeof(EyeForAnEyeCard),
-		typeof(FaultlessCard),
-		typeof(WeighPerspectivesCard),
-
-		typeof(MartyrCard),
-		typeof(BalanceCard),
-		typeof(CrystalizeCard),
-		typeof(FocusFireCard),
-		typeof(RetaliateCard),
-	];
-
-	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
-		typeof(ChakraAlignerArtifact),
-		typeof(ManifestoArtifact),
-		typeof(CorrectiveLensesArtifact),
-		typeof(HealingCrystalsArtifact),
-
-		typeof(PeaceSignArtifact),
-		typeof(ConservationEffortArtifact)
-
-		// typeof(DiamondCubicArtifact),
-
-		// typeof(ConservationEffortArtifact),
-		// typeof(SolarTreeArtifact),
-		// typeof(GemOrbitArtifact),
-		// typeof(ManifestoArtifact),
-		// typeof(MultiFacetedArtifact),
-
-		// typeof(ThoriteArtifact),
-		// typeof(FilterArtifact),
-	];
 
     
     public ModEntry(IPluginPackage<IModManifest> package, IModHelper helper, ILogger logger) : base(package, helper, logger)
@@ -248,3 +113,42 @@ public sealed class ModEntry : SimpleMod {
 		return Api;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
