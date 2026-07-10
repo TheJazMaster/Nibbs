@@ -186,236 +186,16 @@ public sealed class ModEntry : SimpleMod {
 			new CurrentLocaleOrEnglishLocalizationProvider<IReadOnlyList<string>>(AnyLocalizations)
 		);
 
-		NibbsFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/Panel.png")).Sprite;
-        NibbsCardBorder = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/CardBorder.png")).Sprite;
-
-        BacktrackLeftStatus = helper.Content.Statuses.RegisterStatus("BacktrackLeft", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackLeft.png")).Sprite,
-				color = new("a051ff"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "BacktrackLeft", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackLeft", "description"]).Localize
-		}).Status;
-
-        BacktrackRightStatus = helper.Content.Statuses.RegisterStatus("BacktrackRight", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackRight.png")).Sprite,
-				color = new("a051ff"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "BacktrackRight", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackRight", "description"]).Localize
-		}).Status;
-
-        BacktrackAutododgeLeftStatus = helper.Content.Statuses.RegisterStatus("BacktrackAutododgeLeft", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackAutododgeLeft.png")).Sprite,
-				color = new("c744ff"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "BacktrackAutododgeLeft", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeLeft", "description"]).Localize,
-			ShouldFlash = (State s, Combat c, Ship ship, Status status) =>
-			{
-				return true;
-			}
-		}).Status;
-
-        BacktrackAutododgeRightStatus = helper.Content.Statuses.RegisterStatus("BacktrackAutododgeRight", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackAutododgeRight.png")).Sprite,
-				color = new("c744ff"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "BacktrackAutododgeRight", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "BacktrackAutododgeRight", "description"]).Localize,
-			ShouldFlash = (State s, Combat c, Ship ship, Status status) =>
-			{
-				return true;
-			}
-		}).Status;
-
-        SmokescreenStatus = helper.Content.Statuses.RegisterStatus("Smokescreen", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Smokescreen.png")).Sprite,
-				color = new("c4c4c4"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "Smokescreen", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "Smokescreen", "description"]).Localize
-		}).Status;
-
-        BackflipStatus = helper.Content.Statuses.RegisterStatus("Backflip", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Backflip.png")).Sprite,
-				color = new("ffc646"),
-				affectedByTimestop = true,
-				isGood = true
-			},
-			Name = AnyLocalizations.Bind(["status", "Backflip", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "Backflip", "description"]).Localize
-		}).Status;
-
-
-
-        MidShieldStatus = helper.Content.Statuses.RegisterStatus("MidShield", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/MidShield.png")).Sprite,
-				color = new("21CE39"),
-				isGood = true,
-				affectedByTimestop = true
-			},
-			Name = AnyLocalizations.Bind(["status", "MidShield", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "MidShield", "description"]).Localize,
-		}).Status;
-
-        // FractureStatus = helper.Content.Statuses.RegisterStatus("Fracture", new()
-		// {
-		// 	Definition = new()
-		// 	{
-		// 		icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Fracture.png")).Sprite,
-		// 		color = new("6A9B73"),
-		// 		isGood = false,
-		// 		affectedByTimestop = true
-		// 	},
-		// 	Name = AnyLocalizations.Bind(["status", "Fracture", "name"]).Localize,
-		// 	Description = AnyLocalizations.Bind(["status", "Fracture", "description"]).Localize,
-		// }).Status;
-
-        PerseveranceStatus = helper.Content.Statuses.RegisterStatus("Perseverance", new()
-		{
-			Definition = new()
-			{
-				icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Perseverance.png")).Sprite,
-				color = new("6A9B73"),
-				isGood = true,
-				affectedByTimestop = true
-			},
-			Name = AnyLocalizations.Bind(["status", "Perseverance", "name"]).Localize,
-			Description = AnyLocalizations.Bind(["status", "Perseverance", "description"]).Localize,
-		}).Status;
-
-		BacktrackMoveLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveLeft.png")).Sprite;
-		BacktrackMoveRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRight.png")).Sprite;
-		BacktrackMoveRandomIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackMoveRandom.png")).Sprite;
-		PrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Prism.png")).Sprite;
-		PerfectPrismIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/PerfectPrism.png")).Sprite;
-		MirrorIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Mirror.png")).Sprite;
-		FlipIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Flip.png")).Sprite;
-		FlipLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipLeft.png")).Sprite;
-		FlipRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/FlipRight.png")).Sprite;
-
-		// ChippingSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/Chipping.png")).Sprite;
-		
-		PrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Prism.png")).Sprite;
-		PerfectPrismSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/PerfectPrism.png")).Sprite;
-		MirrorSprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Midrow/Mirror.png")).Sprite;
-
-		_ = new StatusManager();
-		_ = new MidShieldManager();
-		_ = new BacktrackManager();
-		// _ = new FractureManager();
-		// _ = new ChippingManager();
-		_ = new AffectDamageDoneManager();
-		_ = new PrismManager();
-		_ = new AngledAttacksManager();
-		_ = new FluxManager();
-		// _ = new ToughManager();
-		CardPatches.Apply();
-		AMovePatches.Apply();
-		AMissileHitPatches.Apply();
-		AStunPatches.Apply();
-		AAttackPatches.Apply();
-		AStatusPatches.Apply();
-		ShipPatches.Apply();
-		CombatPatches.Apply();
-		CharacterPatches.Apply();
-		StoryVarsPatches.Apply();
-		StoryNodePatches.Apply();
-		ScriptCtxPatches.Apply();
-
-		Helper.Events.OnModLoadPhaseFinished += (_, phase) => {
-			if (phase == ModLoadPhase.AfterDbInit) {
-				new CombatDialogue().Inject();
-				new EventDialogue().Inject();
-				new SwitchInjections().Inject();
-			}
-		};
-		Helper.Events.RegisterAfterArtifactsHook(nameof(Artifact.OnEnemyDodgePlayerAttackByOneTile), (State state, Combat combat) => {
-			state.storyVars.ApplyModData(StoryVarsPatches.JustGrazedKey, true);
-		}, 0);
-		
-        NibbsCharacter = RegisterCharacter("Nibbs", new Color("c74b9b"), NibbsCardTypes, NibbsArtifactTypes, 
-			new StarterDeck {
-				cards = [
-					new SmeltCard(),
-					new TrailblazerCard()
-				],
-				artifacts = [
-					new FledgelingOrbArtifact()
-				]
-			},
-			new StarterDeck {
-				cards = {
-					new WingsOfFireCard(),
-					new WormholeSurfingCard()
-				},
-				artifacts = {
-					new FledgelingOrbArtifact()
-				}
-			}
-		);
-		NibbsDeck = NibbsCharacter.Configuration.Deck;
-		
-        IxCharacter = RegisterCharacter("Ix", new Color("22cf3a"), IxCardTypes, IxArtifactTypes, 
-			new StarterDeck {
-				cards = [
-					new PlatitudesCard(),
-					new SpacePrismCard()
-				]
-			},
-			new StarterDeck {
-				cards = {
-					new MakePeaceCard(),
-					new SpaceMirrorCard()
-				}
-			}
-		);
-		IxDeck = IxCharacter.Configuration.Deck;
-
-		RegisterAnimation(NibbsDeck, "Nibbs", "squint");
-		RegisterAnimation(NibbsDeck, "Nibbs", "gameover");
-		RegisterAnimation(NibbsDeck, "Nibbs", "cheeky");
-		RegisterAnimation(NibbsDeck, "Nibbs", "happy");
-		RegisterAnimation(NibbsDeck, "Nibbs", "wowza");
-		RegisterAnimation(NibbsDeck, "Nibbs", "serious");
+		NibbsManager = new NibbsManager(this, package, helper);
+		IxManager = new IxManager(this, package, helper);
+		_ = new StoryVarsManager();
+		_ = new OnStunManager();
 
         Harmony.PatchAll();
     }
 
 
-	public IPlayableCharacterEntryV2 RegisterCharacter(string name, Color color, IReadOnlyList<Type> cardTypes, IReadOnlyList<Type> artifactTypes, StarterDeck starters, StarterDeck altStarters) {
+	internal IPlayableCharacterEntryV2 RegisterCharacter(string name, Color color, IReadOnlyList<Type> cardTypes, IReadOnlyList<Type> artifactTypes, StarterDeck starters, StarterDeck altStarters) {
 		var borderSprite = Helper.Content.Sprites.RegisterSprite(Package.PackageRoot.GetRelativeFile($"Sprites/Characters/{name}/{name}CardBorder.png")).Sprite;
 		var frameSprite = Helper.Content.Sprites.RegisterSprite(Package.PackageRoot.GetRelativeFile($"Sprites/Characters/{name}/{name}Frame.png")).Sprite;
 
@@ -448,7 +228,7 @@ public sealed class ModEntry : SimpleMod {
 		});
 	}
 
-	private CharacterAnimationConfigurationV2 RegisterAnimation(Deck deck, string charname, string name) =>
+	internal CharacterAnimationConfigurationV2 RegisterAnimation(Deck deck, string charname, string name) =>
 		Helper.Content.Characters.V2.RegisterCharacterAnimation(charname + "_" + name, new()
 		{
 			CharacterType = deck.Key(),
@@ -462,6 +242,6 @@ public sealed class ModEntry : SimpleMod {
 
 	public override object? GetApi(IModManifest requestingMod)
 	{
-		return NibbsApi;
+		return Api;
 	}
 }
