@@ -25,7 +25,7 @@ public class GreedySwitch : SaySwitch
 	public new Say? PickLine(G g, IScriptTarget target)
 	{
 		Say? result = RandomLineForPresentCharacter(g, target);
-		if (result == null) {
+		if (result == null && banned.Count == 0) {
 			return RandomLineForGenericCrew(g);
 		}
 		return result;
@@ -47,15 +47,14 @@ public class GreedySwitch : SaySwitch
 	{
 		G g2 = g;
 		IScriptTarget target2 = target;
-		return lines.Where(delegate(Say line)
+		return [.. lines.Where(delegate(Say line)
 		{
 			if (line.who == "crew") return false;
 			bool isBanned = banned.Contains(line.who);
 			bool num = g2.state.characters.Any((Character ch) => ch.type == line.who);
 			bool flag = target2 is Dialogue && line.who == "comp";
 			bool flag2 = target2 is Combat combat && combat.otherShip?.ai?.character.type == line.who;
-			bool flag3 = target2 is Dialogue && NewRunOptions.allChars.All((Deck ch) => ch.Key() != line.who);
-			return !isBanned && (num || flag || flag2 || flag3);
-		}).ToList();
+			return !isBanned && (num || flag || flag2);
+		})];
 	}
 }
