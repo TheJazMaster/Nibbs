@@ -20,7 +20,10 @@ public sealed class ModEntry : SimpleMod {
     internal Harmony Harmony { get; }
 	// internal readonly HookManager<INibbsApi.IHook> HookManager;
 
-	internal INibbsApi NibbsApi { get; }
+	internal NibbsManager NibbsManager { get; }
+	internal IxManager IxManager { get; }
+
+	internal INibbsApi Api { get; }
 	internal IKokoroApi.IV2 KokoroApi { get; }
 	internal IMoreDifficultiesApi? MoreDifficultiesApi { get; }
 	internal IJohnsonApi? JohnsonApi { get; }
@@ -171,7 +174,7 @@ public sealed class ModEntry : SimpleMod {
 		Harmony = new(package.Manifest.UniqueName);
 		// HookManager = new(package.Manifest.UniqueName);
 
-		NibbsApi = new ApiImplementation();
+		Api = new ApiImplementation();
 		MoreDifficultiesApi = helper.ModRegistry.GetApi<IMoreDifficultiesApi>("TheJazMaster.MoreDifficulties")!;
 		DynaApi = helper.ModRegistry.GetApi<IDynaApi>("Shockah.Dyna");
 		JohnsonApi = helper.ModRegistry.GetApi<IJohnsonApi>("Shockah.Johnson");
