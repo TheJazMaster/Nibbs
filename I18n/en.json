@@ -27,8 +27,8 @@
     },
     "midrow": {
         "prism": {
-            "name": "prism",
-            "description": "Splits attacks into two diagonal copies, hitting the closest part <c=keyword>2 to 3 spaces</c> away. <c=keyword>These copies do 1 damage.</c>\n<c=downside>3+ damage attacks destroy the prism after being copied.</c>"
+            "name": "imperfect prism",
+            "description": "Splits attacks into two diagonal copies, hitting the closest part <c=keyword>2 to 3 spaces</c> away.\n<c=downside>The copies do 1 damage.</c>"
         },
         "perfectPrism": {
             "name": "Perfect Prism",
@@ -36,7 +36,7 @@
         },
         "mirror": {
             "name": "space mirror",
-            "description": "Reflects an attack back diagonally, hitting the closest part <c=keyword>2 to 3 spaces</c> away, before being destroyed."
+            "description": "Reflects an attack back diagonally, hitting the closest part <c=keyword>2 to 3 spaces</c> away.\nDestroyed after reflecting a <c=damage>1+ damage</c> attack."
         },
 
         "prismOld": {
@@ -65,6 +65,12 @@
             "name": "Reversible move random",
             "description": "Instantly move <c=keyword>{{Amount}}</c> spaces in a random direction and gain <c=status>BACKTRACK</c> of the opposite direction equal to the distance moved."
         },
+
+        "destroyPrisms": {
+            "name": "",
+            "description": "If this attack hits a ship, you gain <c=keyword>{{Amount}}</c> <c=status>TEMP SHIELD</c>."
+        },
+
 
         "chipping": {
             "name": "CHIPPING ATTACK",
@@ -95,19 +101,21 @@
         },
         "BacktrackLeft": {
             "name": "backtrack left",
-            "description": "Lets you move left with {0}. Costs 1 backtrack left per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
+            "description": "Lets you move left with <c=keyword>{{Key}}</c>. Costs 1 backtrack left per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn.",
+            "simple": "Lets you move left. Costs 1 backtrack left per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
         },
         "BacktrackRight": {
             "name": "backtrack right",
-            "description": "Lets you move right with {0}. Costs 1 backtrack right per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
+            "description": "Lets you move right with <c=keyword>{{Key}}</c>. Costs 1 backtrack right per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn.",
+            "simple": "Lets you move right. Costs 1 backtrack right per move. <c=downside>Not affected by HERMES BOOTS. Goes away at end of turn."
         },
         "BacktrackAutododgeLeft": {
             "name": "reversible autododge left",
-            "description": "If fired on, will completely move out of the way <c=keyword>LEFT</c> and gain <c=status>BACKTRACK RIGHT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
+            "description": "If fired on, will completely move out of the way <c=keyword>LEFT</c> and gain <c=status>BACKTRACK RIGHT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>"
         },
         "BacktrackAutododgeRight": {
             "name": "reversible autododge right",
-            "description": "If fired on, will completely move out of the way <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>."
+            "description": "If fired on, will completely move out of the way <c=keyword>RIGHT</c> and gain <c=status>BACKTRACK LEFT</c> equal to the distance moved. <c=downside>Decreases by 1 every time it triggers. Goes away at start of next turn.</c>"
         },
 
         "MidShield": {
@@ -139,7 +147,7 @@
             },
             "GalacticNewsCoverage": {
                 "name": "CHANNEL 7 COVERAGE",
-                "description": "Upon reaching {{Amount}} <c=status>BACKFLIP</c>, lose {{Amount}} backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
+                "description": "Upon reaching 5 <c=status>BACKFLIP</c>, lose 5 backflip, gain 1 <c=status>TABLE FLIP</c> and convert all current and future backflip to <c=status>TEMP SHIELD</c>."
             },
             "EternalFlame": {
                 "name": "ETERNAL FLAME",
@@ -167,18 +175,18 @@
                 "name": "HEALING CRYSTALS",
                 "description": "The first time each combat you destroy a <c=midrow>prism</c> or <c=midrow>mirror</c>, <c=heal>heal 1</c>."
             },
-            "ChakraAligner": {
-                "name": "CHAKRA ALIGNER",
-                "description": "All enemy parts are <c=parttrait>weak</c> except during your turn."
-            },
             "CorrectiveLenses": {
                 "name": "CORRECTIVE LENSES",
-                "description": "Your <c=midrow>refracted attacks</c> can hit 1 space closer if they would otherwise miss."
+                "description": "Your <c=midrow>diagonal attacks</c> can hit 1 space closer if they would otherwise miss."
+            },
+            "RayleighScattering": {
+                "name": "RAYLEIGH SCATTERING",
+                "description": "When <c=midrow>prisms</c> split and copy attacks, they also copy them <c=keyword>straight ahead</c>.\nWhen <c=midrow>mirrors</c> reflect attacks, they also copy them <c=keyword>straight back</c>."
             },
 
             "PeaceSign": {
                 "name": "PEACE SIGN",
-                "description": "ALL non-<c=midrow>midrow</c> attacks deal 1 less damage. <c=downside>Your cockpit becomes weak.</c>"
+                "description": "Gain 1 extra <c=energy>ENERGY</c> every turn. <c=downside>Your first attack or attack card each turn deals 0 damage."
             },
             "ConservationEffort": {
                 "name": "CONSERVATION EFFORT",
@@ -187,6 +195,15 @@
 
 
 
+
+            "DiplomaticImmunity": {
+                "name": "DIPLOMATIC IMMUNITY",
+                "description": "ALL non-<c=midrow>midrow</c> attacks deal 1 less damage."
+            },
+            "ChakraAligner": {
+                "name": "CHAKRA ALIGNER",
+                "description": "All enemy parts are <c=parttrait>weak</c> except during your turn."
+            },
 
             "DiamondCubic": {
                 "name": "DIAMOND CUBIC",
@@ -267,9 +284,9 @@
             "QuantumTurbulence": {
                 "name": "Quantum Turbulence",
                 "description": {
-                    "None": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}}.",
-                    "A": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and gain 1 <c=status>temp shield</c>.",
-                    "B": "On draw, <c=downside>immediately</c> <c=action>backtrack move {{Dir}} {{Amount}} and <c=action>right {{Amount}}."
+                    "None": "On draw, <c=downside>immediately</c> <c=action>reversibly move {{Dir}} {{Amount}}.",
+                    "A": "On draw, <c=downside>immediately</c> <c=action>reversibly move {{Dir}} {{Amount}} and gain 1 <c=status>temp shield</c>.",
+                    "B": "On draw, <c=downside>immediately</c> <c=action>reversibly move {{Dir}} {{Amount}} and <c=action>{{Dir2}} {{Amount}}."
                 }
             },
             "FireBreath": {
@@ -304,7 +321,7 @@
                 "description": {
                     "None": "Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>.",
                     "A": "Add a <c=card>Hop A</c> and a <c=card>Skip A</c> to your <c=keyword>draw pile</c>.",
-                    "B": "Gain 2 <c=status>backflip</c>. Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>."
+                    "B": "Gain 3 <c=status>backflip</c>. Add a <c=card>Hop</c> and a <c=card>Skip</c> to your <c=keyword>draw pile</c>."
                 }
             },
             "Hop": {
@@ -342,11 +359,16 @@
             }
         },
         "Ix": {
-            "Platitudes": {
-                "name": "Platitudes"
+            "MovingSentiment": {
+                "name": "Moving Sentiment"
             },
             "SpacePrism": {
-                "name": "Space Prism"
+                "name": "Optics",
+                "description": {
+                    "None": "Launch a <c=midrow>prism</c>.\nPut a <c=card>Platitudes</c> in your <c=keyword>hand</c>.",
+                    "A": "Launch a <c=midrow>prism</c>.\nPut a <c=card>Platitudes A</c> in your <c=keyword>hand</c>.",
+                    "B": "Launch a <c=midrow>perfect prism</c>.\nPut a <c=card>Platitudes</c> in your <c=keyword>hand</c>."
+                }
             },
             "SpaceMirror": {
                 "name": "Space Mirror"
@@ -393,7 +415,7 @@
                 "name": "Faultless"
             },
             "WeighPerspectives": {
-                "name": "Weigh Perspectives"
+                "name": "Perspective Shift"
             },
             "Martyr": {
                 "name": "Martyr"
@@ -409,6 +431,12 @@
             },
             "Retaliate": {
                 "name": "Retaliate"
+            },
+            "Detox": {
+                "name": "Detox"
+            },
+            "Platitudes": {
+                "name": "Platitudes"
             }
         }
     }
