@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TheJazMaster.Nibbs.Actions;
 
@@ -16,10 +17,11 @@ public class ARefractedAttack : CardAction
 				attacks.AddRange(refAttack.attacks);
 			}
 		}
-		foreach (AAttack attack in attacks) {
+		foreach (AAttack attack in attacks.OfType<AAttack>()) {
 			attack.Begin(g, s, c);
 		}
-		if (destroyAfter != null) {
+        c.cardActions.Sort((e1, e2) => e1 is AStunPart ? -1 : (e2 is AStunPart ? 1 : 0));
+        if (destroyAfter != null) {
             c.DestroyDroneAt(s, destroyAfter.x, wasPlayer);
         }
 
