@@ -4,57 +4,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using Nanoray.PluginManager;
 using TheJazMaster.Nibbs.Features.Ix;
+using TheJazMaster.Nibbs.Characters;
 
 namespace TheJazMaster.Nibbs.Cards;
 
 
 
 internal sealed class PlatitudesCard : Card, IRegisterableCard
-{
-	private static Spr art;
-	private static Spr artUnflipped;
-	private static Spr artFlipped;
-
-	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _, out art, out artUnflipped, out artFlipped);
-	}
-
-	public override CardData GetData(State state) => new() {
-		cost = 0,
-		floppable = upgrade == Upgrade.A,
-		recycle = upgrade == Upgrade.B,
-		art = upgrade == Upgrade.B ? (flipped ? artFlipped : artUnflipped) : art
-	};
-
-	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
-			new AStatus {
-				status = Status.droneShift,
-				statusAmount = 1,
-				targetPlayer = true,
-				disabled = flipped
-			},
-			new ADummyAction(),
-            new AStatus
-            {
-                status = ModEntry.Instance.IxManager.MidShieldStatus,
-                statusAmount = 1,
-                targetPlayer = true,
-				disabled = !flipped
-            }
-		],
-		_ => [
-			new AStatus {
-				status = Status.droneShift,
-				statusAmount = 1,
-				targetPlayer = true
-			}
-		]
-	};
-}
-
-
-internal sealed class MovingSentimentCard : Card, IRegisterableCard
 {
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
@@ -77,22 +33,51 @@ internal sealed class MovingSentimentCard : Card, IRegisterableCard
 internal sealed class SpacePrismCard : Card, IRegisterableCard
 {
     public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.rare, helper, package, out _, true, []);
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.common, helper, package, out _);
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		exhaust = true
+		exhaust = upgrade == Upgrade.B,
+		flippable = true
 	};
 
-    public override List<CardAction> GetActions(State s, Combat c) => [
-		new ASpawn {
-			thing = new PrismManager.RefractorObject
-			{
-				refractor = new PrismManager.Prism()
+    public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.A => [
+			new AStatus {
+				status = ModEntry.Instance.IxManager.MidShieldStatus,
+				statusAmount = 1,
+				targetPlayer = true
+			},
+			new AKillPrisms(),
+			new ASpawn {
+				thing = new PrismManager.RefractorObject
+				{
+					refractor = new PrismManager.Prism()
+				},
+				offset = 1
 			}
-		}
-	];
+		],
+		Upgrade.B => [
+			new ASpawn {
+				thing = new PrismManager.RefractorObject
+				{
+					refractor = new PrismManager.PerfectPrism()
+				},
+				offset = 1
+			}
+		],
+		_ => [
+			new AKillPrisms(),
+			new ASpawn {
+				thing = new PrismManager.RefractorObject
+				{
+					refractor = new PrismManager.Prism()
+				},
+				offset = 1
+			}
+		]
+	};
 }
 
 
@@ -106,33 +91,64 @@ internal sealed class SpaceMirrorCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.B ? 0 : 2,
+		cost = 1,
 		floppable = true,
-		retain = upgrade == Upgrade.A,
-		exhaust = upgrade == Upgrade.B,
+		retain = upgrade == Upgrade.B,
 		art = flipped ? artFlipped : art
 	};
 
-	public override List<CardAction> GetActions(State s, Combat c) => [
-		new ASpawn {
-			thing = new PrismManager.RefractorObject {
-				refractor = new PrismManager.Mirror {
-					flipped = false
-				}
-            },
-			disabled = flipped
-        },
-		new ADummyAction(),
-		new ASpawn {
-			thing = new PrismManager.RefractorObject {
+	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.A => [
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = 1,
 				targetPlayer = true,
-				refractor = new PrismManager.Mirror {
-					flipped = true
-				}
-            },
-			disabled = !flipped
-        },
-	];
+				disabled = flipped
+			},
+			new ASpawn {
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Mirror {
+						flipped = false
+					}
+				},
+				disabled = flipped
+			},
+			new ADummyAction(),
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = 1,
+				targetPlayer = true,
+				disabled = !flipped
+			},
+			new ASpawn {
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Mirror {
+						flipped = true
+					}
+				},
+				disabled = !flipped
+			},
+		],
+		_ => [
+			new ASpawn {
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Mirror {
+						flipped = false
+					}
+				},
+				disabled = flipped
+			},
+			new ADummyAction(),
+			new ASpawn {
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Mirror {
+						flipped = true
+					}
+				},
+				disabled = !flipped
+			},
+		]
+	};
 }
 
 
@@ -153,6 +169,7 @@ internal sealed class MakePeaceCard : Card, IRegisterableCard
 				damage = GetDmg(s, 0),
 				status = Status.shield,
 				statusAmount = 2,
+				fast = true,
 				stunEnemy = true
 			},
 			new AMove {
@@ -221,14 +238,18 @@ internal sealed class RighteousShotCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 2
+		cost = 1
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AAttack {
-			damage = GetDmg(s, upgrade == Upgrade.A ? 4 : 2),
-			stunEnemy = true,
-			moveEnemy = upgrade == Upgrade.B ? 2 : 0
+			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
+			moveEnemy = upgrade == Upgrade.B ? 1 : 0
+		},
+		new AStatus {
+			status = ModEntry.Instance.IxManager.MidShieldStatus,
+			statusAmount = 1,
+			targetPlayer = true
 		}
 	];
 }
@@ -241,13 +262,12 @@ internal sealed class GreenEnergyCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1,
-		exhaust = upgrade == Upgrade.B
+		cost = 1
 	};
 
     public override List<CardAction> GetActions(State s, Combat c) => upgrade switch
     {
-        Upgrade.A => [
+        Upgrade.B => [
             new AStatus
             {
                 status = Status.energyNextTurn,
@@ -271,13 +291,13 @@ internal sealed class GreenEnergyCard : Card, IRegisterableCard
             new AStatus
             {
                 status = Status.energyNextTurn,
-                statusAmount = upgrade == Upgrade.B ? 2 : 1,
+                statusAmount = 1,
                 targetPlayer = true
             },
             new AStatus
             {
                 status = ModEntry.Instance.IxManager.MidShieldStatus,
-                statusAmount = upgrade == Upgrade.B ? 2 : 1,
+                statusAmount = upgrade == Upgrade.A ? 2 : 1,
                 targetPlayer = true
             }
         ]
@@ -297,14 +317,9 @@ internal sealed class HardenCard : Card, IRegisterableCard
 
     public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
         Upgrade.B => [
-			new AStatus {
-				status = Status.tempPayback,
-				statusAmount = 1,
-				targetPlayer = true
-			},
             new AStatus {
                 status = Status.maxShield,
-                statusAmount = 1,
+                statusAmount = 2,
                 targetPlayer = true,
             },
             new AStatus {
@@ -342,14 +357,14 @@ internal sealed class NaturesShieldCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
 		Upgrade.A => [
 			new AStatus {
-				status = Status.droneShift,
-				statusAmount = 1,
-				targetPlayer = true
-			},
-			new AStatus {
 				status = ModEntry.Instance.IxManager.MidShieldStatus,
 				statusAmount = 1,
 				targetPlayer = true,
+			},
+			new AStatus {
+				status = Status.droneShift,
+				statusAmount = 1,
+				targetPlayer = true
 			},
 			new ASpawn {
 				thing = new Asteroid()
@@ -367,7 +382,7 @@ internal sealed class NaturesShieldCard : Card, IRegisterableCard
 		],
 		_ => [
 			new AStatus {
-				status = ModEntry.Instance.IxManager.MidShieldStatus,
+				status = Status.droneShift,
 				statusAmount = 1,
 				targetPlayer = true,
 			},
@@ -387,32 +402,53 @@ internal sealed class PrismArrayCard : Card, IRegisterableCard
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = upgrade == Upgrade.A ? 1 : 2,
-		exhaust = true
+		cost = 1,
+		exhaust = upgrade != Upgrade.A
 	};
 
-    public override List<CardAction> GetActions(State s, Combat c) => [
-		new AStatus {
-			status = ModEntry.Instance.IxManager.MidShieldStatus,
-			statusAmount = upgrade == Upgrade.A ? 4 : 1,
-			targetPlayer = true
-		},
-		new ASpawn
-		{
-			thing = new PrismManager.RefractorObject {
-				refractor = new PrismManager.Prism()
+    public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
+		Upgrade.B => [
+			new AStatus {
+				status = ModEntry.Instance.IxManager.MidShieldStatus,
+				statusAmount = 3,
+				targetPlayer = true
 			},
-			offset = -1
-		},
-		new ASpawn
-		{
-			thing = new PrismManager.RefractorObject
+			new AKillPrisms(),
+			new ASpawn
 			{
-				refractor = new PrismManager.Prism()
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Prism()
+				},
+				offset = -1
 			},
-			offset = 1
-		},
-	];
+			new ASpawn
+			{
+				thing = new PrismManager.RefractorObject
+				{
+					refractor = new PrismManager.Prism()
+				},
+				offset = 1
+			},
+		],
+		_ => [
+			new AKillPrisms(),
+			new ASpawn
+			{
+				thing = new PrismManager.RefractorObject {
+					refractor = new PrismManager.Prism()
+				},
+				offset = -1
+			},
+			new ASpawn
+			{
+				thing = new PrismManager.RefractorObject
+				{
+					refractor = new PrismManager.Prism()
+				},
+				offset = 1
+			},
+		]
+	};
 }
 
 
@@ -546,42 +582,34 @@ internal sealed class DetoxCard : Card, IRegisterableCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
-		exhaust = true
+		exhaust = upgrade != Upgrade.A
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-		Upgrade.A => [
+		Upgrade.B => [
 			new ASpawn {
-				thing = new Missile {
-					missileType = MissileType.seeker,
-                    targetPlayer = true,
-					bubbleShield = true
+				thing = new AttackDrone {
+                    targetPlayer = true
 				}
 			},
 			new AStatus {
-				status = Status.droneShift,
-				statusAmount = 5,
+				status = Status.shield,
+				statusAmount = 2,
 				targetPlayer = true
 			}
 		],
 		_ => [
 			new ASpawn {
-				thing = upgrade == Upgrade.B ? new AttackDrone {
-                    targetPlayer = true,
-					upgraded = true,
-					bubbleShield = true
-				} : new Missile {
+				thing = new Missile {
 					missileType = MissileType.heavy,
-                    targetPlayer = true,
-					bubbleShield = true
+                    targetPlayer = true
 				}
 			},
 			new AStatus {
-				status = Status.droneShift,
-				statusAmount = 5,
+				status = Status.shield,
+				statusAmount = 3,
 				targetPlayer = true
-			},
-			new AEndTurn()
+			}
 		]
 	};
 }
@@ -736,37 +764,37 @@ internal sealed class FocusFireCard : Card, IRegisterableCard
     public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
         Upgrade.B => [
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
         ],
         _ =>[
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true,
             },
             new AAttack {
-                damage = 0,
+                damage = GetDmg(s, 0),
                 piercing = true
             },
         ]
