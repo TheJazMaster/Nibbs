@@ -37,15 +37,6 @@
         "mirror": {
             "name": "space mirror",
             "description": "Reflects an attack back diagonally, hitting the closest part <c=keyword>2 to 3 spaces</c> away.\nDestroyed after reflecting a <c=damage>1+ damage</c> attack."
-        },
-
-        "prismOld": {
-            "name": "prism",
-            "description": "Instead of destroying the prism, attacks can refract or even be copied based on their direction:\n- Attacks at the <c=keyword>pointy end</c> destroy the prism.\n- Attacks at the <c=keyword>sides</c> are refracted through the flat end\n- Attacks at the <c=keyword>flat end</c> are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
-        },
-        "omniprismOld": {
-            "name": "omniprism",
-            "description": "Instead of destroying the prism, attacks are copied and refracted in the other 3 cardinal directions. <c=faint>(Payback attacks just refract through instead.)</c>"
         }
     },
     "action": {
@@ -67,8 +58,8 @@
         },
 
         "destroyPrisms": {
-            "name": "",
-            "description": "If this attack hits a ship, you gain <c=keyword>{{Amount}}</c> <c=status>TEMP SHIELD</c>."
+            "name": "Absorb prisms",
+            "description": "Convert each <c=midrow>imperfect prism</c> in the midrow into 1 <c=status>DRONESHIFT</c>."
         },
 
 
@@ -173,11 +164,11 @@
             },
             "HealingCrystals": {
                 "name": "HEALING CRYSTALS",
-                "description": "The first time each combat you destroy a <c=midrow>prism</c> or <c=midrow>mirror</c>, <c=heal>heal 1</c>."
+                "description": "The first time each combat you destroy a <c=midrow>prism</c> or <c=midrow>mirror</c>, <c=heal>heal 2</c>."
             },
-            "CorrectiveLenses": {
-                "name": "CORRECTIVE LENSES",
-                "description": "Your <c=midrow>diagonal attacks</c> can hit 1 space closer if they would otherwise miss."
+            "Telescope": {
+                "name": "TELESCOPE",
+                "description": "Gain 3 <c=status>MIDSHIELD</c> on the first turn."
             },
             "RayleighScattering": {
                 "name": "RAYLEIGH SCATTERING",
@@ -363,12 +354,7 @@
                 "name": "Moving Sentiment"
             },
             "SpacePrism": {
-                "name": "Optics",
-                "description": {
-                    "None": "Launch a <c=midrow>prism</c>.\nPut a <c=card>Platitudes</c> in your <c=keyword>hand</c>.",
-                    "A": "Launch a <c=midrow>prism</c>.\nPut a <c=card>Platitudes A</c> in your <c=keyword>hand</c>.",
-                    "B": "Launch a <c=midrow>perfect prism</c>.\nPut a <c=card>Platitudes</c> in your <c=keyword>hand</c>."
-                }
+                "name": "Optics"
             },
             "SpaceMirror": {
                 "name": "Space Mirror"
