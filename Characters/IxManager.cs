@@ -1,17 +1,10 @@
-using HarmonyLib;
-using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
 using Nickel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TheJazMaster.Nibbs.Cards;
 using TheJazMaster.Nibbs.Artifacts;
-using TheJazMaster.Nibbs.Features;
-using Shockah.Kokoro;
-using Shockah.Dyna;
 using TheJazMaster.Nibbs.Features.Ix;
-using TheJazMaster.Nibbs.Characters;
 
 namespace TheJazMaster.Nibbs.Characters;
 
@@ -41,7 +34,7 @@ public class IxManager
 
 	internal static IReadOnlyList<Type> IxCardTypes { get; } = [
 		typeof(PlatitudesCard),
-		typeof(MovingSentimentCard),
+		typeof(SpacePrismCard),
 		typeof(SpaceMirrorCard),
 		typeof(MakePeaceCard),
 		typeof(EqualityCard),
@@ -64,12 +57,11 @@ public class IxManager
 		typeof(FocusFireCard),
 		typeof(RetaliateCard),
 
-		typeof(SpacePrismCard),
 	];
 
 	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
 		typeof(ManifestoArtifact),
-		typeof(CorrectiveLensesArtifact),
+		typeof(TelescopeArtifact),
 		typeof(RayleighScatteringArtifact),
 		typeof(HealingCrystalsArtifact),
 
@@ -132,7 +124,6 @@ public class IxManager
         IxCharacter = caller.RegisterCharacter("Ix", new Color("22cf3a"), IxCardTypes, IxArtifactTypes, 
 			new StarterDeck {
 				cards = [
-					new MovingSentimentCard(),
 					new PlatitudesCard(),
 					new SpacePrismCard()
 				]
