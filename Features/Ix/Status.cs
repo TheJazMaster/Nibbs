@@ -16,7 +16,8 @@ public class IxStatusManager : IKokoroApi.IV2.IStatusLogicApi.IHook
 
     public bool HandleStatusTurnAutoStep(IHandleStatusTurnAutoStepArgs args)
 	{
-        if (args.Amount > 0 && args.Status == IxManager.PerseveranceStatus) args.Amount--;
+        if (args.Amount > 0 && args.Status == IxManager.PerseveranceStatus && args.Timing == IKokoroApi.IV2.IStatusLogicApi.StatusTurnTriggerTiming.TurnStart)
+            args.Amount--;
 		return false;
 	}
 }

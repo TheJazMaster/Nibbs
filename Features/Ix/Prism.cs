@@ -53,7 +53,7 @@ public class PrismManager
                 artifact.active = false;
                 return [
 					new AHeal {
-						healAmount = 1,
+						healAmount = 2,
 						targetPlayer = true,
 						artifactPulse = artifact.Key()
 					}
@@ -177,6 +177,7 @@ public class PrismManager
 			];
 
 			static AAttack Flip(AAttack attack) {
+				if (attack.targetPlayer) attack.cardOnHit = null;
 				attack.targetPlayer = !attack.targetPlayer;
 				return attack;
 			}

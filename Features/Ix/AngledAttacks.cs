@@ -82,17 +82,7 @@ public class AngledAttacksManager
 			ignoreAutoaim = false;
 			return;
         }
-
-        if (MG.inst.g.state.EnumerateAllArtifacts().OfType<CorrectiveLensesArtifact>().FirstOrDefault() is { } artifact) {
-            var oneCloser = CombatUtils.RaycastGlobal(c, target, fromDrone, worldX - sideAdjustment);
-            if (oneCloser.hitShip)
-            {
-                artifact.Pulse();
-                __result = oneCloser;
-                ignoreAutoaim = false;
-                return;
-            }
-        }
+		
 		ignoreAutoaim = false;
     }
 
