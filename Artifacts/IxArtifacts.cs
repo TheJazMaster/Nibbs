@@ -57,10 +57,24 @@ internal sealed class HealingCrystalsArtifact : Artifact, IRegisterableArtifact
 }
 
 
-internal sealed class CorrectiveLensesArtifact : Artifact, IRegisterableArtifact
+internal sealed class TelescopeArtifact : Artifact, IRegisterableArtifact
 {
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
+	}
+
+	public override void OnTurnStart(State state, Combat combat)
+	{
+		if (combat.turn == 1)
+		{
+			combat.QueueImmediate(new AStatus
+			{
+				status = ModEntry.Instance.IxManager.MidShieldStatus,
+				statusAmount = 3,
+				targetPlayer = true,
+				artifactPulse = Key()
+			});
+		}
 	}
 }
 
