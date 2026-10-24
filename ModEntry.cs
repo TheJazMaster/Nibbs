@@ -106,7 +106,7 @@ public sealed class ModEntry : SimpleMod {
 				.TakeWhile(f => f.Exists)
 				.Select(f => Helper.Content.Sprites.RegisterSprite(f).Sprite)
 				.ToList()
-		}).Configuration;
+        }).Configuration;
 
 	public override object? GetApi(IModManifest requestingMod)
 	{
