@@ -456,35 +456,24 @@ internal sealed class InnerPeaceCard : Card, IRegisterableCard
 {
     private static string CardType = null!;
     public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out CardType);
+		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
 	}
 
 	public override CardData GetData(State state) => new() {
-		cost = 1,
-		description = ModEntry.Instance.Localizations.Localize(["card", "Ix", CardType, "description", upgrade.ToString()], new { Count = GetDraw() })
+		cost = upgrade == Upgrade.B ? 0 : 1,
+		exhaust = upgrade == Upgrade.B
 	};
 
-    private int GetDraw() => upgrade switch
-    {
-        Upgrade.A => 6,
-        _ => 4
-    };
-
-    public override List<CardAction> GetActions(State s, Combat c) => upgrade switch {
-        Upgrade.B => [
-            new ADiscardAttacks(),
-            new ADrawCard {
-                count = GetDraw()
-            },
-        ],
-        _ => [
-            new ADrawCard {
-                count = GetDraw(),
-				timer = 1.75
-            },
-            new ADiscardAttacks()
-        ]
-    };
+    public override List<CardAction> GetActions(State s, Combat c) => [
+		new ADrawCard {
+			count = upgrade == Upgrade.A ? 6 : 4
+		},
+		new AStatus {
+			status = ModEntry.Instance.KokoroApi.DriveStatus.Underdrive,
+			statusAmount = upgrade == Upgrade.A ? 2 : 1,
+			targetPlayer = true
+		},
+	];
 }
 
 
