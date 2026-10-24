@@ -136,5 +136,11 @@ public class IxManager
 			}
 		);
 		IxDeck = IxCharacter.Configuration.Deck;
+
+		caller.RegisterAnimation(IxDeck, "Ix", "squint");
+		caller.RegisterAnimation(IxDeck, "Ix", "gameover");
+		caller.RegisterAnimation(IxDeck, "Ix", "eyesclosed");
+		caller.RegisterAnimation(IxDeck, "Ix", "reading");
+		caller.RegisterAnimation(IxDeck, "Ix", "aghast");
 	}
 }
