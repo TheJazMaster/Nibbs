@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Nanoray.PluginManager;
 using TheJazMaster.Nibbs.Features.Ix;
-using TheJazMaster.Nibbs.Characters;
 
 namespace TheJazMaster.Nibbs.Cards;
 
@@ -244,11 +243,10 @@ internal sealed class RighteousShotCard : Card, IRegisterableCard
 	public override List<CardAction> GetActions(State s, Combat c) => [
 		new AAttack {
 			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
-			moveEnemy = upgrade == Upgrade.B ? 1 : 0
 		},
 		new AStatus {
 			status = ModEntry.Instance.IxManager.MidShieldStatus,
-			statusAmount = 1,
+			statusAmount = upgrade == Upgrade.B ? 2 : 1,
 			targetPlayer = true
 		}
 	];
@@ -454,7 +452,6 @@ internal sealed class PrismArrayCard : Card, IRegisterableCard
 
 internal sealed class InnerPeaceCard : Card, IRegisterableCard
 {
-    private static string CardType = null!;
     public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
 	}
