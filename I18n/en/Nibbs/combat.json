@@ -7,7 +7,8 @@
      			{"Nibbs": [ "Let's get them back!" ] },
      			{"Switch": [
          			{"Drake": [ "Yeah!" ] },
-         			{"Peri": [ "On it!", "vengeful" ] }
+         			{"Peri": [ "On it!", "vengeful" ] },
+         			{"Ix": [ "Gotcha!", "glare" ] }
                 ] }
             ]
         ],
@@ -58,6 +59,10 @@
         "Sorrel": [ [
 			{"Nibbs": [ "Oops, taking fire!" ] },
 			{"Sorrel": [ "Immaterial." ] }
+        ] ],
+        "Ix": [ [
+			{"Ix": [ "Make defense, not offense!", "sad" ] },
+			{"Nibbs": [ "I want offense!" ] }
         ] ]
     },
     "TookALotOfDamage": {
@@ -94,12 +99,16 @@
 			{"Eddie": [ "Yeah... it's probably nothing.", "worried" ] }
         ] ],
         "Nola": [ [
-			{"Nibbs": [ "Don't panic. We need you to have a clear head for this." ] },
+			{"Nola": [ "Don't panic. We need you to have a clear head for this." ] },
 			{"Nibbs": [ "...", "serious" ] }
         ] ],
         "Tera": [ [
 			{"Tera": [ "Hmm. Do you think we can get insurance for this?", "taxes" ] },
 			{"Nibbs": [ "Huh?", "serious" ] }
+        ] ],
+        "Ix": [ [
+			{"Nibbs": [ "Uh-oh! Our stuff's in trouble!", "serious" ] },
+			{"Ix": [ "Our mission is in danger!", "glare" ] }
         ] ]
     },
     "TookNonHullDamage": {
@@ -126,6 +135,10 @@
         "Sorrel": [ [
 			{"Sorrel": [ "We will outlast them." ] },
 			{"Nibbs": [ "And wear them down!" ] }
+        ] ],
+        "Ix": [ [
+			{"Ix": [ "Uncracked." ] },
+			{"Nibbs": [ "Our shell's too tough!" ] }
         ] ]
     },
     "NibbsDealtDamage": {
@@ -174,6 +187,10 @@
         "Eddie": [ [
 			{"Eddie": [ "Slow and steady." ] },
 			{"Nibbs": [ "More!" ] }
+        ] ],
+        "Ix": [ [
+			{"Nibbs": [ "Yaaaha-kayaaaa!" ] },
+			{"Ix": [ "Let's try not to revel in senseless violence.", "squint" ] }
         ] ]
     },
     "DealtBigDamage": {
@@ -291,6 +308,10 @@
         "Jost": [ [
 			{"Jost": [ "At least we had some fun on the way, aye?", "happy" ] },
 			{"Nibbs": [ "Yeah... Let's do it again!" ] }
+        ] ],
+        "Ix": [ [
+			{"Ix": [ "It appears we've been cut down to size." ] },
+			{"Nibbs": [ "Nibbs is small, but still very deadly!" ] }
         ] ]
     },
     "HitArmor": {
@@ -567,7 +588,8 @@
                 {"Riggs": [ "Cool! I'll watch." ] },
                 {"Isaac": [ "In here?", "panic" ] },
                 {"Drake": [ "Oh I gotta see this." ] },
-                {"CAT": [ "Inside the ship? Absolutely not!", "squint" ] }
+                {"CAT": [ "Inside the ship? Absolutely not!", "squint" ] },
+                {"Ix": [ "The risk of ecological damage here is reassuringly low.", "eyesclosed" ] }
             ] }
         ] ]
     },
@@ -579,7 +601,8 @@
                 {"Peri": [ "...!", "panic" ] },
                 {"Isaac": [ "...Do you wanna talk about that, or something?" ] },
                 {"Drake": [ "War is a bit much. Simple crime is more exciting and fulfilling." ] },
-                {"Books": [ "But... isn't war bad?", "squint" ] }
+                {"Books": [ "But... isn't war bad?", "squint" ] },
+                {"Ix": [ "Oof. Who raised you?", "sad" ] }
             ] }
         ] ]
     },
