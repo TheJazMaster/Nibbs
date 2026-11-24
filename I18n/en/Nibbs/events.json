@@ -11,7 +11,7 @@
     },
     "HighPitchedStatic": {
         "Basic": [ [
-            {"Nibbs": ["Ooo, my head hurts...", "squint" ]},
+            {"Nibbs": [ "Ooo, my head hurts...", "squint" ]},
             {"Void": [ "Ah. You all again." ]},
             {"CAT": [ "Hello!", "transition" ]},
             {"Void": [ "Which of you shall I teach this time?" ]}
