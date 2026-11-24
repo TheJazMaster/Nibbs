@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TheJazMaster.Nibbs.Cards;
 using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Features.Ix;
+using TheJazMaster.Nibbs.Story.Ix;
 
 namespace TheJazMaster.Nibbs.Characters;
 
@@ -62,8 +63,9 @@ public class IxManager
 	internal static IReadOnlyList<Type> IxArtifactTypes { get; } = [
 		typeof(ManifestoArtifact),
 		typeof(TelescopeArtifact),
-		typeof(RayleighScatteringArtifact),
+		// typeof(RayleighScatteringArtifact),
 		typeof(HealingCrystalsArtifact),
+		typeof(MoralHighGroundArtifact),
 
 		typeof(PeaceSignArtifact),
 		typeof(ConservationEffortArtifact)
@@ -120,6 +122,13 @@ public class IxManager
 		_ = new PerseveranceManager();
 		_ = new PrismManager();
 
+		helper.Events.OnModLoadPhaseFinished += (_, phase) => {
+			if (phase == ModLoadPhase.AfterDbInit) {
+				new IxCombatDialogue().Inject();
+				new IxEventDialogue().Inject();
+				new IxSwitchInjections().Inject();
+			}
+		};
 
         IxCharacter = caller.RegisterCharacter("Ix", new Color("22cf3a"), IxCardTypes, IxArtifactTypes, 
 			new StarterDeck {
@@ -142,5 +151,8 @@ public class IxManager
 		caller.RegisterAnimation(IxDeck, "Ix", "eyesclosed");
 		caller.RegisterAnimation(IxDeck, "Ix", "reading");
 		caller.RegisterAnimation(IxDeck, "Ix", "aghast");
+		caller.RegisterAnimation(IxDeck, "Ix", "smile");
+		caller.RegisterAnimation(IxDeck, "Ix", "sad");
+		caller.RegisterAnimation(IxDeck, "Ix", "psychic");
 	}
 }
