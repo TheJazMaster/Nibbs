@@ -464,13 +464,7 @@ internal sealed class HoldOnCard : Card, IRegisterableCard
 
 internal sealed class DimensionalJauntCard : Card, IRegisterableCard
 {
-	public static Spr HopArt;
-	public static Spr SkipArt;
-
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		HopArt = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Nibbs/Hop.png")).Sprite;
-		SkipArt = helper.Content.Sprites.RegisterSprite(ModEntry.Instance.Package.PackageRoot.GetRelativeFile("Sprites/Cards/Nibbs/Skip.png")).Sprite;
-	
 		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _);
 	}
 
@@ -516,13 +510,15 @@ internal sealed class DimensionalJauntCard : Card, IRegisterableCard
 
 internal sealed class HopCard : Card, IRegisterableCard
 {
+	internal static Spr Art;
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _, true);
+		var entry = IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _, true);
+		Art = entry.Configuration.Art!.Value;
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 0,
-		art = flipped ? DimensionalJauntCard.SkipArt : DimensionalJauntCard.HopArt,
+		art = flipped ? SkipCard.Art : Art,
 		exhaust = upgrade == Upgrade.B,
 		temporary = true
 	};
@@ -560,13 +556,15 @@ internal sealed class HopCard : Card, IRegisterableCard
 
 internal sealed class SkipCard : Card, IRegisterableCard
 {
+	internal static Spr Art;
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
-		IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _, true);
+		var entry = IRegisterableCard.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, Rarity.uncommon, helper, package, out _, true);
+		Art = entry.Configuration.Art!.Value;
 	}
 
 	public override CardData GetData(State state) => new() {
 		cost = 0,
-		art = flipped ? DimensionalJauntCard.HopArt : DimensionalJauntCard.SkipArt,
+		art = flipped ? HopCard.Art : Art,
 		exhaust = upgrade == Upgrade.B,
 		temporary = true
 	};

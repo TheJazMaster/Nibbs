@@ -5,9 +5,8 @@ using System;
 using System.Collections.Generic;
 using TheJazMaster.Nibbs.Cards;
 using TheJazMaster.Nibbs.Artifacts;
-using TheJazMaster.Nibbs.Features;
 using TheJazMaster.Nibbs.Features.Nibbs;
-using TheJazMaster.Nibbs.Story;
+using TheJazMaster.Nibbs.Story.Nibbs;
 
 namespace TheJazMaster.Nibbs.Characters;
 
@@ -22,9 +21,6 @@ public class NibbsManager
     internal Status BacktrackRightStatus { get; }
 	internal Status BacktrackAutododgeLeftStatus { get; }
 	internal Status BacktrackAutododgeRightStatus { get; }
-
-    internal Spr NibbsFrame { get; }
-    internal Spr NibbsCardBorder { get; }
 
     internal Spr BacktrackLeftIcon { get; }
 	internal Spr BacktrackRightIcon { get; }
@@ -82,9 +78,6 @@ public class NibbsManager
 
 	public NibbsManager(ModEntry caller, IPluginPackage<IModManifest> package, IModHelper helper)
 	{
-		NibbsFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/Panel.png")).Sprite;
-        NibbsCardBorder = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Characters/Nibbs/CardBorder.png")).Sprite;
-
 		BacktrackLeftIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackLeft.png")).Sprite;
 		BacktrackRightIcon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("Sprites/Icons/BacktrackRight.png")).Sprite;
 
@@ -186,9 +179,9 @@ public class NibbsManager
 
 		helper.Events.OnModLoadPhaseFinished += (_, phase) => {
 			if (phase == ModLoadPhase.AfterDbInit) {
-				new CombatDialogue().Inject();
-				new EventDialogue().Inject();
-				new SwitchInjections().Inject();
+				new NibbsCombatDialogue().Inject();
+				new NibbsEventDialogue().Inject();
+				new NibbsSwitchInjections().Inject();
 			}
 		};
 		
