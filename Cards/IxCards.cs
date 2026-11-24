@@ -108,7 +108,7 @@ internal sealed class SpaceMirrorCard : Card, IRegisterableCard
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Mirror {
 						flipped = false
-					}
+					},
 				},
 				disabled = flipped
 			},
@@ -123,7 +123,7 @@ internal sealed class SpaceMirrorCard : Card, IRegisterableCard
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Mirror {
 						flipped = true
-					}
+					},
 				},
 				disabled = !flipped
 			},
@@ -133,7 +133,7 @@ internal sealed class SpaceMirrorCard : Card, IRegisterableCard
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Mirror {
 						flipped = false
-					}
+					},
 				},
 				disabled = flipped
 			},
@@ -142,7 +142,7 @@ internal sealed class SpaceMirrorCard : Card, IRegisterableCard
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Mirror {
 						flipped = true
-					}
+					},
 				},
 				disabled = !flipped
 			},
@@ -241,14 +241,15 @@ internal sealed class RighteousShotCard : Card, IRegisterableCard
 	};
 
 	public override List<CardAction> GetActions(State s, Combat c) => [
-		new AAttack {
-			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
-		},
 		new AStatus {
 			status = ModEntry.Instance.IxManager.MidShieldStatus,
 			statusAmount = upgrade == Upgrade.B ? 2 : 1,
 			targetPlayer = true
-		}
+		},
+		new AAttack {
+			damage = GetDmg(s, upgrade == Upgrade.A ? 2 : 1),
+			piercing = true
+		},
 	];
 }
 
@@ -401,6 +402,7 @@ internal sealed class PrismArrayCard : Card, IRegisterableCard
 
 	public override CardData GetData(State state) => new() {
 		cost = 1,
+		flippable = true,
 		exhaust = upgrade != Upgrade.A
 	};
 
@@ -416,8 +418,7 @@ internal sealed class PrismArrayCard : Card, IRegisterableCard
 			{
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Prism()
-				},
-				offset = -1
+				}
 			},
 			new ASpawn
 			{
@@ -434,8 +435,7 @@ internal sealed class PrismArrayCard : Card, IRegisterableCard
 			{
 				thing = new PrismManager.RefractorObject {
 					refractor = new PrismManager.Prism()
-				},
-				offset = -1
+				}
 			},
 			new ASpawn
 			{
@@ -620,7 +620,7 @@ internal sealed class WeighPerspectivesCard : Card, IRegisterableCard
 			thing = new PrismManager.RefractorObject {
 				refractor = new PrismManager.Mirror {
 					flipped = flipped
-				}
+				},
             },
 			offset = flipped ? 1 : -1
         },
@@ -633,7 +633,7 @@ internal sealed class WeighPerspectivesCard : Card, IRegisterableCard
 			thing = new PrismManager.RefractorObject {
 				refractor = new PrismManager.Mirror {
 					flipped = !flipped
-				}
+				},
             },
 			offset = flipped ? -1 : 1
         },
