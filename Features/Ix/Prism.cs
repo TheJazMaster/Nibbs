@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Nickel;
 using TheJazMaster.Nibbs.Actions;
 using TheJazMaster.Nibbs.Artifacts;
@@ -11,8 +13,17 @@ namespace TheJazMaster.Nibbs.Features.Ix;
 public class PrismManager
 {
 	private static ModEntry Instance => ModEntry.Instance;
+	private static Harmony Harmony => Instance.Harmony;
 	private static IxManager IxManager => Instance.IxManager;
 	private static IModData ModData => ModEntry.Instance.Helper.ModData;
+
+	public PrismManager() {
+		Harmony.TryPatch(
+			logger: Instance.Logger,
+			original: AccessTools.DeclaredMethod(typeof(ASpawn), nameof(ASpawn.Begin)),
+			postfix: new HarmonyMethod(GetType(), nameof(ASpawn_Begin_Postfix))
+		);
+	}
 
 	private static AAttack CopyAttack(AAttack attack) {
 		var ret = Mutil.DeepCopy(attack);
@@ -72,6 +83,8 @@ public class PrismManager
 		}
 
         public override List<Tooltip> GetTooltips() => refractor.GetTooltips(this);
+
+		public override string GetDialogueTag() => refractor.GetDialogueTag();
     }
 
 	public abstract class RefractorStats {
@@ -83,6 +96,7 @@ public class PrismManager
         public abstract Spr? GetIcon(StuffBase stuff);
         public abstract void Render(G g, Vec v, StuffBase stuff);
         public abstract List<Tooltip> GetTooltips(StuffBase stuff);
+		public abstract string GetDialogueTag();
     }
 
 	public class Prism : RefractorStats
@@ -123,6 +137,8 @@ public class PrismManager
 				Description = ModEntry.Instance.Localizations.Localize(["midrow", "prism", "description"]),
 			}
 		];
+
+        public override string GetDialogueTag() => "prism";
     }
 
 	public class PerfectPrism : Prism
@@ -158,6 +174,8 @@ public class PrismManager
 				Description = ModEntry.Instance.Localizations.Localize(["midrow", "perfectPrism", "description"]),
 			}
 		];
+
+		public override string GetDialogueTag() => "perfect_prism";
     }
 
 	public class Mirror : RefractorStats
@@ -200,5 +218,14 @@ public class PrismManager
 				Description = ModEntry.Instance.Localizations.Localize(["midrow", "mirror", "description"]),
 			}
 		];
+
+		public override string GetDialogueTag() => "mirror";
+	}
+
+	public static void ASpawn_Begin_Postfix(ASpawn __instance, State s, Combat c) {
+		if (__instance.thing is RefractorObject refractor) {
+			if (s.storyVars.lastNamedDroneSpawned == null || refractor.refractor is PerfectPrism)
+				s.storyVars.lastNamedDroneSpawned = refractor.GetDialogueTag();
+		}
 	}
 }
