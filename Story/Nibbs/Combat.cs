@@ -4,11 +4,13 @@ using TheJazMaster.Nibbs.Artifacts;
 using TheJazMaster.Nibbs.Characters;
 using TheJazMaster.Nibbs.Features;
 
-namespace TheJazMaster.Nibbs.Story;
+namespace TheJazMaster.Nibbs.Story.Nibbs;
 
-internal class CombatDialogue : BaseDialogue
-{
-	private static ModEntry Instance => ModEntry.Instance;
+internal class NibbsCombatDialogue() : BaseDialogue(
+	ModEntry.Instance.NibbsManager.NibbsCharacter.CharacterType,
+	Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en/Nibbs").GetRelativeFile("combat.json")
+) {
+    private static ModEntry Instance => ModEntry.Instance;
 	private static NibbsManager NibbsManager => Instance.NibbsManager;
 	internal void Inject()
 	{
@@ -618,6 +620,9 @@ internal class CombatDialogue : BaseDialogue
 				lookup = [
 					"summonNibbs"
 				],
+				allPresent = [
+					TranslateChar("CAT")
+				],
 				nonePresent = [
 					TranslateChar("Nibbs")
 				],
@@ -649,12 +654,6 @@ internal class CombatDialogue : BaseDialogue
 
 		InjectStory(nodePresets);
 		Instance.Helper.Events.OnLoadStringsForLocale += (_, e) => InjectLocalizations(e);
-	}
-
-
-	internal override IFileInfo GetJsonFile()
-	{
-		return Instance.Package.PackageRoot.GetRelativeDirectory("I18n/en/Nibbs").GetRelativeFile("combat.json");
 	}
 
 	internal override NodeType GetNodeType()

@@ -6,8 +6,11 @@ using System.Collections.Generic;
 
 namespace TheJazMaster.Nibbs.Story;
 
-internal abstract class BaseDialogue()
+internal abstract class BaseDialogue(string characterType, IFileInfo jsonFile)
 {
+    public string characterType = characterType;
+	public IFileInfo jsonFile = jsonFile;
+
 	// Locale, then key, then hash, gets line
 	protected readonly Dictionary<string, Dictionary<string, Dictionary<string, string>>> hashToLine = new()
 	{
@@ -27,6 +30,8 @@ internal abstract class BaseDialogue()
 			"Cleo" => "nerd",
 			"Void" => "void",
 			"Wizbo" => "wizard",
+			"Soggins" => "soggins",
+			"Smiff" => "batboy",
 			"Nibbs" => "TheJazMaster.Nibbs::Nibbs",
 			"Johnson" => "Shockah.Johnson::Johnson",
 			"Nola" => "Mezz.TwosCompany.NolaDeck",
@@ -41,7 +46,6 @@ internal abstract class BaseDialogue()
 		};
 	}
 
-	internal abstract IFileInfo GetJsonFile();
 	internal abstract NodeType GetNodeType();
 	internal abstract bool FlipPortrait(string who);
 
@@ -52,11 +56,11 @@ internal abstract class BaseDialogue()
 		List<Instruction> ret = [];
 		var dict = hashToLine["en"];
 
-		// Case: generic nibbs line. First string is line, second is looptag
+		// Case: generic line for the character in question. First string is line, second is looptag
 		if (list[0] is string str) {
 			ret.Add(new Say {
 				hash = "0",
-				who = TranslateChar("Nibbs"),
+				who = /*TranslateChar("Nibbs")*/characterType,
 				loopTag = list.Count > 1 ? list[1] as string : "neutral",
 			});
 			if (!dict.TryGetValue(key, out Dictionary<string, string>? value)) {
@@ -80,7 +84,7 @@ internal abstract class BaseDialogue()
 					else if (kvp.Key == "GreedySwitch") {
 						ret.Add(new GreedySwitch {
 							lines = ConvertToSays((kvp.Value as JArray)!.ToObject<List<object>>()!, key, ref h),
-							banned = [ModEntry.Instance.NibbsManager.NibbsCharacter.CharacterType]
+							banned = [/*ModEntry.Instance.NibbsManager.NibbsCharacter.CharacterType*/characterType]
 						});
 					}
 					else if (kvp.Key == "Jump") {
@@ -115,14 +119,14 @@ internal abstract class BaseDialogue()
 
 	// As above but returns a list of says from inside a SaySwitch
 	protected List<Say> ConvertToSays(List<object> list, string key, ref int hash) {
-		List<Say> ret = new();
+		List<Say> ret = [];
 		var dict = hashToLine["en"];
 
 		// Case: generic nibbs line. First string is line, second is looptag
 		if (list[0] is string str) {
 			ret.Add(new Say {
 				hash = hash.ToString(),
-				who = TranslateChar("Nibbs"),
+				who = characterType/*TranslateChar("Nibbs")*/,
 				loopTag = list.Count > 1 ? list[1] as string : "neutral"
 			});
 			if (!dict.TryGetValue(key, out Dictionary<string, string>? value)) {
@@ -163,21 +167,27 @@ internal abstract class BaseDialogue()
 
 	internal void InjectStory(Dictionary<string, StoryNode> newNodes)
 	{
-		var NibbsType = ModEntry.Instance.NibbsManager.NibbsCharacter.CharacterType;
-
-		IFileInfo file = GetJsonFile();
+		IFileInfo file = jsonFile;
 		if(!ModEntry.Instance.Helper.Storage.TryLoadJson<Dictionary<string, Dictionary<string, List<List<object>>>>>(file, out var dialogue)) {
 			ModEntry.Instance.Logger.LogError("Dialogue loading failed. Tell the developer");
 			throw new System.Exception();
 		}
 		
-		foreach (KeyValuePair<string, Dictionary<string, List<List<object>>>> kvp in dialogue) {
-			foreach (KeyValuePair<string, List<List<object>>> pairs in kvp.Value) {
+		foreach (KeyValuePair<string, Dictionary<string, List<List<object>>>> kvp in dialogue)
+		{
+			bool prefix = !kvp.Key.Contains("{{CharacterType}}");
+			string key = kvp.Key.Replace("{{CharacterType}}", characterType);
+			if (!newNodes.ContainsKey(key)) {
+				ModEntry.Instance.Logger.LogError($"Node {key} not found for {characterType}! Some dialogue might not work.");
+				continue;
+			}
+
+			foreach (KeyValuePair<string, List<List<object>>> pairs in kvp.Value)
+			{
+				string advancedKey = prefix ? $"{characterType}_{key}" : key;
+
 				for (int i = 0; i < pairs.Value.Count; i++) {
 
-					bool prefix = !kvp.Key.Contains("{{CharacterType}}");
-					string key = kvp.Key.Replace("{{CharacterType}}", NibbsType);
-					string advancedKey = prefix ? "TheJazMaster.Nibbs::" + key : key;
 					string fullKey = advancedKey + (prefix ? "_" + pairs.Key + "_" + i : "");
 
 					StoryNode node = Mutil.DeepCopy(newNodes[key]);
@@ -185,7 +195,7 @@ internal abstract class BaseDialogue()
 
 					node.oncePerCombatTags = node.oncePerCombatTags != null && node.oncePerCombatTags.Count == 0 ? [key] : node.oncePerCombatTags;
 					node.oncePerRunTags = node.oncePerRunTags != null && node.oncePerRunTags.Count == 0 ? [key] : node.oncePerRunTags;
-					node.allPresent ??= [TranslateChar("Nibbs")];
+					node.allPresent ??= [characterType/*NibbsType*/];
 					if (pairs.Key != "Basic") {
 						foreach (string character in pairs.Key.Split("_"))
 							node.allPresent.Add(TranslateChar(character));
