@@ -11,7 +11,7 @@
             "name": "Ix",
             "description": [
                 "<c=22cf3a>IX</c>",
-                "An environmentalist. More of an ecoterrorist. Uses midrow to augment your offence and defence in strange ways."
+                "An environmentalist interloper. Arguably an ecoterrorist. Defends against <c=keyword>midrow</c> damage, punishes enemy aggression and <c=keyword>splits attacks</c> in two."
             ]
         }
     },
@@ -168,15 +168,19 @@
             },
             "Telescope": {
                 "name": "TELESCOPE",
-                "description": "Gain 3 <c=status>MIDSHIELD</c> on the first turn."
+                "description": "Gain 1 <c=status>MIDSHIELD</c> for every 2 <c=midrow>midrow objects</c> you launch."
             },
             "RayleighScattering": {
                 "name": "RAYLEIGH SCATTERING",
                 "description": "When <c=midrow>prisms</c> split and copy attacks, they also copy them <c=keyword>straight ahead</c>.\nWhen <c=midrow>mirrors</c> reflect attacks, they also copy them <c=keyword>straight back</c>."
             },
+            "MoralHighGround": {
+                "name": "MORAL HIGH GROUND",
+                "description": "When it's not your turn, all enemy parts are <c=parttrait>weak</c>."
+            },
 
             "PeaceSign": {
-                "name": "PEACE SIGN",
+                "name": "PEACEFUL PROTEST",
                 "description": "Gain 1 extra <c=energy>ENERGY</c> every turn. <c=downside>Your first attack or attack card each turn deals 0 damage."
             },
             "ConservationEffort": {
@@ -363,7 +367,7 @@
                 "name": "Make Peace"
             },
             "PrismArray": {
-                "name": "Prism Array"
+                "name": "Prismatic Wall"
             },
             "Equality": {
                 "name": "Equality"

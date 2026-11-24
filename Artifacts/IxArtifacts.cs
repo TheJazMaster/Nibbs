@@ -59,23 +59,27 @@ internal sealed class HealingCrystalsArtifact : Artifact, IRegisterableArtifact
 
 internal sealed class TelescopeArtifact : Artifact, IRegisterableArtifact
 {
+	public int counter = 0;
+
 	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
 		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
 	}
 
-	public override void OnTurnStart(State state, Combat combat)
-	{
-		if (combat.turn == 1)
-		{
+    public override void OnPlayerSpawnSomething(State state, Combat combat, StuffBase thing)
+    {
+        if (++counter >= 2) {
 			combat.QueueImmediate(new AStatus
 			{
 				status = ModEntry.Instance.IxManager.MidShieldStatus,
-				statusAmount = 3,
+				statusAmount = 1,
 				targetPlayer = true,
 				artifactPulse = Key()
 			});
+			counter = 0;
 		}
-	}
+    }
+
+    public override int? GetDisplayNumber(State s) => counter;
 }
 
 
@@ -86,6 +90,42 @@ internal sealed class RayleighScatteringArtifact : Artifact, IRegisterableArtifa
 	}
 }
 
+
+
+
+internal sealed class MoralHighGroundArtifact : Artifact, IRegisterableArtifact
+{
+	private static IModData ModData => ModEntry.Instance.Helper.ModData;
+	public static void Register(Deck deck, string charname, IModHelper helper, IPluginPackage<IModManifest> package) {
+		IRegisterableArtifact.Register(MethodBase.GetCurrentMethod()!.DeclaringType!, deck, charname, [ArtifactPool.Common], helper, package, out _);
+	}
+
+	public override void OnTurnEnd(State state, Combat combat)
+	{
+		foreach (Part part in combat.otherShip.parts) {
+			if (part.type == PType.empty) continue;
+
+			ModData.SetModData(part, Key(), part.damageModifier);
+			part.damageModifier = PDamMod.brittle;
+			part.brittleIsHidden = false;
+		}
+		Pulse();
+	}
+
+	public override void OnTurnStart(State state, Combat combat)
+	{
+		foreach (Part part in combat.otherShip.parts) {
+			if (part.type == PType.empty || part.damageModifier != PDamMod.weak) continue;
+
+			var mod = ModData.GetOptionalModData<PDamMod>(part, Key());
+			if (mod.HasValue) part.damageModifier = mod.Value;
+		}
+	}
+
+	public override List<Tooltip>? GetExtraTooltips() => [
+		new TTGlossary("parttrait.weak")
+	];
+}
 
 
 
