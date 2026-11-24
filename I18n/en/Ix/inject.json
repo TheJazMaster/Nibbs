@@ -1,0 +1,83 @@
+{
+    "ThatsALotOfDamageToThem_Multi_6": [
+        [ "It is preventative action.", "eyesclosed" ]
+    ],
+    "BanditThreats_Multi_0": [
+        [ "Missiles? That's sooo last century.", "eyesclosed" ]
+    ],
+    "SkunkFirstTurnShouts_Multi_0": [
+        [ "No no, we're here for YOU.", "smile" ]
+    ],
+    "Soggins_Infinite": [
+        [ "Are they biodegradable?", "squint" ]
+    ],
+    "Soggins_Missile_Shout_1": [
+        [ "This could pass as pertinent political commentary... if it weren't so stupid.", "squint" ]
+    ],
+    "SogginsEscape_1": [
+        [ "Remember: you reap what you sow." ]
+    ],
+    "SogginsEscapeIntent_1": [
+        [ "Nobody ever said doing the right thing is easy." ]
+    ],
+    "Sasha_2_Multi_2": [
+        [ "What a waste of time.", "glare" ]
+    ],
+    "DraculaTime": [
+        [ "I don't keep up with celebrities.", "squint" ]
+    ],
+    "LoseCharacterCard": [
+        [ "Who allowed THIS to happen?!", "aghast" ]
+    ],
+    "LoseCharacterCard_No": [
+        [ "We're still in one piece, aren't we?" ]
+    ],
+    "GrandmaShop": [
+        [ "Do you have any... hm... you probably haven't heard of it.", "squint" ]
+    ],
+    "CrystallizedFriendEvent": [
+        [ "We must aid whenever we can.", "eyesclosed" ]
+    ],
+    "ForeignCardOffering_After": [
+        [ "What's this new idea? It feels... wrong.", "psychic" ]
+    ],
+    "ForeignCardOffering_Refuse": [
+        [ "No thanks, my views are already correct." ]
+    ],
+    "ShopKeepBattleInsult": [ 
+        [ "We're no match for her accumulated karmic credit!", "aghast" ]
+    ],
+    "CrabFacts1_Multi_0": [ 
+        [ "Cover your ears! Misinformation underway!", "aghast" ]
+    ],
+    "CrabFacts2_Multi_0": [ 
+        [ "Could I see a source for that one?", "squint" ]
+    ],
+    "CrabFactsAreOverNow_Multi_0": [ 
+        [ "Oof. Please educate yourself.", "squint" ]
+    ],
+    "DillianShouts": [
+        [ "But I don't make enemies.", "squint" ]
+    ],
+    "EphemeralCardGift": [
+        [ "Hmmm, that's a lot to process...", "psychic" ]
+    ],
+    "JustPlayedASashaCard_Multi_2": [
+        [ "Oh, so we're supporting the sports-industrial complex now?", "squint" ]
+    ],
+    "OverheatDrakeFix_Multi_6": [
+        [ "I knew you had it in you, Drake." ]
+    ],
+    "WeJustGainedHeatAndDrakeIsHere_Multi_0": [
+        [ "Drake, you'll ruin my 100% organic wool scarf.", "glare" ]
+    ],
+    "OverheatDrakesFault_Multi_9": [
+        [ "Drake, have you thought this through?", "squint" ]
+    ],
+    "AbandonedShipyard_Repaired": [
+        [ "And there was no need to spill blood." ]
+    ],
+    "RiderAvast": [
+        [ "A vast what?" ]
+    ]
+}

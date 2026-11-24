@@ -1,0 +1,77 @@
+{
+    "LoseCharacterCard_{{CharacterType}}": {
+        "Basic": [
+            [ "What's one more burden to shoulder?", "eyesclosed" ]
+        ]
+    },
+    "CrystallizedFriendEvent_{{CharacterType}}": {
+        "Basic": [
+            [ "I was totally zenned-out in there.", "eyesclosed" ]
+        ]
+    },
+    "ChoiceCardRewardOfYourColorChoice_{{CharacterType}}": {
+        "Basic": [ [
+            {"Ix": [ "I think I just had an out-of-body experience!", "aghast" ] },
+            {"CAT": [ "Energy readings are back to normal." ] }
+        ] ]
+    },
+    "ShopkeeperInfinite": {
+        "Basic": [ [
+            {"Ix": [ "I only buy organic.", "eyesclosed" ] },
+            {"Cleo": [ "Didn't ask." ] },
+            {"Jump": "NewShop" }
+        ], [
+            {"Ix": [ "The fact that you provide your services for free is truly commendable, Cleo.", "smile" ] },
+            {"Cleo": [ "It's a temporary arrangement." ] },
+            {"Jump": "NewShop" }
+        ], [
+            {"Cleo": [ "Hey." ] },
+            {"Ix": [ "Peace be with you." ] },
+            {"Jump": "NewShop" }
+        ], [
+            {"Ix": [ "Are we sure this business is suffering-free?", "squint" ] },
+            {"Cleo": [ "It won't be if you keep asking about it!" ] },
+            {"Jump": "NewShop" }
+        ] ]
+    },
+
+    "RunStartFirst": {
+        "Basic": [ [
+            {"Ix": [ "Aha! Finally face to face with the crew behind that wicked machine!" ]},
+            {"Ix": [ "I am Ix, and I cannot stand idly by as you recklessly pollute space and meddle with forces beyond your control.", "glare" ]},
+            {"Ix": [ "And so you will face... Hmmm... Where IS the Cobalt, actually?", "squint" ]},
+            {"CAT": [ "Sorry, buddy, we're in a time loop now. We're trying to get to the Cobalt so that we can blow it up." ]},
+            {"Ix": [ "Hmmm... As an empath, I can tell you are telling the truth.", "psychic" ]},
+            {"Ix": [ "But then... what's the point of me being here?", "sad" ]},
+            {"CAT": [ "I dunno! You can go help us blow it up if you're gonna be here anyway." ]},
+            {"Ix": [ "Hmmm, good idea! I'll demonstrate what I had planned.", "smile" ]}
+        ] ]
+    },
+
+    "Batboy": {
+        "Basic": [ [
+            {"Smiff": [ "Ready to lose, losers?" ]},
+            {"Ix": [ "Oh, you poor soul, lashing out against us. I know there is a great turmoil hidden within you, and it is blinding you.", "eyesclosed" ]},
+            {"Ix": [ "You may think naught of your acts of violence and appalling pollution footprint, but the world weeps over your callousness.", "eyesclosed" ]},
+            {"Ix": [ "However, it is never too late to turn to the right path. Lay down your arms and join the side of peace, where you will be forgiven.", "smile" ]},
+            {"Smiff": [ "What? I don't care about any of that, I'm here to blow you guys up!" ]},
+            {"Ix": [ "Let's hope your ship is biodegradable.", "smile" ]},
+            {"Smiff": [ "Huh?", "nervous" ]}
+        ] ]
+    },
+
+    "IsaacPolluting_1": {
+        "Basic": [ [
+            {"Ix": [ "Isaac, I do not wish to rock the boat, but I cannot stay silent on this any longer.", "eyesclosed" ]},
+            {"Isaac": [ "Oh? Is something wrong?" ]},
+            {"Ix": [ "Yes! How can you so carelessly launch drones into space, only to let them break apart and spread hazardous debris ALL over the sector?", "aghast" ]},
+            {"Isaac": [ "Uh, well, I kinda just do that so we don't die?", "shy" ]},
+            {"Isaac": [ "I don't think polluting space really matters if you're stuck in a time loop anyway." ]},
+            {"Ix": [ "But... It's about the principle! You need to retain a strong moral code!", "squint" ]},
+            {"Isaac": [ "Well, it's harmless, right? Probably. I'm not an expert on time loops ethics.", "shy" ]},
+            {"Ix": [ "Well neither am I, but I MUST put my foot down!", "glare" ]},
+            {"Ix": [ "I have decided...", "eyesclosed" ]},
+            {"Ix": [ "...that I need to think about this more.", "squint" ]},
+        ] ]
+    },
+}

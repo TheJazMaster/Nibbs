@@ -1,0 +1,646 @@
+{
+
+
+    "TookDamage": {
+        "Basic": [
+            [ "Ugh, chipped.", "sad" ],
+            [ "The cracks are beginning to show." ]
+        ]
+    },
+    "TookALotOfDamage": {
+        "Basic": [
+            [ "Okay, our turn.", "glare" ],
+            [ "That will leave a mark on your karmic balance." ]
+        ]
+    },
+    "TookNonHullDamage": {
+        "Basic": [
+            [ "We remain pristine." ]
+        ]
+    },
+    "IxDealtDamage": {
+        "Basic": [
+            [ "Deserved." ],
+            [ "Let that be a lesson learned." ]
+        ]
+    },
+    "DealtBigDamage": {
+        "Basic": [
+            [ "I am a pacifist, but..." ],
+            [ "Shatter them!" ],
+            [ "Stone cold." ]
+        ]
+    },
+    "IxDealtBigDamage": {
+        "Basic": [
+            [ "I am a pacifist, but..." ],
+            [ "Mother nature can be cruel.", "eyesclosed" ],
+            [ "I am a blood diamond.", "glare" ],
+            [ "Reflect upon THAT.", "smile" ],
+            [ "Should've gone green.", "smile" ],
+            [ "Cut down to size.", "smile" ]
+        ]
+    },
+    "LaunchedPrism": {
+        "Basic": [
+            [ "Reflect upon this." ],
+            [ "Prismatic!" ],
+            [ "Refract!" ],
+            [ "The beauty of nature." ],
+            [ "I'm seeing double.", "smile" ]
+        ]
+    },
+    "LaunchedPerfectPrism": {
+        "Basic": [
+            [ "Reflect upon this." ],
+            [ "Prismatic!" ],
+            [ "Refract!" ],
+            [ "The beauty of nature." ],
+            [ "I'm seeing double.", "smile" ],
+            [ "Ah, the missing piece.", "eyesclosed" ]
+        ]
+    },
+    "LaunchedMirror": {
+        "Basic": [
+            [ "Reflect upon this." ],
+            [ "Take a long, hard look at yourself." ],
+            [ "You may not like what you see.", "eyesclosed" ],
+            [ "What goes around, comes around." ]
+        ]
+    },
+    "Missed": {
+        "Basic": [
+            [ "Consider that a warning shot." ],
+            [ "Ugh, can't believe we're wasting energy.", "sad" ],
+            [ "What a waste!", "sad" ],
+            [ "Please, make every shot count." ]
+        ]
+    },
+    "IxMissed": {
+        "Basic": [
+            [ "...The light was in my eyes.", "sad" ],
+            [ "I have chosen mercy." ],
+            [ "Ugh, can't believe I'm wasting energy.", "sad" ]
+        ]
+    },
+    "AboutToDie": {
+        "Basic": [
+            [ "All must return to stardust eventually.", "eyesclosed" ],
+            [ "Alright, no more holding back.", "glare" ],
+            [ "You messed with the wrong rock.", "glare" ],
+            [ "I will fight for as long as I live.", "glare" ]
+        ]
+    },
+    "HitArmor": {
+        "Basic": [
+            [ "It's hard as rock." ]
+        ]
+    },
+    "HitArmorALot": {
+        "Basic": [
+            [ "No, we can't bore through their armor." ]
+        ]
+    },
+    "UsedArmor": {
+        "Basic": [
+            [ "Organics are so easily impressed by simple armor plating.", "eyesclosed" ]
+        ]
+    },
+    "UsedArmorALot": {
+        "Basic": [
+            [ "There's no getting through us." ]
+        ]
+    },
+    "EmptyHandExcessEnergy": {
+        "Basic": [
+            [ "Ugh, can't believe we're wasting energy.", "sad" ],
+            [ "Did you know that each point of energy could power a household for a week?", "reading" ]
+        ]
+    },
+    "EmptyHandInsaneTurn": {
+        "Basic": [
+            [ "Now THAT's activism." ]
+        ]
+    },
+    "TrashHand": {
+        "Basic": [
+            [ "Please tell me we can properly dispose of this trash...", "sad" ]
+        ]
+    },
+    "UnplayableHand": {
+        "Basic": [
+            [ "Something's blocking our bond...", "psychic" ],
+            [ "I sense cosmic interference...", "psychic" ]
+        ]
+    },
+    "NoOverlap": {
+        "Basic": [
+            [ "Begone." ],
+            [ "Time to reflect...", "eyesclosed" ],
+            [ "Off-target? Nothing a prism can't fix." ]
+        ]
+    },
+    "NoOverlapButSeeker": {
+        "Basic": [
+            [ "Missiles don't bother me." ],
+            [ "Too ashamed to fight us face to face?", "glare" ],
+            [ "Do you think these seekers will succeed where you have failed?", "glare" ]
+        ]
+    },
+    "LongFight": {
+        "Basic": [
+            [ "We must only fight fights worth fighting.", "eyesclosed" ],
+            [ "Look at us, wasting our time here, when the universe needs our help.", "eyesclosed" ]
+        ]
+    },
+    "Corroded": {
+        "Basic": [
+            [ "Do we have anything against corrosion?", "squint" ]
+        ]
+    },
+    "DizzyWentMissing": {
+        "Basic": [
+            [ "Dizzy? Come back! You are the yin to my yang!", "sad" ]
+        ]
+    },
+    "RiggsWentMissing": {
+        "Basic": [
+            [ "Some time alone will be good for her." ]
+        ]
+    },
+    "PeriWentMissing": {
+        "Basic": [
+            [ "A vengeful spirit cannot be stifled for long." ]
+        ]
+    },
+    "IsaacWentMissing": {
+        "Basic": [
+            [ "I am glad to see his drones gone.", "smile" ]
+        ]
+    },
+    "DrakeWentMissing": {
+        "Basic": [
+            [ "Perhaps she can use this time to cool down." ]
+        ]
+    },
+    "MaxWentMissing": {
+        "Basic": [
+            [ "Perhaps this is his karmic punishment." ]
+        ]
+    },
+    "BooksWentMissing": {
+        "Basic": [
+            [ "Books! Come back!", "aghast" ]
+        ]
+    },
+    "CATWentMissing": {
+        "Basic": [
+            [ "Hm? Is there something different around here?", "squint" ]
+        ]
+    },
+    "JohnsonWentMissing": {
+        "Basic": [
+            [ "Missing? Good.", "smile" ]
+        ]
+    },
+    "EddieWentMissing": {
+        "Basic": [
+            [ "Some time to reflect will do them well.", "eyesclosed" ]
+        ]
+    },
+    "GoingToOverheat": {
+        "Basic": [
+            [ "The climate has changed!", "aghast" ],
+            [ "It's global warming all over again!", "aghast" ],
+            [ "Ugh, this heat will ruin my 100% organic wool scarf.", "sad" ]
+        ]
+    },
+    "MissedWithGrazerBeam": {
+        "Basic": [
+            [ "Life finds a way." ]
+        ]
+    },
+    "MissedWithRecalibrator": {
+        "Basic": [
+            [ "It's for a greater cause." ]
+        ]
+    },
+    "MissedWithRecalibratorGrazerBeam": {
+        "Basic": [
+            [ "How's THAT for a warning shot?" ]
+        ]
+    },
+    "PiercedArmor": {
+        "Basic": [
+            [ "Crack their defenses!" ],
+            [ "Ugh, I hope I never get hit by a piercing attack." ]
+        ]
+    },
+    "ThereIsWeakpoint": {
+        "Basic": [
+            [ "They're weak!" ],
+            [ "I see a crack!" ]
+        ]
+    },
+    "ThereIsBrittlePoint": {
+        "Basic": [
+            [ "They're chipped!" ],
+            [ "Their vulnerability is plain to see." ]
+        ]
+    },
+    "ThereIsSecretBrittlePoint": {
+        "Basic": [
+            [ "I can't stand prospecting... except prospecting for a brittle point." ],
+        ]
+    },
+    "IonConverter": {
+        "Basic": [
+            [ "Waste not, want not.", "eyesclosed" ],
+            [ "No bit of energy wasted!", "smile" ]
+        ]
+    },
+    "StartedBattleAgainstBigCrystal": {
+        "Basic": [
+            [ "...We are not welcome here...", "psychic" ],
+            [ "...We're intruding... Let's make it quick.", "psychic" ],
+            [ "...This will all be over soon.", "sad" ],
+            [ "...Forgive us... me... for the intrusion.", "sad" ]
+        ]
+    },
+    "GainedPayback": {
+        "Basic": [
+            [ "Let's endanger THEM.", "glare" ],
+            [ "This situation calls for some passive resistance.", "eyesclosed" ],
+            [ "Watch them break themselves against us." ],
+            [ "It's only self defense." ],
+            [ "If a carrot doesn't work, bring a stick." ],
+
+            [ "The chance for peace has passed." ],
+            [ "Violence is not the solution, my friend.", "eyesclosed" ]
+        ]
+    },
+    "GainedTempPayback": {
+        "Basic": [
+            [ "Let's endanger THEM.", "glare" ],
+            [ "This situation calls for some passive resistance.", "eyesclosed" ],
+            [ "Watch them break themselves against us." ],
+            [ "It's only self defense." ],
+            [ "If a carrot doesn't work, bring a stick." ]
+        ]
+    },
+    "GainedPerfectShield": {
+        "Basic": [
+            [ "I have many facets, and they're all as hard as diamond." ],
+            [ "Shatter-proof!" ]
+        ]
+    },
+
+    "PrismInMidrowSolo": {
+        "Dizzy": [ [
+            {"Dizzy": [ "Doubling our small attacks could really help our damage output." ] }
+        ], [
+            {"Dizzy": [ "Double the shots, double the debilitation!" ] }
+        ], [
+            {"Dizzy": ["If the enemy shoots that prism, we have to be prepared for the attack.", "serious" ] },
+            {"Switch": [
+                {"Max": [ "How are you on trigonometry?" ] },
+                {"Riggs": [ "Huh? Do I have to move us somewhere?" ] },
+                {"Isaac": [ "Maybe I could move the prism, if it comes down to it?" ] },
+                {"Dizzy": [ "Try to line the trajectory up with a tougher ship part." ] },
+                {"Eddie": [ "There's gotta be enough space to nestle in the middle. Surely." ] },
+                {"Sorrel": [ "Consider it done." ] },
+                {"Isabelle": [ "I've been in dirty fights before.", "snide" ] },
+                {"Jost": [ "We can withstand it." ] },
+                {"Ix": [ "We could take advantage of it." ] },
+                {"Nibbs": [ "Ya! ...Erm, how?" ]}
+            ] }
+        ] ],
+        "Riggs": [ [
+            {"Riggs": [ "I'll try flying us close to that thing!" ] }
+        ], [
+            {"Riggs": [ "Ooh, shiny!" ] }
+        ], [
+            {"Riggs": [ "Hey, do you think we can get shot through that crystal? How should I be dodging that?" ] },
+            {"Switch": [
+                {"Max": [ "How are you on trigonometry?" ] },
+                {"Isaac": [ "Maybe I could move the prism, if it comes down to it?" ] },
+                {"Dizzy": [ "Try to line the trajectory up with a tougher ship part." ] },
+                {"Gauss": [ "Pilots these days...", "side" ] },
+                {"Jost": [ "We can withstand it." ] },
+                {"Nola": [ "Just follow my instructions and we'll be fine." ] },
+                {"Eddie": [ "We just gotta run away farther." ] },
+                {"Johnson": [ "Well, first imagine a graph of stock market prices..." ] },
+                {"Ix": [ "Focus on it... Visualize it...", "psychic" ] },
+                {"Nibbs": [ "Ermmmmmmm..... Hmmmm.....", "squint" ]}
+            ] }
+        ] ],
+        "Drake": [ [
+            {"Drake": [ "Huh? How am I supposed to shoot the enemy through a prism?" ] }
+        ], [
+            {"Drake": [ "Ugh, who cares about refraction? Just let me shoot the enemy!", "mad" ] }
+        ], [
+            {"Drake": [ "This stupid thing is making it hard to see where I'm shooting.", "squint" ] },
+            {"Switch": [
+                {"Max": [ "How are you on trigonometry?" ] },
+                {"Isaac": [ "Maybe I could move the prism, if it comes down to it?" ] },
+                {"Gauss": [ "Wow, piracy truly is a field full of bright minds.", "side" ] },
+                {"Ilya": [ "You should try shooting through an impenetrably thick smokescreen sometime.", "happy" ] },
+                {"Jost": [ "We'll try another angle." ] },
+                {"Isabelle": [ "What's that, Drake? Too much thinking for you?", "snide" ] },
+                {"Eddie": [ "I'm sure it'll be fine." ] },
+                {"Johnson": [ "Well, first imagine a graph of stock market prices..." ] },
+                {"Ix": [ "Focus on it... Visualize it...", "psychic" ] },
+                {"Nibbs": [ "Evil prism!" ]}
+            ] }
+        ] ],
+        "Max": [ [
+            {"Max": [ "I'll let the rest of you deal with the prisms. I'm not really an attack guy." ]},
+        ], [
+            {"Max": [ "Heads up, keep in mind where refracted attacks are gonna end up." ]},
+            {"Switch": [
+                {"Isaac": [ "Maybe I could move the prism, if it comes down to it?" ] },
+                {"Dizzy": [ "We can try to line the trajectory up with a tougher ship part." ] },
+                {"Gauss": [ "I'll focus on zapping the enemy actually.", "vengeful" ] },
+                {"Jost": [ "We can withstand it." ] },
+                {"Sorrel": [ "A small slip-up can cost us dearly." ] },
+                {"Eddie": [ "We just gotta run away farther." ] },
+                {"Johnson": [ "Well, first imagine a graph of stock market prices..." ] },
+                {"Ix": [ "Focus on it... Visualize it...", "psychic" ] },
+                {"Nibbs": [ "Ermmmmmmm..... Hmmmm.....", "squint" ]}
+            ] }
+        ]],
+        "Books": [ [
+            {"Books": [ "Wow! That crystal is so pretty I wanna shoot it!", "paws" ]},
+        ], [
+            {"Books": [ "There! Let's shoot the crystal!" ]},
+            {"Switch": [
+                {"Isaac": [ "I can't shoot a drone at it..." ] },
+                {"Dizzy": [ "Do we have any cool statuses on our attacks?" ] },
+                {"Gauss": [ "I'll focus on zapping the enemy actually.", "vengeful" ] },
+                {"Drake": [ "It's nice to see kids nurturing their destructive instincts.", "sly" ] },
+                {"Jost": [ "Think about it first, aye?" ] },
+                {"Nola": [ "With a low damage attack, right?", "squint" ] },
+                {"Max": [ "With a low damage attack, right?", "squint" ] },
+                {"Eddie": [ "Whatever makes you happy, Books." ] },
+                {"Johnson": [ "Wait, let me ask the committee about this.", "phone" ] },
+                {"Ix": [ "Channel your crystal power." ] },
+                {"Nibbs": [ "Our sacred mission!" ]}
+            ] }
+        ] ],
+        "CAT": [ [
+            {"CAT": [ "Mind the prism, guys!" ]}
+        ], [
+            {"CAT": [ "Let's make sure we use that prism." ]}
+        ], [
+            {"CAT": [ "Let's make sure we use that prism. Carefully." ]}
+        ] ],
+        "Ilya": [ [
+            {"Ilya": [ "Ah, the light is refracting in my eyes.", "squint" ]}
+        ] ],
+        "Nola": [ [
+            {"Nola": [ "Let's make sure we make that prism a defensive advantage, not a liability." ]}
+        ], [
+            {"Nola": [ "Mind the prism." ]}
+        ] ],
+        "Isabelle": [ [
+            {"Isabelle": [ "Lining up with the prisms — an interesting new challenge!", "swordsquint" ]}
+        ], [
+            {"Switch": [
+                {"Isabelle": [ "We must be vigilant of attacks from any angle.", "squint" ]},
+                {"Isabelle": [ "Our angles of attack and defense have multiplied." ]}
+            ] },
+            {"Switch": [
+                {"Isaac": [ "Maybe I could move the prism, if it comes down to it?" ] },
+                {"Dizzy": [ "How bad can it be?", "shrug" ] },
+                {"Gauss": [ "I'll just focus on zapping the enemy.", "vengeful" ] },
+                {"Jost": [ "We can withstand it." ] },
+                {"Nola": [ "I'll watch our sides." ] },
+                {"Sorrel": [ "Can you afford to split your attention?" ] },
+                {"Eddie": [ "Man, one angle was enough.", "disappointed" ] },
+                {"Johnson": [ "Multitasking. Nothing new.", "fiddling" ] },
+                {"Ix": [ "Don't worry, I'll handle them.", "smile" ] },
+                {"Nibbs": [ "Oh no! Nibbs is gonna be dizzy!", "serious" ]} 
+            ] }
+        ]],
+        "Eddie": [ [
+            {"Eddie": [ "Woah, cool prism." ]}
+        ], [
+            {"Eddie": [ "Y'know, I kinda don't wanna deal with that prism right now.", "squint" ]}
+        ], [
+            {"Eddie": [ "It's like a disco ball, but deadly." ]}
+        ] ],
+        "Johnson": [ [
+            {"Johnson": [ "Incredible, these optic devices can MULTIPLY our profits!", "happy" ]}
+        ], [
+            {"Johnson": [ "We should cash out on that prismatic shard while we can!", "happy" ]}
+        ], [
+            {"Johnson": [ "The surplus value we can generate with this prism is truly remarkable!", "happy" ]}
+        ] ],
+        "Nibbs": [ [
+            {"Nibbs": [ "The light is playing games with me!" ]}
+        ], [
+            {"Nibbs": [ "Rawr! Nibbs can do an EXTRA tricky attack!" ]}
+        ], [
+            {"Nibbs": [ "Nibbs can strike two places at once!" ]}
+        ], [
+            {"Nibbs": [ "Nibbs can fell two enemies with one strike! Rawr!" ]}
+        ], [
+            {"Nibbs": [ "Nibbs can shoot two ships with one shoot!" ]}
+        ], [
+            {"Nibbs": [ "Nibbs can eat two birds in one bite!" ]}
+        ], [
+            {"Nibbs": [ "Nibbs can hit two birds with one swipe!" ]}
+        ] ]
+    },
+    "PrismInMidrow": {
+        "Basic": [
+            [ "I'm not just in my element, I AM my element." ],
+            [ "My actions may seem weak, but when magnified..." ],
+            [ "We're fighting on MY terms." ],
+            [ "The space between us is my domain." ],
+            [ "The objects I shoot off into space are 100% natural. And yours?" ]
+        ],
+        "Dizzy": [ [
+            {"Dizzy": [ "Do you think I can pull off a refracted double stun?" ] },
+            {"Ix": [ "It's worth trying.", "smile" ] }
+        ] ],
+        "Peri": [ [
+            {"Ix": [ "There, Peri, a nice prism for you." ] },
+            {"Peri": [ "I'll consider it." ] }
+        ], [
+            {"Peri": [ "Let's get some multihits going." ] },
+            {"Ix": [ "With pleasure.", "smile" ] }
+        ] ],
+        "Drake": [ [
+            {"Drake": [ "Your stupid prism is just gonna sabotage my attacks.", "squint" ] },
+            {"Ix": [ "You'll just have to act more considerate then.", "eyesclosed" ] }
+        ], [
+            {"Drake": [ "I don't think your dinky crystal can handle MY attacks.", "sly" ] },
+            {"Ix": [ "I'm... pretty sure it can, actually.", "squint" ] }
+        ] ],
+        "Isaac": [ [
+            {"Isaac": [ "Uh, that prism is kinda in the way.", "shy" ] },
+            {"Ix": [ "Tough.", "eyesclosed" ]}
+        ], [
+            {"Ix": [ "Isaac, you must prioritize shifting that prism into advantageous positions." ]},
+            {"Isaac": [ "Why is that MY job?", "squint" ] }
+        ] ],
+        "Max": [ [
+            {"Max": [ "Can these prisms do RGB lighting?" ] },
+            {"Ix": [ "They have the whole rainbow.", "eyesclosed" ]}
+        ], [
+            {"Ix": [ "By the power of crystals!" ]},
+            {"Max": [ "I'm a fan of crystals. Even my computer has them." ] }
+        ] ],
+        "Riggs": [ [
+            {"Riggs": [ "So, like, is it safe to shoot that prism?" ] },
+            {"Ix": [ "Of course. There is zero carbon footprint.", "eyesclosed" ]}
+        ], [
+            {"Ix": [ "Pilot, deliver me to my prism!" ]},
+            {"Riggs": [ "Right away, my liege!" ] }
+        ] ],
+        "Books": [ [
+            {"Books": [ "Wow, that prism's much prettier than a geode!" ] },
+            {"Ix": [ "I put my whole self into it." ]}
+        ], [
+            {"Books": [ "It looks almost too pretty to shoot." ] },
+            {"Ix": [ "Almost." ]}
+        ], [
+            {"Ix": [ "Books, do you want to see the true power of crystals?", "smile" ]},
+            {"Books": [ "You bet I do!", "stoked" ] }
+        ], [
+            {"Ix": [ "Make use of that prism while it's still there." ]},
+            {"Books": [ "Why must fleeting things be the most beautiful?", "relaxed" ] }
+        ] ],
+        "CAT": [ [
+            {"CAT": [ "Ix! We better not get shot through those prisms!", "squint" ] },
+            {"Ix": [ "It's all part of the plan.", "eyesclosed" ]}
+        ], [
+            {"Ix": [ "I think I'm seeing double.", "smile" ]},
+            {"CAT": [ "...", "squint" ] }
+        ], [
+            {"Ix": [ "Let's see how they handle a doubled assault.", "smile" ]},
+            {"CAT": [ "Efficient!" ] }
+        ] ],
+        "Nola": [ [
+            {"Nola": [ "We'll discuss that prism positioning later." ] },
+            {"Ix": [ "What is there to discuss?", "squint" ]}
+        ], [
+            {"Ix": [ "Nola, do you really have ZERO attacks to refract?" ]},
+            {"Nola": [ "What can I say. I'm a pacifist.", "smug" ] }
+        ] ],
+        "Isabelle": [ [     
+            {"Isabelle": [ "Come on, let's get some more prisms out there!", "snide" ] },
+            {"Ix": [ "Easier said than done, but I like the enthusiasm.", "smile" ]}
+        ], [
+            {"Ix": [ "I hope these refraction angles aren't too confusing for you." ]},
+            {"Isabelle": [ "Pah, jeu d'enfant!", "glare" ] }
+        ] ],
+        "Gauss": [ [
+            {"Gauss": [ "These prisms are too simple. Do you have anything more complicated?" ] },
+            {"Ix": [ "Simplicity is a virtue!" ]}
+        ], [
+            {"Ix": [ "Gauss, try not to zap my prisms, please.", "sad" ]},
+            {"Gauss": [ "I can't promise much." ] }
+        ] ],
+        "Ilya": [ [
+            {"Ilya": [ "So... can you burn stuff with these prisms?", "happy" ] },
+            {"Ix": [ "...I don't know if I should answer that.", "sad" ]}
+        ], [
+            {"Ix": [ "Oh look, an easy way to double our firepower.", "smile" ]},
+            {"Ilya": [ "A not-so-subtle hint.", "annoyed" ] }
+        ] ],
+        "Jost": [ [
+            {"Jost": [ "If you're bending shots, at least help us avoid them.", "annoyed" ] },
+            {"Ix": [ "Trust me, I'm a natural.", "smile" ]}
+        ], [
+            {"Ix": [ "Double the shots means double the payback." ] },
+            {"Jost": [ "...I like the sound of that.", "happy" ]}
+        ], [
+            {"Ix": [ "Might I suggest using..." ]},
+            {"Jost": [ "They're getting in the way." ] }
+        ] ],
+        "Sorrel": [ [
+            {"Ix": [ "My prism space is looking a bit tight.", "squint" ]},
+            {"Sorrel": [ "There is always room for that which is necessary.", "nap" ] }
+        ], [
+            {"Ix": [ "Freezing time doesn't affect shots that enter my prisms, you know?" ]},
+            {"Sorrel": [ "A double edged sword." ] }
+        ] ],
+        "Eddie": [ [
+            {"Eddie": [ "Are you sure this device works? I'm quite attached to my attacks.", "squint" ] },
+            {"Ix": [ "Of course. It's structurally perfect." ]}
+        ], [
+            {"Ix": [ "If we use the prism we could-" ]},
+            {"Eddie": [ "Woah, slow down, let me process the situation first.", "squint" ] }
+        ] ],
+        "Johnson": [ [
+            {"Switch": [
+                {"Johnson": [ "Incredible, these optic devices can MULTIPLY our profits!", "happy" ]},
+                {"Johnson": [ "We should cash out on that prismatic shard while we can!", "happy" ]},
+                {"Johnson": [ "The surplus value we can generate with this prism is truly remarkable!", "happy" ]},
+                {"Johnson": [ "Goodness, these prisms will be the newest business sensation!", "happy" ]}
+            ] },
+            {"Switch": [
+                {"Ix": [ "Ugh, please stop talking.", "glare" ]},
+                {"Ix": [ "Is that all you can think about?", "glare" ]},
+                {"Ix": [ "...I would like to file a complaint...", "glare" ]},
+                {"Ix": [ "You really don't \"get it\", do you?", "squint" ]},
+                {"Ix": [ "We're not on the same wavelength, my friend.", "sad" ]},
+                {"Ix": [ "What a corruption of everything I stand for.", "sad" ]},
+                {"Ix": [ "...You're lucky we're on the same ship.", "glare" ]}
+            ] }
+        ] ],
+        "Nibbs": [ [
+            {"": [ "" ] },
+            {"Ix": [ "" ]}
+        ], [
+            {"Ix": [ "" ]},
+            {"": [ "" ] }
+        ] ],
+    },
+
+
+    "CatSummonIx": {
+        "CAT": [ [
+            {"Ix": [ "Ah, is someone finally following my lead and trying to act responsibly?", "smile" ]},
+            {"CAT": [ "Zip it.", "squint" ]}
+        ] ]
+    },
+    "CatSummonIWithoutIx": {
+        "CAT": [ [
+            {"CAT": [ "Ix is a nutcase, but he would know what to do here." ]}
+        ] ]
+    },
+
+    "SogginsEscapeIntent_2": {
+        "Basic": [ [
+            {"Soggins": [ "Uh, can you let me go?" ]},
+            {"Ix": [ "Tut-tut! Not until after you hear my lecture.", "glare" ]}
+        ] ]
+    },
+    "SogginsEscapeIntent_3": {
+        "Basic": [ [
+            {"Ix": [ "It's highly irresponsible of you to fly such a dangerous ship given your... capabilities..." ]},
+            {"Soggins": [ "Hey!", "mad" ]}
+        ] ]
+    },
+    "SogginsEscapeIntent_4": {
+        "Basic": [ [
+            {"Ix": [ "On top of that, did you even check the composition of these corrosive missiles? These are a major biohazard.", "reading" ]},
+            {"Soggins": [ "I haven't even hit anyone yet." ]}
+        ] ]
+    },
+    "SogginsEscapeIntent_5": {
+        "Basic": [ [
+            {"Ix": [ "So in conclusion, you will need to become more responsible and stop relying on others to correct your mistakes.", "eyesclosed" ]},
+            {"Soggins": [ "Uh huh." ]}
+        ] ]
+    },
+    "SogginsEscapeIntent_6": {
+        "Basic": [ [
+            {"Soggins": [ "Can I go now?" ]},
+            {"Ix": [ "Yes." ]}
+        ] ]
+    },
+}
